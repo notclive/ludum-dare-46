@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "Entry for https://ldjam.com/events/ludum-dare/46",
   "private": true,
+  "dependencies": {
+    "phaser": "3.22.0"
+  },
   "devDependencies": {
+    "css-loader": "3.5.2",
     "html-webpack-plugin": "4.2.0",
+    "style-loader": "1.1.4",
     "ts-loader": "7.0.0",
     "typescript": "3.8.3",
     "webpack": "4.42.1",
