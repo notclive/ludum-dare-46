@@ -3,6 +3,7 @@ import { SceneBase } from './sceneBase';
 
 export class Menu extends SceneBase {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+    private text: Phaser.GameObjects.Text;
 
     create() {
         this.cameras.main.backgroundColor = Phaser.Display.Color.ValueToColor(0x808080);
@@ -16,6 +17,7 @@ export class Menu extends SceneBase {
         circle.fillCircle(0, 0, 50);
         
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.text = this.add.text(-225, 75, 'Press "space" to start', { fontSize: '32px', fill: '#000' });
     }
 
     update() {
