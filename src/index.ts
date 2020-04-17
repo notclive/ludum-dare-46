@@ -1,26 +1,6 @@
 import './global.css';
+import {Game} from './game';
 
-import * as Phaser from 'phaser';
+const launch = () => new Game();
 
-const gameConfig: Phaser.Types.Core.GameConfig = {
-    title: 'Sample',
-
-    type: Phaser.AUTO,
-
-    scale: {
-        width: window.innerWidth,
-        height: window.innerHeight,
-    },
-
-    physics: {
-        default: 'arcade',
-        arcade: {
-            debug: true,
-        },
-    },
-
-    parent: 'game',
-    backgroundColor: '#000000',
-};
-
-export const game = new Phaser.Game(gameConfig);
+window.onload = launch;
