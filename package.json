@@ -4,7 +4,9 @@
   "description": "Entry for https://ldjam.com/events/ludum-dare/46",
   "private": true,
   "dependencies": {
-    "phaser": "3.22.0"
+    "file-loader": "6.0.0",
+    "phaser": "3.22.0",
+    "raw-loader": "4.0.1"
   },
   "devDependencies": {
     "css-loader": "3.5.2",

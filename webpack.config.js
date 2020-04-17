@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
     entry: './src/index.ts',
@@ -13,6 +14,14 @@ module.exports = {
             {
                 test: /\.css$/i,
                 use: ['style-loader', 'css-loader'],
+            },
+            {
+              test: [/\.vert$/, /\.frag$/],
+              use: "raw-loader"
+            },
+            {
+              test: /\.(gif|png|jpe?g|svg|xml)$/i,
+              use: "file-loader"
             }
         ],
     },
@@ -28,5 +37,9 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin(),
+        new webpack.DefinePlugin({
+          CANVAS_RENDERER: JSON.stringify(true),
+          WEBGL_RENDERER: JSON.stringify(true)
+        }),
     ]
 };
