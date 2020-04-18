@@ -46,13 +46,8 @@ export default class Fishes extends StaticGroup {
     };
 
     private tryPickUpFish = () => {
-        const closestFish = this.scene.physics.closest(this.player, this.children.entries) as Image;
-        if (!closestFish) {
-            return;
-        }
-        const distanceToFish = Distance.Between(closestFish.x, closestFish.y, this.player.x, this.player.y);
-        // 30 seems about right on my screen, but probably needs to be scaled with the window.
-        if (distanceToFish < 30) {
+        const closestFish = this.scene.getBTouchingA(this.player, this.children.entries);
+        if (closestFish) {
             this.pickUpFish(closestFish);
         }
     };
