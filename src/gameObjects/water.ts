@@ -2,8 +2,8 @@ import * as Phaser from 'phaser';
 import { PHASER_STATIC_BODY } from '../consts';
 
 export class Water extends Phaser.GameObjects.Image {
-    constructor(scene: Phaser.Scene, x: number, private initialY: number, private minY: number) {
-        super(scene, x, initialY, 'water');
+    constructor(scene: Phaser.Scene, x: number, private maxY: number, private minY: number) {
+        super(scene, x, maxY, 'water');
 
         this.setAlpha(0.5);
         this.setDepth(1);
@@ -13,7 +13,8 @@ export class Water extends Phaser.GameObjects.Image {
 
     update(waterLevel: number) {
         // This keeps the water within the bounds of the cat
-        this.y = this.minY + ((this.initialY - this.minY) * (100 - waterLevel) / 100);
+        const waterLevelY = this.minY + ((this.maxY - this.minY) * (100 - waterLevel) / 100);
+        this.y = waterLevelY + (this.displayHeight / 2);
     }
 
     YOfTheWaterLevel = () => this.y - (this.displayHeight / 2);

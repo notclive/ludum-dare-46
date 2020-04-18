@@ -62,7 +62,7 @@ export class Level extends SceneBase {
 
         this.brain = new Brain(this, leftGameWidth/2, this.gameHeight/3, this.player);
 
-        this.water = new Water(this, catXPosition, catTopY + (catBackground.displayHeight * 1.5), 0);
+        this.water = new Water(this, catXPosition, catTopY + catBackground.displayHeight, catTopY);
         this.plug = new Plug(this, 3 * leftGameWidth / 8, (3 * this.gameHeight) / 4, this.water);
 
         this.physics.add.collider(this.player, this.heart, () => this.handleCollidingWithInteractableObject(this.beatHeart), null, this);
