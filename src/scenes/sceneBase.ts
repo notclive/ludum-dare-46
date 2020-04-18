@@ -1,3 +1,6 @@
+type MoveableGameObject =
+    Phaser.GameObjects.Sprite | Phaser.GameObjects.Text | Phaser.GameObjects.Image;
+
 export class SceneBase extends Phaser.Scene {
     public get gameWidth(): number {
         return this.sys.game.config.width as number;
@@ -7,8 +10,16 @@ export class SceneBase extends Phaser.Scene {
         return this.sys.game.config.height as number;
     }
 
-    protected setView(): void {
-        // focus on center
-        this.cameras.main.centerOn(0, 0);
+    protected centreObjectX(object: MoveableGameObject) {
+        object.x = (this.gameWidth / 2) - (object.displayWidth / 2);
+    }
+
+    protected centreObjectY(object: MoveableGameObject) {
+        object.y = (this.gameHeight / 2) - (object.displayHeight / 2);
+    }
+
+    protected centreObject(object: MoveableGameObject) {
+        this.centreObjectX(object);
+        this.centreObjectY(object);
     }
 }

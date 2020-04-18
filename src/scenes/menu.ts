@@ -8,16 +8,14 @@ export class Menu extends SceneBase {
     create() {
         this.cameras.main.backgroundColor = Phaser.Display.Color.ValueToColor(0x808080);
 
-        // focus on 0, 0
-        this.setView();
-
         // red circle
         let circle = this.add.graphics();
         circle.fillStyle(0xff0000);
-        circle.fillCircle(0, 0, 50);
-        
+        circle.fillCircle(this.gameWidth / 2, this.gameHeight / 2, 50);
+
         this.cursors = this.input.keyboard.createCursorKeys();
-        this.text = this.add.text(-225, 75, 'Press "space" to start', { fontSize: '32px', fill: '#000' });
+        this.text = this.add.text(0, (this.gameHeight / 2) + 75, 'Press "space" to start', { fontSize: '32px', fill: '#000' });
+        this.centreObjectX(this.text);
     }
 
     update() {
