@@ -10,16 +10,30 @@ export class Plug extends Phaser.Physics.Arcade.Sprite {
 
         scene.physics.world.enable(this, PHASER_STATIC_BODY);
         scene.add.existing(this);
+
+        this.scene.anims.create({
+            key: 'plug-plugged',
+            frames: this.scene.anims.generateFrameNumbers('plug', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.scene.anims.create({
+            key: 'plug-unplugged',
+            frames: this.scene.anims.generateFrameNumbers('plug', { start: 2, end: 4 }),
+            frameRate: 15,
+            repeat: -1
+        });
+        this.anims.play('plug-plugged', true);
     }
 
     unplug = () => {
         this.isPlugged = false;
-        this.setAngle(90);
+        this.anims.play('plug-unplugged', true);
     };
 
     plug = () => {
         this.isPlugged = true;
-        this.setAngle(0);
+        this.anims.play('plug-plugged', true);
     };
 
     update = (waterLevel: number) => {

@@ -7,7 +7,7 @@ import stomach from '../assets/organ-stomach.png';
 import buttonA from '../assets/buttonA.png';
 import buttonB from '../assets/buttonB.png';
 import water from '../assets/water.png';
-import plug from '../assets/plug.jpg';
+import cork from '../assets/cork.png';
 import fish from '../assets/fish.png';
 import player1 from '../assets/player1.png';
 import player2 from '../assets/player2.png';
@@ -39,7 +39,6 @@ export class Preloader extends SceneBase {
         this.load.image('buttonA', buttonA);
         this.load.image('buttonB', buttonB);
         this.load.image('stomach', stomach);
-        this.load.image('plug', plug);
         this.load.image('water', water);
         this.load.image('fish', fish);
         this.load.image('cat', cat);
@@ -69,6 +68,10 @@ export class Preloader extends SceneBase {
         this.load.spritesheet('lungs',
             lungs,
             { frameWidth: 165, frameHeight: 257 }
+        );
+        this.load.spritesheet('plug',
+            cork,
+            { frameWidth: 76, frameHeight: 65 }
         );
     }
 }
