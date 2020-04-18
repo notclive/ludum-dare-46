@@ -6,6 +6,7 @@ import {Player} from './player';
 import GameObject = Phaser.GameObjects.GameObject;
 
 export default class Fishes extends StaticGroup {
+    private fishGenerationId: NodeJS.Timeout;
 
     public constructor(public scene: Level, private player: Player, private placeFishCallback: (fish: Image) => void) {
         super(scene.physics.world, scene);
@@ -13,11 +14,15 @@ export default class Fishes extends StaticGroup {
         this.handleFishKeyBeingPressed();
     }
 
+    public stopGeneratingFish = () => {
+        clearInterval(this.fishGenerationId);
+    };
+
     private generateFishEveryFifteenSeconds = () => {
         this.generateFish();
-        setInterval(() => {
+        this.fishGenerationId = setInterval(() => {
             this.generateFish();
-        }, 15 * 1000)
+        }, 15 * 1000);
     };
 
     private generateFish = () => {

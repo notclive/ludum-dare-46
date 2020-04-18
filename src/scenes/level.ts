@@ -19,6 +19,7 @@ export class Level extends SceneBase {
     private stomach: Stomach;
     private foodBar: StatBar;
     private brain: Brain;
+    private fishes: Fishes;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private outsideView: OutsideView;
     private gameOver = false;
@@ -80,6 +81,7 @@ export class Level extends SceneBase {
     private endGame() {
         this.physics.pause();
         this.player.gameOver();
+        this.fishes.stopGeneratingFish();
         this.gameOver = true;
     }
 
