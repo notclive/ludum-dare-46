@@ -16,6 +16,7 @@ export class Level extends SceneBase {
     private outsideView: OutsideView;
     private gameOver = false;
     private spaceBarDown = false;
+    private walls: Phaser.Physics.Arcade.StaticGroup;
 
     create() {
         const background = this.add.image(0, 0, 'sky');
@@ -32,6 +33,10 @@ export class Level extends SceneBase {
 
         this.physics.add.collider(this.player, this.heart, () => this.handleCollidingWithInteractableObject(() => this.heart.pump()), null, this);
         this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithLungs(), null, this);
+
+        this.walls = this.physics.add.staticGroup();
+        this.createWalls();
+        this.physics.add.collider(this.player, this.walls);
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
@@ -85,5 +90,18 @@ export class Level extends SceneBase {
             const fish = this.add.image(this.gameWidth / (2 + xJitter), this.gameHeight  / (4 + yJitter), 'fish');
             this.scaleObjectToGameWidth(fish, 0.02);
         }, 60 * 1000)
+    }
+
+    private createWalls() {
+        const leftMargin = 50;
+        const topMargin = 150;
+        for (var i = leftMargin; i <= this.gameWidth - leftMargin; i = i + 50) {
+            this.walls.create(i, topMargin, 'wall');
+            this.walls.create(i, this.gameHeight - topMargin, 'wall');
+            for (var j = topMargin; j <= this.gameHeight - topMargin; j = j + 50) {
+                this.walls.create(leftMargin, j, 'wall');
+                this.walls.create(this.gameWidth - leftMargin, j, 'wall');
+            }
+        }
     }
 }
