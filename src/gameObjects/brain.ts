@@ -27,7 +27,7 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
         this.scene.anims.create({
             key: 'brain-slowPulse',
             frames: this.scene.anims.generateFrameNumbers('brain', { start: 0, end: 1 }),
-            frameRate: 5,
+            frameRate: 3,
             repeat: -1
         });
         this.anims.play('brain-slowPulse', true);
