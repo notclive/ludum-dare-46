@@ -16,6 +16,9 @@ export class Menu extends SceneBase {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.text = this.add.text(0, (this.gameHeight / 2) + 75, 'Press "space" to start', { fontSize: '32px', fill: '#000' });
         this.centreObjectX(this.text);
+
+        // Skip menu so we can develop quicker.
+        this.startGame();
     }
 
     update() {
@@ -23,7 +26,6 @@ export class Menu extends SceneBase {
             this.startGame();
         }
     }
-
 
     private startGame() {
         console.log('Starting game...');
