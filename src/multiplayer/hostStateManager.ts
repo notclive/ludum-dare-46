@@ -18,15 +18,23 @@ export default class HostStateManager implements StateManager {
     public tick = () => {
         this._state = {
             ...this._state,
-            gameOver: this.state.gameOver || this._state.heart === 0 || this._state.lungs === 0,
+            gameOver: this.isGameOver(),
             heart: Math.max(this._state.heart - 0.1, 0),
             lungs: Math.max(this._state.lungs - 0.05, 0),
+            fullness: Math.max(this._state.fullness - 0.01, 0),
             waterLevel: Math.min(this._state.waterLevel + 0.03, 100)
         };
         if (this.connection) {
             this.sendStateToPeer(this.connection)
         }
     };
+
+    private isGameOver() {
+        return this.state.gameOver
+            || this._state.heart === 0
+            || this._state.lungs === 0
+            || this._state.fullness === 0;
+    }
 
     public set myPosition(position: PlayerPosition) {
         this._state = {
@@ -48,6 +56,9 @@ export default class HostStateManager implements StateManager {
         }
         if (event.type === 'BEAT_HEART') {
             this.beatHeart();
+        }
+        if (event.type === 'DIGEST_FOOD') {
+            this.digestFood();
         }
         if (event.type === 'DRAIN_PLUG') {
             this.drainPlug();
@@ -71,6 +82,13 @@ export default class HostStateManager implements StateManager {
         };
     };
 
+    private digestFood = () => {
+        this._state = {
+            ...this._state,
+            fullness: Math.min(this._state.fullness + 20, 100)
+        };
+    };
+
     private drainPlug = () => {
         this._state = {
             ...this._state,
@@ -85,7 +103,7 @@ export default class HostStateManager implements StateManager {
                 ...this.state.peerPlayer,
                 position
             }
-        }
+        };
     };
 
     private handleEventsFromPeer = (connection: DataConnection) => {

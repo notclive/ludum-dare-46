@@ -88,8 +88,6 @@ export class Level extends SceneBase {
             return;
         }
 
-        this.stomach.update(0.01);
-
         this.stateManager.tick();
 
         const walkingSpeed = this.player.y > this.water.YOfTheWaterLevel()
@@ -102,7 +100,7 @@ export class Level extends SceneBase {
         this.healthBar.update(this.stateManager.state.heart);
         this.breatheBar.update(this.stateManager.state.lungs);
         this.plug.update(this.stateManager.state.waterLevel);
-        this.foodBar.update(this.stomach.getHealth());
+        this.foodBar.update(this.stateManager.state.fullness);
 
         if (this.player.isTouching(this.brain)) {
             if (!this.isInBrain) { this.brain.showDecision(); }
@@ -180,7 +178,9 @@ export class Level extends SceneBase {
 
     private feedStomach = (fish: Phaser.GameObjects.Image) => {
         fish.destroy();
-        this.stomach.feed();
+        this.stateManager.handleEvent({
+            type: 'DIGEST_FOOD'
+        });
     };
 
     private openPlug = () => {
