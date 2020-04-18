@@ -45,7 +45,7 @@ export class Level extends SceneBase {
         this.stomach = new Stomach(this, this.gameWidth / 2, (3 * this.gameHeight) / 4);
         this.foodBar = new StatBar(this, 20, 130, 'Food');
 
-        this.brain = new Brain(this, this.gameWidth/2, this.gameHeight/3);
+        this.brain = new Brain(this, this.gameWidth/2, this.gameHeight/3, this.player);
 
         this.physics.add.collider(this.player, this.heart, () => this.handleCollidingWithInteractableObject(() => this.heart.pump()), null, this);
         this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithLungs(), null, this);
@@ -106,6 +106,15 @@ export class Level extends SceneBase {
 
     private handleOverlapWithBrain() {
         this.brain.showDecision();
+
+        if (this.cursors.space.isDown) {
+            if (!this.spaceBarDown) {
+                this.brain.tryPressButton();
+            }
+            this.spaceBarDown = true;
+        } else {
+            this.spaceBarDown = false;
+        }
     }
 
     private createWalls() {

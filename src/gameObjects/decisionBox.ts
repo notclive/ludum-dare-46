@@ -20,6 +20,7 @@ export class DecisionBox extends Phaser.GameObjects.Graphics {
     }
 
     hide() {
-        this.clear();
+        // TODO: this doesn't work yet.
+        this.destroy();
     }
 }
