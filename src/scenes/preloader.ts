@@ -1,9 +1,6 @@
 import * as Phaser from 'phaser';
 import { SceneBase } from './sceneBase';
 import sky from '../assets/sky.png';
-import platform from '../assets/platform.png';
-import star from '../assets/star.png';
-import bomb from '../assets/bomb.png';
 import heart from '../assets/heart.png';
 import lungs from '../assets/lungs.jpg';
 import dude from '../assets/dude.png';
@@ -28,9 +25,6 @@ export class Preloader extends SceneBase {
         });
 
         this.load.image('sky', sky);
-        this.load.image('ground', platform);
-        this.load.image('star', star);
-        this.load.image('bomb', bomb);
         this.load.image('heart', heart);
         this.load.image('lungs', lungs);
         this.load.spritesheet('dude', 
