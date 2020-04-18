@@ -77,12 +77,11 @@ export class Level extends SceneBase {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
 
-        this.fishes = new Fishes(this, leftGameWidth / 2, this.gameHeight / 2, this.player, this.handleFishPlaced);
+        this.fishes = new Fishes(this, leftGameWidth / 2, this.gameHeight / 2,  this.player, this.stomach);
         listenForMultiplayerHotkeys(this);
     }
 
     update() {
-        const baseWalkingSpeed = 160;
         if (this.stateManager.state.gameOver) {
             this.endGame();
             return;
@@ -90,17 +89,14 @@ export class Level extends SceneBase {
 
         this.stateManager.tick();
 
+        const baseWalkingSpeed = 160;
         const walkingSpeed = this.player.y > this.water.YOfTheWaterLevel()
             ? baseWalkingSpeed / 2
             : baseWalkingSpeed;
 
         this.player.update(walkingSpeed, this.cursors);
         this.stateManager.myPosition = {x: this.player.x, y: this.player.y};
-        this.externalPlayer.setPosition(this.stateManager.otherPlayerPosition.x, this.stateManager.otherPlayerPosition.y);
-        this.healthBar.update(this.stateManager.state.heart);
-        this.breatheBar.update(this.stateManager.state.lungs);
-        this.plug.update(this.stateManager.state.waterLevel);
-        this.foodBar.update(this.stateManager.state.fullness);
+        this.updateGameObjectsFromState();
 
         if (this.player.isTouching(this.brain)) {
             if (!this.isInBrain) {
@@ -125,7 +121,15 @@ export class Level extends SceneBase {
     private endGame() {
         this.physics.pause();
         this.player.gameOver();
-        this.fishes.stopGeneratingFish();
+    }
+
+    private updateGameObjectsFromState() {
+        this.externalPlayer.setPosition(this.stateManager.otherPlayerPosition.x, this.stateManager.otherPlayerPosition.y);
+        this.fishes.update(this.stateManager.state.fishes, this.stateManager.state.gameTime);
+        this.healthBar.update(this.stateManager.state.heart);
+        this.breatheBar.update(this.stateManager.state.lungs);
+        this.plug.update(this.stateManager.state.waterLevel);
+        this.foodBar.update(this.stateManager.state.fullness);
     }
 
     private handleSpaceBar() {
@@ -176,17 +180,6 @@ export class Level extends SceneBase {
         this.walls.create(leftMargin, this.gameHeight / 2, 'wall').setScale(1, yScale).refreshBody();
         this.walls.create(this.gameWidth - leftMargin, this.gameHeight / 2, 'wall').setScale(1, yScale).refreshBody();
     }
-
-    private handleFishPlaced = (fish: Phaser.GameObjects.Image) => {
-        this.physics.add.collider(fish, this.stomach, () => this.feedStomach(fish), null, this);
-    };
-
-    private feedStomach = (fish: Phaser.GameObjects.Image) => {
-        fish.destroy();
-        this.stateManager.handleEvent({
-            type: 'DIGEST_FOOD'
-        });
-    };
 
     private openPlug = () => {
         if (this.plug.getIsPlugged()) {

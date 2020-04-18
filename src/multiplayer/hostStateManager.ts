@@ -18,7 +18,7 @@ export default class HostStateManager implements StateManager {
     public tick = () => {
         this._state = {
             ...this._state,
-            clock: this._state.clock + 1,
+            gameTime: this._state.gameTime + 1,
             gameOver: this.isGameOver(),
             heart: Math.max(this._state.heart - 0.1, 0),
             lungs: Math.max(this._state.lungs - 0.05, 0),
@@ -103,7 +103,7 @@ export default class HostStateManager implements StateManager {
         };
     };
 
-    private placeFish = (id: number, position: GameObjectPosition, ticksUntilVisible: number) => {
+    private placeFish = (id: string, position: GameObjectPosition, ticksUntilVisible: number) => {
         this._state = {
             ...this._state,
             fishes: [
@@ -111,13 +111,13 @@ export default class HostStateManager implements StateManager {
                 {
                     id,
                     position,
-                    visibleAfterGameTime: this._state.clock + ticksUntilVisible
+                    visibleAfterGameTime: this._state.gameTime + ticksUntilVisible
                 }
             ]
         };
     };
 
-    private removeFish = (fishId: number) => {
+    private removeFish = (fishId: string) => {
         this._state = {
             ...this._state,
             fishes: this._state.fishes.filter(fish => fish.id !== fishId)

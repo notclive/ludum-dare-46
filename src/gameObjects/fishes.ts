@@ -1,45 +1,46 @@
 import StaticGroup = Phaser.Physics.Arcade.StaticGroup;
 import Image = Phaser.GameObjects.Image;
+import GameObject = Phaser.GameObjects.GameObject;
 import {Level} from '../scenes/level';
 import {Player} from './player';
-import GameObject = Phaser.GameObjects.GameObject;
+import {Fish} from '../multiplayer/stateManager';
+import {Stomach} from './stomach';
 
 export default class Fishes extends StaticGroup {
-    private fishGenerationId: NodeJS.Timeout;
 
-    public constructor(public scene: Level, private x: number, private y: number,
-        private player: Player, private placeFishCallback: (fish: Image) => void
+    private fishId = 0;
+
+    public constructor(
+        public scene: Level,
+        private x: number,
+        private y: number,
+        private player: Player,
+        private stomach: Stomach
     ) {
         super(scene.physics.world, scene);
         this.handleFishKeyBeingPressed();
     }
 
-    public stopGeneratingFish = () => {
-        clearInterval(this.fishGenerationId);
-    };
-
     public generateFishRegularlyForAWhile = () => {
-        this.generateFishRegularly();
-        setTimeout(() => {
-            this.stopGeneratingFish();
-        }, 40 * 1000)
-    }
-
-    private generateFishRegularly = () => {
-        if (this.fishGenerationId) {
-            this.stopGeneratingFish();
+        // Not exact, but it doesn't matter.
+        const ticksPerSecond = 60;
+        for (let delayInSeconds = 0; delayInSeconds < 40; delayInSeconds += 10) {
+            this.scene.stateManager.handleEvent({
+                type: 'PLACE_FISH',
+                id: this.generateNewFishId(),
+                position: this.generateFishCoordinates(),
+                ticksUntilVisible: ticksPerSecond * delayInSeconds
+            });
         }
-        this.fishGenerationId = setInterval(() => {
-            this.generateFish();
-        }, 10 * 1000);
     };
 
-    private generateFish = () => {
+    // Jitter is added so that multiple fish look like a pile rather than one fish.
+    private generateFishCoordinates = () => {
         const xJitter = Math.random() * 40;
         const yJitter = Math.random() * 40;
         const x = this.x + xJitter;
         const y = this.y + yJitter;
-        this.placeFish(x, y);
+        return {x, y};
     };
 
     private handleFishKeyBeingPressed = () => {
@@ -63,20 +64,56 @@ export default class Fishes extends StaticGroup {
 
     private pickUpFish = (closestFish: GameObject) => {
         this.player.isHoldingFish = true;
-        // It might be more efficient to use an object pool but we're not going to have that many fish ... right?
-        closestFish.destroy();
+        this.scene.stateManager.handleEvent({
+            type: 'REMOVE_FISH',
+            id: closestFish.name
+        });
     };
 
     private dropFish = () => {
         this.player.isHoldingFish = false;
-        this.placeFish(this.player.x, this.player.y);
+        if (this.player.isTouching(this.stomach)) {
+            this.scene.stateManager.handleEvent({
+                type: 'DIGEST_FOOD'
+            });
+        } else {
+            this.scene.stateManager.handleEvent({
+                type: 'PLACE_FISH',
+                id: this.generateNewFishId(),
+                position: {x: this.player.x, y: this.player.y},
+                ticksUntilVisible: 0
+            });
+        }
     };
 
-    private placeFish = (x: number, y: number) => {
-        const fish = new Image(this.scene, x, y, 'fish');
-        fish.scale = this.scene.gameWidth * 0.02 / fish.displayWidth;
-        this.add(fish);
-        this.scene.add.existing(fish);
-        this.placeFishCallback(fish);
+    private generateNewFishId = () => (this.fishId++).toString();
+
+    public update = (fishes: Fish[], gameTime: number) => {
+        this.destroyFishThatNoLongerExist(fishes);
+        this.drawNewFishes(fishes, gameTime);
+    };
+
+    private destroyFishThatNoLongerExist = (fishes: Fish[]) => {
+        const idsThatStillExist = fishes.map(f => f.id);
+        this.getChildren()
+            .filter(image => !idsThatStillExist.includes(image.name))
+            .forEach(image => {
+                image.destroy();
+            });
+    };
+
+    private drawNewFishes = (fishes: Fish[], gameTime: number) => {
+        const idsThatHaveBeenDrawn = this.getChildren().map(image => image.name);
+        fishes.filter(fish => !idsThatHaveBeenDrawn.includes(fish.id))
+            .filter(fish => fish.visibleAfterGameTime < gameTime)
+            .forEach(this.drawNewFish);
+    };
+
+    private drawNewFish = (fish: Fish) => {
+        const image = new Image(this.scene, fish.position.x, fish.position.y, 'fish');
+        image.name = fish.id;
+        image.scale = this.scene.gameWidth * 0.02 / image.displayWidth;
+        this.add(image);
+        this.scene.add.existing(image);
     };
 }

@@ -8,7 +8,7 @@ export interface StateManager {
 
 export interface GameState {
     gameOver: boolean;
-    clock: number;
+    gameTime: number;
     hostPlayer: PlayerState;
     peerPlayer: PlayerState;
     fishes: Fish[];
@@ -28,8 +28,8 @@ export interface GameObjectPosition {
     y: number;
 }
 
-interface Fish {
-    id: number;
+export interface Fish {
+    id: string;
     visibleAfterGameTime: number;
     position: GameObjectPosition;
 }
@@ -54,14 +54,14 @@ interface DrainPlug {
 
 interface PlaceFish {
     type: 'PLACE_FISH';
-    id: number;
+    id: string;
     position: GameObjectPosition;
     ticksUntilVisible: number;
 }
 
 interface RemoveFish {
     type: 'REMOVE_FISH';
-    id: number;
+    id: string;
 }
 
 interface SetPeerPlayerPosition {
@@ -71,7 +71,7 @@ interface SetPeerPlayerPosition {
 
 export const INITIAL_STATE: GameState = {
     gameOver: false,
-    clock: 0,
+    gameTime: 0,
     hostPlayer: {
         position: {
             x: 500, y: 500
