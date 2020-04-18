@@ -7,7 +7,9 @@ import GameObject = Phaser.GameObjects.GameObject;
 export default class Fishes extends StaticGroup {
     private fishGenerationId: NodeJS.Timeout;
 
-    public constructor(public scene: Level, private player: Player, private placeFishCallback: (fish: Image) => void) {
+    public constructor(public scene: Level, private x: number, private y: number,
+        private player: Player, private placeFishCallback: (fish: Image) => void
+    ) {
         super(scene.physics.world, scene);
         this.handleFishKeyBeingPressed();
     }
@@ -33,10 +35,10 @@ export default class Fishes extends StaticGroup {
     };
 
     private generateFish = () => {
-        const xJitter = Math.random() / 10;
-        const yJitter = Math.random() / 10;
-        const x = this.scene.gameWidth / (2 + xJitter);
-        const y = this.scene.gameHeight / (2 + yJitter);
+        const xJitter = Math.random() * 40;
+        const yJitter = Math.random() * 40;
+        const x = this.x + xJitter;
+        const y = this.y + yJitter;
         this.placeFish(x, y);
     };
 

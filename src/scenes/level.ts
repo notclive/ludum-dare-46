@@ -77,7 +77,7 @@ export class Level extends SceneBase {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
 
-        this.fishes = new Fishes(this, this.player, this.handleFishPlaced);
+        this.fishes = new Fishes(this, leftGameWidth / 2, this.gameHeight / 2, this.player, this.handleFishPlaced);
         listenForMultiplayerHotkeys(this);
     }
 
@@ -104,13 +104,11 @@ export class Level extends SceneBase {
 
         if (this.player.isTouching(this.brain)) {
             if (!this.isInBrain) {
-                console.log('entering brain')
                 this.brain.showDecision();
             }
             this.isInBrain = true;
         } else {
             if (this.isInBrain) {
-                console.log('leaving brain')
                 this.brain.hideDecision();
             }
             this.isInBrain = false;
