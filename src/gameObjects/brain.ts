@@ -10,8 +10,7 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
     private buttonA: DecisionButton;
     private buttonB: DecisionButton;
 
-    //TODO: For now, getting to make a decision is a one-time-only event!
-    private decisionHasBeenShown: boolean;
+    private decisionIsVisible: boolean;
 
     playerIsOverlapping: boolean;
 
@@ -21,41 +20,43 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
         scene.physics.world.enable(this, PHASER_STATIC_BODY);
         scene.add.existing(this);
 
-        this.decisionBox = new DecisionBox(scene, x, 20);
-        this.buttonA = new DecisionButton(scene, x - 40, y, 'buttonA');
-        this.buttonB = new DecisionButton(scene, x + 40, y, 'buttonB');
+        this.decisionBox = new DecisionBox(scene, this.x, 20);
+        this.buttonA = new DecisionButton(scene, this.x - 40, this.y, 'buttonA');
+        this.buttonB = new DecisionButton(scene, this.x + 40, this.y, 'buttonB');
     }
 
     tryPressButton = () => {
-        if (!this.decisionHasBeenShown) {
+        if (!this.decisionIsVisible) {
             return;
         }
 
         if (this.player.isTouching(this.buttonA)) {
-            console.log('near A')
+            console.log('near A');
             this.hideDecision();
         }
         else if (this.player.isTouching(this.buttonB)) {
-            console.log('near B')
+            console.log('near B');
             this.hideDecision();
         }
     };
 
     showDecision() {
-        if (!this.decisionHasBeenShown) {
+        if (!this.decisionIsVisible) {
             this.decisionBox.show();
             this.buttonA.show();
             this.buttonB.show();
 
-            this.decisionHasBeenShown = true;
+            this.decisionIsVisible = true;
         }
     }
 
     hideDecision() {
-        if (this.decisionHasBeenShown) {
+        if (this.decisionIsVisible) {
             this.decisionBox.hide();
             this.buttonA.hide();
             this.buttonB.hide();
+
+            this.decisionIsVisible = false;
         }
     }
 }

@@ -103,11 +103,17 @@ export class Level extends SceneBase {
         this.foodBar.update(this.stateManager.state.fullness);
 
         if (this.player.isTouching(this.brain)) {
-            if (!this.isInBrain) { this.brain.showDecision(); }
+            if (!this.isInBrain) {
+                console.log('entering brain')
+                this.brain.showDecision();
+            }
             this.checkIfPressingBrainButtons();
             this.isInBrain = true;
         } else {
-            if (this.isInBrain) { this.brain.hideDecision(); }
+            if (this.isInBrain) {
+                console.log('leaving brain')
+                this.brain.hideDecision();
+            }
             this.isInBrain = false;
         }
     }
