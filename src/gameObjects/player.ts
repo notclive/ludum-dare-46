@@ -56,4 +56,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             this.setVelocityY(-330);
         }
     }
+
+    gameOver() {
+        this.setTint(0xff0000);
+        this.anims.play('turn');
+    }
 }

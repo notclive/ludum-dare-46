@@ -1,9 +1,12 @@
 import * as Phaser from 'phaser';
 import { SceneBase } from './sceneBase';
 import { Player } from '../gameObjects/player';
+import { Heart } from '../gameObjects/heart';
 
 export class Level extends SceneBase {
     private player: Player;
+    private heart: Heart;
+    private progressBar: Phaser.GameObjects.Graphics;
     private platforms: Phaser.Physics.Arcade.StaticGroup;
     private stars: Phaser.Physics.Arcade.Group;
     private bombs: Phaser.Physics.Arcade.Group;
@@ -13,19 +16,24 @@ export class Level extends SceneBase {
     private gameOver = false;
 
     create() {
-        const background = this.add.image(400, 300, 'sky');
+        const background = this.add.image(0, 0, 'sky');
+        this.centreObject(background);
+        this.scaleObjectToGameWidth(background, 1);
+
+        this.progressBar = this.add.graphics();
+        var progressBox = this.add.graphics();
+        progressBox.fillStyle(0x222222, 0.8);
+        progressBox.fillRect(20, 50, 320, 50);
 
         this.platforms = this.physics.add.staticGroup();
-        this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-        this.platforms.create(600, 400, 'ground');
-        this.platforms.create(50, 250, 'ground');
-        this.platforms.create(750, 220, 'ground');
+        this.platforms.create(this.gameWidth / 2, this.gameHeight - 22, 'ground').setScale(4).refreshBody();
 
         this.player = new Player(this, 100, 450);
+        this.heart = new Heart(this, 300, 450, 20);
 
         this.stars = this.physics.add.group();
         this.createStars();
-        
+
         this.bombs = this.physics.add.group();
 
         this.physics.add.collider(this.bombs, this.platforms);
@@ -33,6 +41,7 @@ export class Level extends SceneBase {
         this.physics.add.collider(this.stars, this.platforms);
         
         this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
+        this.physics.add.collider(this.player, this.heart, () => this.heart.pump(), null, this);
         this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this);
 
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -44,10 +53,18 @@ export class Level extends SceneBase {
             return;
         }
 
+        this.heart.update();
+        if (this.heart.getHealth() <= 0) {
+            this.endGame();
+        }
+
         this.player.update(this.cursors);
+        this.progressBar.clear();
+        this.progressBar.fillStyle(0xff0000, 1);
+        this.progressBar.fillRect(30, 60, 300 * this.heart.getHealth() / 100, 30);
     };
 
-    private collectStar(player: Phaser.Physics.Arcade.Sprite, star: Phaser.GameObjects.GameObject) {
+    private collectStar(player: Player, star: Phaser.GameObjects.GameObject) {
         star.destroy();
 
         this.score += 10;
@@ -65,12 +82,8 @@ export class Level extends SceneBase {
         }
     }
 
-    private hitBomb(player: Phaser.Physics.Arcade.Sprite, bomb: Phaser.GameObjects.GameObject) {
-        this.physics.pause();
-        player.setTint(0xff0000);
-        player.anims.play('turn');
-    
-        this.gameOver = true;
+    private hitBomb(player: Player, bomb: Phaser.GameObjects.GameObject) {
+        this.endGame();
     }
 
     private createStars() {
@@ -81,5 +94,11 @@ export class Level extends SceneBase {
         this.stars.children.iterate((star) => {
             (star.body as Phaser.Physics.Arcade.Body).setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
         });
+    }
+
+    private endGame() {
+        this.physics.pause();
+        this.player.gameOver();
+        this.gameOver = true;
     }
 }

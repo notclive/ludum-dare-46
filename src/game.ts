@@ -9,8 +9,10 @@ export class Game extends Phaser.Game {
         super({
             type: Phaser.AUTO,
             backgroundColor: '#125555',
-            width: 800,
-            height: 600,
+            scale: {
+                width: window.innerWidth,
+                height: window.innerHeight,
+            },
             physics: {
                 default: 'arcade',
                 arcade: {

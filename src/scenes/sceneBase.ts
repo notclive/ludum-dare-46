@@ -22,4 +22,9 @@ export class SceneBase extends Phaser.Scene {
         this.centreObjectX(object);
         this.centreObjectY(object);
     }
+
+    protected scaleObjectToGameWidth(object: MoveableGameObject, percentage: number) {
+        object.displayWidth = this.gameWidth * percentage;
+        object.scaleY = object.scaleX;
+    }
 }
