@@ -1,6 +1,5 @@
 import StaticGroup = Phaser.Physics.Arcade.StaticGroup;
 import Image = Phaser.GameObjects.Image;
-import Distance = Phaser.Math.Distance;
 import {Level} from '../scenes/level';
 import {Player} from './player';
 import GameObject = Phaser.GameObjects.GameObject;

@@ -2,6 +2,7 @@ type MoveableGameObject =
     Phaser.GameObjects.Sprite | Phaser.GameObjects.Text | Phaser.GameObjects.Image;
 
 export class SceneBase extends Phaser.Scene {
+
     public get gameWidth(): number {
         return this.sys.game.config.width as number;
     }
@@ -15,9 +16,10 @@ export class SceneBase extends Phaser.Scene {
         if (!closestBOrNull) {
             return;
         }
-        const distance = Phaser.Math.Distance.Between(closestBOrNull.x, closestBOrNull.y, a.x, a.y);
-        // 30 seems about right on my screen, but probably needs to be scaled with the window.
-        return distance < 30 ? closestBOrNull : null;
+
+        // TODO: this is smaller than expected for fishes, but works for Arcade Images and Sprites.
+        const intersection = Phaser.Geom.Rectangle.Intersection(a.getBounds(), closestBOrNull.getBounds());
+        return intersection.width > 0 ? closestBOrNull : null;
     }
 
     protected centreObjectX(object: MoveableGameObject) {

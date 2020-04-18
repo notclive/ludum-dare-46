@@ -33,6 +33,7 @@ export class Level extends SceneBase {
     private outsideView: OutsideView;
     private spaceBarDown = false;
     private walls: Phaser.Physics.Arcade.StaticGroup;
+    private isInBrain: boolean;
 
     create() {
         const background = this.add.image(0, 0, 'sky');
@@ -68,8 +69,6 @@ export class Level extends SceneBase {
         this.physics.add.collider(this.player, this.heart, () => this.handleCollidingWithInteractableObject(this.beatHeart), null, this);
         this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithInteractableObjectHold(this.pumpLungs), null, this);
         this.physics.add.collider(this.player, this.plug, () => this.handleCollidingWithInteractableObjectHold(this.openPlug), null, this);
-
-        this.physics.add.overlap(this.player, this.brain, () => this.handleOverlapWithBrain(), null, this);
         
         this.walls = this.physics.add.staticGroup();
         this.createWalls();
@@ -104,6 +103,15 @@ export class Level extends SceneBase {
         this.healthBar.update(this.stateManager.state.heart);
         this.breatheBar.update(this.stateManager.state.lungs);
         this.foodBar.update(this.stomach.getHealth());
+
+        if (this.player.isTouching(this.brain)) {
+            if (!this.isInBrain) { this.brain.showDecision(); }
+            this.checkIfPressingBrainButtons();
+            this.isInBrain = true;
+        } else {
+            if (this.isInBrain) { this.brain.hideDecision(); }
+            this.isInBrain = false;
+        }
     }
 
     private endGame() {
@@ -141,9 +149,7 @@ export class Level extends SceneBase {
         });
     };
 
-    private handleOverlapWithBrain() {
-        this.brain.showDecision();
-
+    private checkIfPressingBrainButtons() {
         if (this.cursors.space.isDown) {
             if (!this.spaceBarDown) {
                 this.brain.tryPressButton();

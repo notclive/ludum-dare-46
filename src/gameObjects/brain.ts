@@ -3,6 +3,7 @@ import { DecisionBox } from './decisionBox';
 import * as Phaser from 'phaser';
 import { PHASER_STATIC_BODY } from '../consts';
 import { DecisionButton } from './decisionButton';
+import { Level } from '../scenes/level';
 
 export class Brain extends Phaser.Physics.Arcade.Sprite {
     private decisionBox: DecisionBox;
@@ -14,7 +15,7 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
 
     playerIsOverlapping: boolean;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, private player: Player) {
+    constructor(scene: Level, x: number, y: number, private player: Player) {
         super(scene, x, y, 'brain');
 
         scene.physics.world.enable(this, PHASER_STATIC_BODY);
