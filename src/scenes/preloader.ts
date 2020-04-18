@@ -8,6 +8,7 @@ import fish from '../assets/fish.png';
 import player1 from '../assets/player1.png';
 import player1WithFish from '../assets/player1-with-fish.png';
 import cat from '../assets/outsideView/cat.webp';
+import catBackground from '../assets/cat-main.png';
 import wall from '../assets/wall.png';
 
 export class Preloader extends SceneBase {
@@ -36,6 +37,7 @@ export class Preloader extends SceneBase {
         this.load.image('stomach', stomach);
         this.load.image('fish', fish);
         this.load.image('cat', cat);
+        this.load.image('catBackground', catBackground);
 
         this.load.image('wall', wall);
         this.load.spritesheet('player1',

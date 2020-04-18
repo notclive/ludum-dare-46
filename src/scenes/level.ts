@@ -31,6 +31,9 @@ export class Level extends SceneBase {
         const background = this.add.image(0, 0, 'sky');
         this.centreObject(background);
         this.scaleObjectToGameWidth(background, 1);
+        const catBackground = this.add.image(0, 0, 'catBackground');
+        catBackground.x = (catBackground.displayWidth / 2) + 20;
+        catBackground.y = this.gameHeight / 2;
 
         this.player = new Player(this, this.gameWidth / 2, this.gameHeight / 2);
 
