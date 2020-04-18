@@ -35,25 +35,36 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(cursors: Phaser.Types.Input.Keyboard.CursorKeys) {
+        const walkingSpeed = 160;
+
         if (cursors.left.isDown)
         {
-            this.setVelocityX(-160);
+            this.setVelocity(0);
+            this.setVelocityX(-1 * walkingSpeed);
             this.anims.play('left', true);
         }
         else if (cursors.right.isDown)
         {
-            this.setVelocityX(160);
+            this.setVelocity(0);
+            this.setVelocityX(walkingSpeed);
             this.anims.play('right', true);
+        }
+        else if (cursors.up.isDown)
+        {
+            this.setVelocity(0);
+            this.setVelocityY(-1 * walkingSpeed);
+            this.anims.play('right', true);
+        }
+        else if (cursors.down.isDown)
+        {
+            this.setVelocity(0);
+            this.setVelocityY(walkingSpeed);
+            this.anims.play('turn', true);
         }
         else
         {
-            this.setVelocityX(0);
-            this.anims.play('turn');
-        }
-
-        if (cursors.up.isDown && this.body.touching.down)
-        {
-            this.setVelocityY(-330);
+            this.setVelocity(0);
+            this.anims.play('turn', true);
         }
     }
 
