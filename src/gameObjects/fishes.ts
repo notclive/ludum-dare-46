@@ -7,7 +7,7 @@ import GameObject = Phaser.GameObjects.GameObject;
 
 export default class Fishes extends StaticGroup {
 
-    public constructor(public scene: Level, private player: Player) {
+    public constructor(public scene: Level, private player: Player, private placeFishCallback: (fish: Image) => void) {
         super(scene.physics.world, scene);
         this.generateFishEveryFifteenSeconds();
         this.handleFishKeyBeingPressed();
@@ -68,5 +68,6 @@ export default class Fishes extends StaticGroup {
         fish.scale = this.scene.gameWidth * 0.02 / fish.displayWidth;
         this.add(fish);
         this.scene.add.existing(fish);
+        this.placeFishCallback(fish);
     };
 }

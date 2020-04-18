@@ -15,6 +15,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     create() {
         this.setBounce(0.2);
         this.setCollideWorldBounds(true);
+        this.setDepth(1);
 
         this.scene.anims.create({
             key: 'still',

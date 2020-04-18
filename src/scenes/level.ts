@@ -8,6 +8,7 @@ import {Lungs} from '../gameObjects/lungs';
 import OutsideView from '../subscene/outsideView';
 import Fishes from '../gameObjects/fishes';
 import { Brain } from '../gameObjects/brain';
+import { Stomach } from '../gameObjects/stomach';
 
 export class Level extends SceneBase {
     private player: Player;
@@ -15,6 +16,8 @@ export class Level extends SceneBase {
     private healthBar: StatBar;
     private lungs: Lungs;
     private breatheBar: StatBar;
+    private stomach: Stomach;
+    private foodBar: StatBar;
     private brain: Brain;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private outsideView: OutsideView;
@@ -36,6 +39,9 @@ export class Level extends SceneBase {
         this.lungs = new Lungs(this, (3 * this.gameWidth) / 4, this.gameHeight / 2);
         this.breatheBar = new StatBar(this, 20, 90, 'O2');
 
+        this.stomach = new Stomach(this, this.gameWidth / 2, (3 * this.gameHeight) / 4);
+        this.foodBar = new StatBar(this, 20, 130, 'Hunger');
+
         this.brain = new Brain(this, this.gameWidth/2, this.gameHeight/4);
         this.decisionBox = new DecisionBox(this, this.gameWidth/2, 20);
 
@@ -50,7 +56,7 @@ export class Level extends SceneBase {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
 
-        new Fishes(this, this.player);
+        new Fishes(this, this.player, this.handleFishPlaced);
     }
 
     update() {
@@ -60,6 +66,7 @@ export class Level extends SceneBase {
 
         this.heart.update(0.1);
         this.lungs.update(0.05);
+        this.stomach.update(0.01);
         if (this.heart.hasFailed() || this.lungs.haveFailed()) {
             this.endGame();
         }
@@ -67,6 +74,7 @@ export class Level extends SceneBase {
         this.player.update(this.cursors);
         this.healthBar.update(this.heart.getHealth());
         this.breatheBar.update(this.lungs.getHealth());
+        this.foodBar.update(this.stomach.getHealth());
     }
 
     private endGame() {
@@ -108,5 +116,14 @@ export class Level extends SceneBase {
         this.walls.create(this.gameWidth/2, this.gameHeight - topMargin, 'wall').setScale(xScale, 1).refreshBody();
         this.walls.create(leftMargin, this.gameHeight/2, 'wall').setScale(1, yScale).refreshBody();
         this.walls.create(this.gameWidth - leftMargin, this.gameHeight/2, 'wall').setScale(1, yScale).refreshBody();
+    }
+
+    private handleFishPlaced = (fish: Phaser.GameObjects.Image) => {
+        this.physics.add.collider(fish, this.stomach, () => this.feedStomach(fish), null, this);
+    }
+
+    private feedStomach = (fish: Phaser.GameObjects.Image) => {
+        fish.destroy();
+        this.stomach.feed();
     }
 }

@@ -3,6 +3,7 @@ import sky from '../assets/sky.png';
 import heart from '../assets/heart.png';
 import lungs from '../assets/lungs.jpg';
 import brain from '../assets/brain.png';
+import stomach from '../assets/stomach.jpg';
 import fish from '../assets/fish.png';
 import player1 from '../assets/player1.png';
 import player1WithFish from '../assets/player1-with-fish.png';
@@ -32,6 +33,7 @@ export class Preloader extends SceneBase {
         this.load.image('heart', heart);
         this.load.image('lungs', lungs);
         this.load.image('brain', brain);
+        this.load.image('stomach', stomach);
         this.load.image('fish', fish);
         this.load.image('cat', cat);
 
