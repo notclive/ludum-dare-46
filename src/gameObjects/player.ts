@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import { Level } from '../scenes/level';
+import { MoveableGameObject } from '../scenes/sceneBase';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
 
@@ -102,7 +103,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this._isHoldingFish = isHoldingFish;
     }
 
-    isTouching(object: Phaser.GameObjects.GameObject) {
-        return !!this.scene.getBTouchingA(this, [object]);
+    isTouching(object: MoveableGameObject) {
+        return this.scene.bIsTouchingA(this, object);
     }
 }

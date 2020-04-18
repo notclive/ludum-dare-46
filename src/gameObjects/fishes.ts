@@ -50,7 +50,7 @@ export default class Fishes extends StaticGroup {
     };
 
     private tryPickUpFish = () => {
-        const closestFish = this.scene.getBTouchingA(this.player, this.children.entries);
+        const closestFish = this.scene.getClosestBTouchingA(this.player, this.children.entries as Image[]);
         if (closestFish) {
             this.pickUpFish(closestFish);
         }

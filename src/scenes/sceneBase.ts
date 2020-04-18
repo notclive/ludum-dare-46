@@ -1,4 +1,4 @@
-type MoveableGameObject =
+export type MoveableGameObject =
     Phaser.GameObjects.Sprite | Phaser.GameObjects.Text | Phaser.GameObjects.Image;
 
 export class SceneBase extends Phaser.Scene {
@@ -11,15 +11,20 @@ export class SceneBase extends Phaser.Scene {
         return this.sys.game.config.height as number;
     }
 
-    public getBTouchingA(a: MoveableGameObject, b: Phaser.GameObjects.GameObject[]) {
-        const closestBOrNull = this.physics.closest(a, b) as MoveableGameObject;
-        if (!closestBOrNull) {
+    public getClosestBTouchingA(a: MoveableGameObject, b: MoveableGameObject[]) {
+        const bsThatAreTouching = b.filter(x => this.bIsTouchingA(a, x));
+        if (bsThatAreTouching.length === 0) {
             return;
         }
 
-        // TODO: this is smaller than expected for fishes, but works for Arcade Images and Sprites.
-        const intersection = Phaser.Geom.Rectangle.Intersection(a.getBounds(), closestBOrNull.getBounds());
-        return intersection.width > 0 ? closestBOrNull : null;
+        return bsThatAreTouching[0];
+    }
+
+    public bIsTouchingA(a: MoveableGameObject, b: MoveableGameObject) {
+        // 4 pixels grace
+        const xAllowableDistance = (a.displayWidth / 2) + (b.displayWidth / 2) + 4;
+        const yAllowableDistance = (a.displayHeight / 2) + (b.displayHeight / 2) + 4;
+        return Math.abs(a.x - b.x) <= xAllowableDistance && Math.abs(a.y - b.y) <= yAllowableDistance;
     }
 
     protected centreObjectX(object: MoveableGameObject) {
@@ -38,5 +43,5 @@ export class SceneBase extends Phaser.Scene {
     protected scaleObjectToGameWidth(object: MoveableGameObject, percentage: number) {
         object.displayWidth = this.gameWidth * percentage;
         object.scaleY = object.scaleX;
-    } 
+    }
 }

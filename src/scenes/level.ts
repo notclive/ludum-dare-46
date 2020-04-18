@@ -65,11 +65,11 @@ export class Level extends SceneBase {
 
         this.water = new Water(this, catXPosition, catTopY + catBackground.displayHeight, catTopY);
         this.plug = new Plug(this, 3 * leftGameWidth / 8, (3 * this.gameHeight) / 4, this.water);
-
-        this.physics.add.collider(this.player, this.heart, () => this.handleCollidingWithInteractableObject(this.beatHeart), null, this);
-        this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithInteractableObjectHold(this.pumpLungs), null, this);
-        this.physics.add.collider(this.player, this.plug, () => this.handleCollidingWithInteractableObjectHold(this.openPlug), null, this);
         
+        this.physics.add.collider(this.player, this.heart);
+        this.physics.add.collider(this.player, this.lungs);
+        this.physics.add.collider(this.player, this.plug);
+
         this.walls = this.physics.add.staticGroup();
         this.createWalls();
         this.physics.add.collider(this.player, this.walls);
@@ -107,7 +107,6 @@ export class Level extends SceneBase {
                 console.log('entering brain')
                 this.brain.showDecision();
             }
-            this.checkIfPressingBrainButtons();
             this.isInBrain = true;
         } else {
             if (this.isInBrain) {
@@ -115,6 +114,13 @@ export class Level extends SceneBase {
                 this.brain.hideDecision();
             }
             this.isInBrain = false;
+        }
+
+        if (this.cursors.space.isDown) {
+            this.handleSpaceBar();
+            this.spaceBarDown = true;
+        } else {
+            this.spaceBarDown = false;
         }
     }
 
@@ -124,20 +130,26 @@ export class Level extends SceneBase {
         this.fishes.stopGeneratingFish();
     }
 
-    private handleCollidingWithInteractableObject(performAction: () => void) {
-        if (this.cursors.space.isDown) {
+    private handleSpaceBar() {
+        if (this.bIsTouchingA(this.player, this.heart)) {
             if (!this.spaceBarDown) {
-                performAction();
+                this.beatHeart();
             }
-            this.spaceBarDown = true;
-        } else {
-            this.spaceBarDown = false;
         }
-    }
-
-    private handleCollidingWithInteractableObjectHold(performAction: () => void) {
-        if (this.cursors.space.isDown && this.cursors.space.getDuration() > 200) {
-            performAction();
+        if (this.bIsTouchingA(this.player, this.lungs)) {
+            if (this.cursors.space.getDuration() > 200) {
+                this.pumpLungs();
+            }
+        }
+        if (this.bIsTouchingA(this.player, this.plug)) {
+            if (this.cursors.space.getDuration() > 200) {
+                this.openPlug();
+            }
+        }
+        if (this.bIsTouchingA(this.player, this.brain)) {
+            if (!this.spaceBarDown) {
+                this.brain.tryPressButton(this.fishes.generateFishRegularlyForAWhile);
+            }
         }
     }
 
@@ -152,17 +164,6 @@ export class Level extends SceneBase {
             type: 'PUMP_LUNGS'
         });
     };
-
-    private checkIfPressingBrainButtons() {
-        if (this.cursors.space.isDown) {
-            if (!this.spaceBarDown) {
-                this.brain.tryPressButton(this.fishes.generateFishRegularlyForAWhile);
-            }
-            this.spaceBarDown = true;
-        } else {
-            this.spaceBarDown = false;
-        }
-    }
 
     private createWalls() {
         const wallSize = 20;

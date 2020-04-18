@@ -2,8 +2,7 @@ import * as Phaser from 'phaser';
 import { PHASER_STATIC_BODY } from '../consts';
 import { Water } from './water';
 
-export class Plug extends Phaser.Physics.Arcade.Image {
-
+export class Plug extends Phaser.Physics.Arcade.Sprite {
     private isPlugged = true;
 
     constructor(scene: Phaser.Scene, x: number, y: number, private water: Water) {
