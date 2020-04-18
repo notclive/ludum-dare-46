@@ -2,7 +2,7 @@ import * as Phaser from 'phaser';
 
 export const STAT_BAR_WIDTH = 250;
 export const STAT_BAR_HEIGHT = 20;
-export const LABEL_WIDTH = 40;
+export const LABEL_WIDTH = 60;
 
 export class StatBar extends Phaser.GameObjects.Graphics {
     constructor(scene: Phaser.Scene, private xPosition: number, private yPosition: number, private label: string) {

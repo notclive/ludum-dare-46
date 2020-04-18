@@ -41,7 +41,7 @@ export class Level extends SceneBase {
         this.breatheBar = new StatBar(this, 20, 90, 'O2');
 
         this.stomach = new Stomach(this, this.gameWidth / 2, (3 * this.gameHeight) / 4);
-        this.foodBar = new StatBar(this, 20, 130, 'Hunger');
+        this.foodBar = new StatBar(this, 20, 130, 'Food');
 
         this.brain = new Brain(this, this.gameWidth/2, this.gameHeight/4);
         this.decisionBox = new DecisionBox(this, this.gameWidth/2, 20);
