@@ -1,4 +1,4 @@
-import {GameState, INITIAL_STATE, PlayerPosition, StateChangeEvent, StateManager} from './stateManager';
+import {INITIAL_STATE, PlayerPosition, StateChangeEvent, StateManager} from './stateManager';
 import {DataConnection} from 'peerjs';
 
 export default class HostStateManager implements StateManager {
@@ -20,7 +20,8 @@ export default class HostStateManager implements StateManager {
             ...this._state,
             gameOver: this.state.gameOver || this._state.heart === 0 || this._state.lungs === 0,
             heart: Math.max(this._state.heart - 0.1, 0),
-            lungs: Math.max(this._state.lungs - 0.05, 0)
+            lungs: Math.max(this._state.lungs - 0.05, 0),
+            waterLevel: Math.min(this._state.waterLevel + 0.03, 100)
         };
         if (this.connection) {
             this.sendStateToPeer(this.connection)
@@ -48,6 +49,9 @@ export default class HostStateManager implements StateManager {
         if (event.type === 'BEAT_HEART') {
             this.beatHeart();
         }
+        if (event.type === 'DRAIN_PLUG') {
+            this.drainPlug();
+        }
         if (event.type === 'SET_PEER_PLAYER_POSITION') {
             this.setPeerPlayerPosition(event.position);
         }
@@ -57,24 +61,21 @@ export default class HostStateManager implements StateManager {
         this._state = {
             ...this._state,
             lungs: Math.min(this._state.lungs + 0.5, 100)
-        }
+        };
     };
 
     private beatHeart = () => {
         this._state = {
             ...this._state,
             heart: Math.min(this._state.heart + 10, 100)
-        }
+        };
     };
 
-    private setHostPlayerPosition = (position: PlayerPosition) => {
+    private drainPlug = () => {
         this._state = {
             ...this._state,
-            hostPlayer: {
-                ...this.state.hostPlayer,
-                position
-            }
-        }
+            waterLevel: Math.max(this._state.waterLevel - 0.8, 0)
+        };
     };
 
     private setPeerPlayerPosition = (position: PlayerPosition) => {

@@ -89,7 +89,6 @@ export class Level extends SceneBase {
         }
 
         this.stomach.update(0.01);
-        this.plug.update(0.03);
 
         this.stateManager.tick();
 
@@ -102,6 +101,7 @@ export class Level extends SceneBase {
         this.externalPlayer.setPosition(this.stateManager.otherPlayerPosition.x, this.stateManager.otherPlayerPosition.y);
         this.healthBar.update(this.stateManager.state.heart);
         this.breatheBar.update(this.stateManager.state.lungs);
+        this.plug.update(this.stateManager.state.waterLevel);
         this.foodBar.update(this.stomach.getHealth());
 
         if (this.player.isTouching(this.brain)) {
@@ -188,7 +188,9 @@ export class Level extends SceneBase {
             this.cursors.space.once('up', () => this.plug.plug());
             this.plug.unplug();
         }
-        this.plug.drain();
+        this.stateManager.handleEvent({
+            type: 'DRAIN_PLUG'
+        });
     };
 
     public get stateManager() {

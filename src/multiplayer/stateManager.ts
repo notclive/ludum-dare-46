@@ -12,6 +12,7 @@ export interface GameState {
     peerPlayer: PlayerState;
     heart: number;
     lungs: number;
+    waterLevel: number;
 }
 
 interface PlayerState {
@@ -24,7 +25,7 @@ export interface PlayerPosition {
     y: number
 }
 
-export type StateChangeEvent = PumpLungs | BeatHeart | SetPeerPlayerPosition;
+export type StateChangeEvent = PumpLungs | BeatHeart | DrainPlug | SetPeerPlayerPosition;
 
 interface PumpLungs {
     type: 'PUMP_LUNGS';
@@ -32,6 +33,10 @@ interface PumpLungs {
 
 interface BeatHeart {
     type: 'BEAT_HEART';
+}
+
+interface DrainPlug {
+    type: 'DRAIN_PLUG';
 }
 
 interface SetPeerPlayerPosition {
@@ -54,5 +59,6 @@ export const INITIAL_STATE: GameState = {
         holdingFish: false
     },
     heart: 100,
-    lungs: 100
+    lungs: 100,
+    waterLevel: 0
 };
