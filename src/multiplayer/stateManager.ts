@@ -27,7 +27,7 @@ export interface GameObjectPosition {
     y: number;
 }
 
-export type StateChangeEvent = PumpLungs | BeatHeart | DigestFood | DrainPlug | SetPeerPlayerPosition;
+export type StateChangeEvent = PumpLungs | BeatHeart | DigestFood | DrainPlug | PlaceFish | RemoveFish | SetPeerPlayerPosition;
 
 interface PumpLungs {
     type: 'PUMP_LUNGS';
