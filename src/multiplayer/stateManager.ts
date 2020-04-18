@@ -2,14 +2,15 @@ export interface StateManager {
     tick: () => void;
     state: GameState;
     handleEvent: (event: StateChangeEvent) => void;
-    myPosition: PlayerPosition;
-    otherPlayerPosition: PlayerPosition;
+    myPosition: GameObjectPosition;
+    otherPlayerPosition: GameObjectPosition;
 }
 
 export interface GameState {
     gameOver: boolean;
     hostPlayer: PlayerState;
     peerPlayer: PlayerState;
+    fish: GameObjectPosition[];
     heart: number;
     lungs: number;
     fullness: number;
@@ -17,13 +18,13 @@ export interface GameState {
 }
 
 interface PlayerState {
-    position: PlayerPosition;
+    position: GameObjectPosition;
     holdingFish: boolean;
 }
 
-export interface PlayerPosition {
+export interface GameObjectPosition {
     x: number;
-    y: number
+    y: number;
 }
 
 export type StateChangeEvent = PumpLungs | BeatHeart | DigestFood | DrainPlug | SetPeerPlayerPosition;
@@ -44,9 +45,20 @@ interface DrainPlug {
     type: 'DRAIN_PLUG';
 }
 
+interface PlaceFish {
+    type: 'PLACE_FISH';
+    position: GameObjectPosition;
+    ticksUntilVisible: number;
+}
+
+interface RemoveFish {
+    type: 'REMOVE_FISH';
+    id: number;
+}
+
 interface SetPeerPlayerPosition {
     type: 'SET_PEER_PLAYER_POSITION';
-    position: PlayerPosition;
+    position: GameObjectPosition;
 }
 
 export const INITIAL_STATE: GameState = {
@@ -63,6 +75,7 @@ export const INITIAL_STATE: GameState = {
         },
         holdingFish: false
     },
+    fish: [],
     heart: 100,
     lungs: 100,
     fullness: 100,
