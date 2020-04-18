@@ -2,11 +2,12 @@ import * as Phaser from 'phaser';
 import { SceneBase } from './sceneBase';
 import { Player } from '../gameObjects/player';
 import { Heart } from '../gameObjects/heart';
+import { StatBar } from '../gameObjects/statBar';
 
 export class Level extends SceneBase {
     private player: Player;
     private heart: Heart;
-    private progressBar: Phaser.GameObjects.Graphics;
+    private healthBar: StatBar;
     private platforms: Phaser.Physics.Arcade.StaticGroup;
     private stars: Phaser.Physics.Arcade.Group;
     private bombs: Phaser.Physics.Arcade.Group;
@@ -20,16 +21,12 @@ export class Level extends SceneBase {
         this.centreObject(background);
         this.scaleObjectToGameWidth(background, 1);
 
-        this.progressBar = this.add.graphics();
-        var progressBox = this.add.graphics();
-        progressBox.fillStyle(0x222222, 0.8);
-        progressBox.fillRect(20, 50, 320, 50);
-
         this.platforms = this.physics.add.staticGroup();
         this.platforms.create(this.gameWidth / 2, this.gameHeight - 22, 'ground').setScale(4).refreshBody();
 
         this.player = new Player(this, 100, 450);
         this.heart = new Heart(this, 300, 450, 20);
+        this.healthBar = new StatBar(this, 20, 50, 'HP');
 
         this.stars = this.physics.add.group();
         this.createStars();
@@ -59,9 +56,7 @@ export class Level extends SceneBase {
         }
 
         this.player.update(this.cursors);
-        this.progressBar.clear();
-        this.progressBar.fillStyle(0xff0000, 1);
-        this.progressBar.fillRect(30, 60, 300 * this.heart.getHealth() / 100, 30);
+        this.healthBar.update(this.heart.getHealth());
     };
 
     private collectStar(player: Player, star: Phaser.GameObjects.GameObject) {
