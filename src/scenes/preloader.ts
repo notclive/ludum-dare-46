@@ -1,11 +1,11 @@
 import { SceneBase } from './sceneBase';
 import sky from '../assets/sky.png';
-import heart from '../assets/heart.png';
-import lungs from '../assets/lungs.jpg';
-import brain from '../assets/brain.png';
+import heart from '../assets/organ-heart.png';
+import lungs from '../assets/organ-lungs.png';
+import brain from '../assets/organ-brain.png';
+import stomach from '../assets/organ-stomach.png';
 import buttonA from '../assets/buttonA.png';
 import buttonB from '../assets/buttonB.png';
-import stomach from '../assets/stomach.jpg';
 import plug from '../assets/plug.jpg';
 import fish from '../assets/fish.png';
 import player1 from '../assets/player1.png';
