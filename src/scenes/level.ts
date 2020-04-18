@@ -35,6 +35,8 @@ export class Level extends SceneBase {
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
+
+        this.generateFishEveryMinute();
     }
 
     update() {
@@ -74,5 +76,14 @@ export class Level extends SceneBase {
         if (this.cursors.space.isDown && this.cursors.space.getDuration() > 200) {
             this.lungs.breathe();
         }
+    }
+
+    private generateFishEveryMinute() {
+        setInterval(() => {
+            const xJitter = Math.random() / 10;
+            const yJitter = Math.random() / 10;
+            const fish = this.add.image(this.gameWidth / (2 + xJitter), this.gameHeight  / (4 + yJitter), 'fish');
+            this.scaleObjectToGameWidth(fish, 0.02);
+        }, 60 * 1000)
     }
 }
