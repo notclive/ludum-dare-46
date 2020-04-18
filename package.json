@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "file-loader": "6.0.0",
+    "peerjs": "1.2.0",
     "phaser": "3.22.0",
     "raw-loader": "4.0.1"
   },

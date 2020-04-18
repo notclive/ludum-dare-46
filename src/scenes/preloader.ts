@@ -10,6 +10,7 @@ import water from '../assets/water.png';
 import plug from '../assets/plug.jpg';
 import fish from '../assets/fish.png';
 import player1 from '../assets/player1.png';
+import player2 from '../assets/player2.png';
 import player1WithFish from '../assets/player1-with-fish.png';
 import cat from '../assets/outsideView/cat.webp';
 import catBackground from '../assets/cat-main.png';
@@ -50,6 +51,10 @@ export class Preloader extends SceneBase {
         this.load.image('wall', wall);
         this.load.spritesheet('player1',
             player1,
+            { frameWidth: 39, frameHeight: 50 }
+        );
+        this.load.spritesheet('player2',
+            player2,
             { frameWidth: 39, frameHeight: 50 }
         );
         this.load.spritesheet('player1-with-fish',

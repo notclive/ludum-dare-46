@@ -10,11 +10,15 @@ import {Brain} from '../gameObjects/brain';
 import {Stomach} from '../gameObjects/stomach';
 import {Plug} from '../gameObjects/plug';
 import {Water} from '../gameObjects/water';
-import {Game} from '../game';
+import {StateManager} from '../multiplayer/stateManager';
+import {listenForMultiplayerHotkeys} from '../multiplayer/multiplayer';
+import HostStateManager from '../multiplayer/hostStateManager';
 
 export class Level extends SceneBase {
 
+    private _stateManager: StateManager = new HostStateManager();
     private player: Player;
+    private externalPlayer: Phaser.GameObjects.Sprite;
     private heart: Heart;
     private healthBar: StatBar;
     private lungs: Lungs;
@@ -45,6 +49,7 @@ export class Level extends SceneBase {
         catBackground.y = this.gameHeight / 2;
 
         this.player = new Player(this, leftGameWidth / 2, this.gameHeight / 2);
+        this.externalPlayer = this.add.sprite(0, 0, 'player2');
 
         this.heart = new Heart(this, 3 * leftGameWidth / 4, this.gameHeight / 2);
         this.healthBar = new StatBar(this, 20, 50, 'HP');
@@ -74,6 +79,7 @@ export class Level extends SceneBase {
         this.outsideView = new OutsideView(this);
 
         this.fishes = new Fishes(this, this.player, this.handleFishPlaced);
+        listenForMultiplayerHotkeys(this);
     }
 
     update() {
@@ -93,6 +99,8 @@ export class Level extends SceneBase {
             : baseWalkingSpeed;
 
         this.player.update(walkingSpeed, this.cursors);
+        this.stateManager.myPosition = {x: this.player.x, y: this.player.y};
+        this.externalPlayer.setPosition(this.stateManager.otherPlayerPosition.x, this.stateManager.otherPlayerPosition.y);
         this.healthBar.update(this.stateManager.state.heart);
         this.breatheBar.update(this.stateManager.state.lungs);
         this.foodBar.update(this.stomach.getHealth());
@@ -121,17 +129,17 @@ export class Level extends SceneBase {
         }
     }
 
-    private beatHeart() {
+    private beatHeart = () => {
         this.stateManager.handleEvent({
             type: 'BEAT_HEART'
         });
-    }
+    };
 
-    private pumpLungs() {
+    private pumpLungs = () => {
         this.stateManager.handleEvent({
             type: 'PUMP_LUNGS'
         });
-    }
+    };
 
     private handleOverlapWithBrain() {
         this.brain.showDecision();
@@ -154,10 +162,10 @@ export class Level extends SceneBase {
         const xScale = (this.gameWidth - leftMargin * 2) / wallSize;
         const yScale = (this.gameHeight - topMargin * 2) / wallSize;
 
-        this.walls.create(this.gameWidth/2, topMargin, 'wall').setScale(xScale, 1).refreshBody();
-        this.walls.create(this.gameWidth/2, this.gameHeight - topMargin, 'wall').setScale(xScale, 1).refreshBody();
-        this.walls.create(leftMargin, this.gameHeight/2, 'wall').setScale(1, yScale).refreshBody();
-        this.walls.create(this.gameWidth - leftMargin, this.gameHeight/2, 'wall').setScale(1, yScale).refreshBody();
+        this.walls.create(this.gameWidth / 2, topMargin, 'wall').setScale(xScale, 1).refreshBody();
+        this.walls.create(this.gameWidth / 2, this.gameHeight - topMargin, 'wall').setScale(xScale, 1).refreshBody();
+        this.walls.create(leftMargin, this.gameHeight / 2, 'wall').setScale(1, yScale).refreshBody();
+        this.walls.create(this.gameWidth - leftMargin, this.gameHeight / 2, 'wall').setScale(1, yScale).refreshBody();
     }
 
     private handleFishPlaced = (fish: Phaser.GameObjects.Image) => {
@@ -178,6 +186,10 @@ export class Level extends SceneBase {
     };
 
     public get stateManager() {
-        return (this.game as Game).stateManager;
+        return this._stateManager;
+    }
+
+    public set stateManager(stateManager) {
+        this._stateManager = stateManager;
     }
 }
