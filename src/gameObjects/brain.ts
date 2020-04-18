@@ -3,7 +3,6 @@ import { DecisionBox } from './decisionBox';
 import * as Phaser from 'phaser';
 import { PHASER_STATIC_BODY } from '../consts';
 import { DecisionButton } from './decisionButton';
-import Distance = Phaser.Math.Distance;
 
 export class Brain extends Phaser.Physics.Arcade.Image {
     private decisionBox: DecisionBox;
@@ -30,14 +29,12 @@ export class Brain extends Phaser.Physics.Arcade.Image {
         if (!this.decisionHasBeenShown) {
             return;
         }
-        const distanceToButtonA = Distance.Between(this.buttonA.x, this.buttonB.y, this.player.x, this.player.y);
-        const distanceToButtonB = Distance.Between(this.buttonB.x, this.buttonB.y, this.player.x, this.player.y);
 
-        if (distanceToButtonA < 30) {
+        if (this.player.isTouching(this.buttonA)) {
             console.log('near A')
             this.hideDecision();
         }
-        else if (distanceToButtonB < 30) {
+        else if (this.player.isTouching(this.buttonB)) {
             console.log('near B')
             this.hideDecision();
         }

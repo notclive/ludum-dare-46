@@ -1,10 +1,11 @@
 import * as Phaser from 'phaser';
+import { Level } from '../scenes/level';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
 
     private _isHoldingFish = false;
 
-    constructor(scene: Phaser.Scene, x: number, y: number) {
+    constructor(public scene: Level, x: number, y: number) {
         super(scene, x, y, 'player1');
 
         scene.physics.world.enable(this);
@@ -101,5 +102,9 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
 
     public set isHoldingFish(isHoldingFish: boolean) {
         this._isHoldingFish = isHoldingFish;
+    }
+
+    isTouching(object: Phaser.GameObjects.GameObject) {
+        return !!this.scene.getBTouchingA(this, [object]);
     }
 }
