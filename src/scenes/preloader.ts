@@ -1,5 +1,4 @@
 import { SceneBase } from './sceneBase';
-import sky from '../assets/sky.png';
 import heart from '../assets/organ-heart.png';
 import lungs from '../assets/organ-lungs.png';
 import brain from '../assets/organ-brain.png';
@@ -21,12 +20,12 @@ export class Preloader extends SceneBase {
         const progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
         progressBox.fillStyle(0x222222, 0.8);
-        progressBox.fillRect(240, 270, 320, 50);
+        progressBox.fillRect((this.gameWidth / 2) - 160, (this.gameHeight / 2) - 25, 320, 50);
 
         this.load.on('progress', (value: number) => {
             progressBar.clear();
             progressBar.fillStyle(0xffffff, 1);
-            progressBar.fillRect(250, 280, 300 * value, 30);
+            progressBar.fillRect((this.gameWidth / 2) - 150, (this.gameHeight / 2) - 15, 300 * value, 30);
         });
 
         this.load.on('complete', () => {
@@ -35,7 +34,6 @@ export class Preloader extends SceneBase {
             this.scene.start('Menu');
         });
 
-        this.load.image('sky', sky);
         this.load.image('buttonA', buttonA);
         this.load.image('buttonB', buttonB);
         this.load.image('stomach', stomach);
@@ -73,5 +71,19 @@ export class Preloader extends SceneBase {
             cork,
             { frameWidth: 76, frameHeight: 65 }
         );
+        this.setupBackground();
     }
+
+    private setupBackground = () => {
+        const texture = this.textures.createCanvas('background', this.gameWidth, this.gameHeight);
+        const context = texture.getContext();
+        var gradient = context.createLinearGradient(0, 0, this.gameWidth, this.gameHeight);
+
+        gradient.addColorStop(0, '#FFFFFF');
+        gradient.addColorStop(1, '#4B0082');
+
+        context.fillStyle = gradient;
+        context.fillRect(0, 0, this.gameWidth, this.gameHeight);
+        texture.refresh();
+    };
 }

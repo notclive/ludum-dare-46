@@ -36,9 +36,7 @@ export class Level extends SceneBase {
     private isInBrain: boolean;
 
     create() {
-        const background = this.add.image(0, 0, 'sky');
-        this.centreObject(background);
-        this.scaleObjectToGameWidth(background, 1);
+        this.add.image(this.gameWidth / 2, this.gameHeight / 2, 'background');
 
         const leftGameWidth = this.gameWidth / 2;
 
