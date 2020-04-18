@@ -3,7 +3,7 @@ import { PHASER_STATIC_BODY } from '../consts';
 
 const HEALTH_INCREASE_PER_FRAME = 0.5;
 
-export class Lungs extends Phaser.Physics.Arcade.Image {
+export class Lungs extends Phaser.Physics.Arcade.Sprite {
     private health = 100;
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'lungs');

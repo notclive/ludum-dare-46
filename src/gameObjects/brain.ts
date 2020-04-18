@@ -4,7 +4,7 @@ import * as Phaser from 'phaser';
 import { PHASER_STATIC_BODY } from '../consts';
 import { DecisionButton } from './decisionButton';
 
-export class Brain extends Phaser.Physics.Arcade.Image {
+export class Brain extends Phaser.Physics.Arcade.Sprite {
     private decisionBox: DecisionBox;
     private buttonA: DecisionButton;
     private buttonB: DecisionButton;
