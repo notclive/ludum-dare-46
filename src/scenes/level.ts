@@ -25,7 +25,6 @@ export class Level extends SceneBase {
     private gameOver = false;
     private spaceBarDown = false;
     private walls: Phaser.Physics.Arcade.StaticGroup;
-    private decisionBox: DecisionBox;
 
     create() {
         const background = this.add.image(0, 0, 'sky');
@@ -46,12 +45,12 @@ export class Level extends SceneBase {
         this.stomach = new Stomach(this, this.gameWidth / 2, (3 * this.gameHeight) / 4);
         this.foodBar = new StatBar(this, 20, 130, 'Food');
 
-        this.brain = new Brain(this, this.gameWidth/2, this.gameHeight/4);
-        this.decisionBox = new DecisionBox(this, this.gameWidth/2, 20);
+        this.brain = new Brain(this, this.gameWidth/2, this.gameHeight/3);
 
         this.physics.add.collider(this.player, this.heart, () => this.handleCollidingWithInteractableObject(() => this.heart.pump()), null, this);
         this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithLungs(), null, this);
-        this.physics.add.collider(this.player, this.brain, () => this.handleCollidingWithBrain(), null, this);
+
+        this.physics.add.overlap(this.player, this.brain, () => this.handleOverlapWithBrain(), null, this);
 
         this.walls = this.physics.add.staticGroup();
         this.createWalls();
@@ -105,8 +104,8 @@ export class Level extends SceneBase {
         }
     }
 
-    private handleCollidingWithBrain() {
-        this.decisionBox.show();
+    private handleOverlapWithBrain() {
+        this.brain.showDecision();
     }
 
     private createWalls() {
