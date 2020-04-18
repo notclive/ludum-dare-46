@@ -106,15 +106,16 @@ export class Level extends SceneBase {
     }
 
     private createWalls() {
-        const leftMargin = 50;
+        const wallSize = 20;
+        const leftMargin = 100;
         const topMargin = 150;
-        for (var i = leftMargin; i <= this.gameWidth - leftMargin; i = i + 50) {
-            this.walls.create(i, topMargin, 'wall');
-            this.walls.create(i, this.gameHeight - topMargin, 'wall');
-            for (var j = topMargin; j <= this.gameHeight - topMargin; j = j + 50) {
-                this.walls.create(leftMargin, j, 'wall');
-                this.walls.create(this.gameWidth - leftMargin, j, 'wall');
-            }
-        }
+
+        const xScale = (this.gameWidth - leftMargin * 2) / wallSize;
+        const yScale = (this.gameHeight - topMargin * 2) / wallSize;
+
+        this.walls.create(this.gameWidth/2, topMargin, 'wall').setScale(xScale, 1).refreshBody();
+        this.walls.create(this.gameWidth/2, this.gameHeight - topMargin, 'wall').setScale(xScale, 1).refreshBody();
+        this.walls.create(leftMargin, this.gameHeight/2, 'wall').setScale(1, yScale).refreshBody();
+        this.walls.create(this.gameWidth - leftMargin, this.gameHeight/2, 'wall').setScale(1, yScale).refreshBody();
     }
 }
