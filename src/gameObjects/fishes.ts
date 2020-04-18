@@ -24,6 +24,9 @@ export default class Fishes extends StaticGroup {
     }
 
     private generateFishRegularly = () => {
+        if (this.fishGenerationId) {
+            this.stopGeneratingFish();
+        }
         this.fishGenerationId = setInterval(() => {
             this.generateFish();
         }, 10 * 1000);
