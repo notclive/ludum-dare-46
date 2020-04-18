@@ -9,7 +9,6 @@ export default class Fishes extends StaticGroup {
 
     public constructor(public scene: Level, private player: Player, private placeFishCallback: (fish: Image) => void) {
         super(scene.physics.world, scene);
-        this.generateFishEveryFifteenSeconds();
         this.handleFishKeyBeingPressed();
     }
 
@@ -17,11 +16,17 @@ export default class Fishes extends StaticGroup {
         clearInterval(this.fishGenerationId);
     };
 
-    private generateFishEveryFifteenSeconds = () => {
-        this.generateFish();
+    public generateFishRegularlyForAWhile = () => {
+        this.generateFishRegularly();
+        setTimeout(() => {
+            this.stopGeneratingFish();
+        }, 40 * 1000)
+    }
+
+    private generateFishRegularly = () => {
         this.fishGenerationId = setInterval(() => {
             this.generateFish();
-        }, 15 * 1000);
+        }, 10 * 1000);
     };
 
     private generateFish = () => {

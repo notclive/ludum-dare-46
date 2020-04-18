@@ -33,13 +33,13 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
         this.anims.play('brain-slowPulse', true);
     }
 
-    tryPressButton = () => {
+    tryPressButton = (actionA: () => void) => {
         if (!this.decisionIsVisible) {
             return;
         }
 
         if (this.player.isTouching(this.buttonA)) {
-            console.log('near A');
+            actionA();
             this.hideDecision();
         }
         else if (this.player.isTouching(this.buttonB)) {

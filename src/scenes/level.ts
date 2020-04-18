@@ -156,7 +156,7 @@ export class Level extends SceneBase {
     private checkIfPressingBrainButtons() {
         if (this.cursors.space.isDown) {
             if (!this.spaceBarDown) {
-                this.brain.tryPressButton();
+                this.brain.tryPressButton(this.fishes.generateFishRegularlyForAWhile);
             }
             this.spaceBarDown = true;
         } else {

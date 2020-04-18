@@ -14,7 +14,7 @@ export class DecisionBox extends Phaser.GameObjects.Graphics {
         this.setDepth(1);
 
         this.background = this.scene.add.graphics();
-        this.text = this.scene.add.text(this.xPosition, this.yPosition, 'Do what? \n  A: this\n  B: that', { fontSize: '20px', fill: '#fff' });
+        this.text = this.scene.add.text(this.xPosition, this.yPosition, 'Do what? \n  A: catch some fish\n  B: nah', { fontSize: '20px', fill: '#fff' });
 
         this.background.setVisible(false);
         this.text.setVisible(false);
