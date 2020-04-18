@@ -18,6 +18,7 @@ export default class HostStateManager implements StateManager {
     public tick = () => {
         this._state = {
             ...this._state,
+            clock: this._state.clock + 1,
             gameOver: this.isGameOver(),
             heart: Math.max(this._state.heart - 0.1, 0),
             lungs: Math.max(this._state.lungs - 0.05, 0),
@@ -63,6 +64,12 @@ export default class HostStateManager implements StateManager {
         if (event.type === 'DRAIN_PLUG') {
             this.drainPlug();
         }
+        if (event.type === 'PLACE_FISH') {
+            this.placeFish(event.id, event.position, event.ticksUntilVisible);
+        }
+        if (event.type === 'REMOVE_FISH') {
+            this.removeFish(event.id);
+        }
         if (event.type === 'SET_PEER_PLAYER_POSITION') {
             this.setPeerPlayerPosition(event.position);
         }
@@ -96,6 +103,27 @@ export default class HostStateManager implements StateManager {
         };
     };
 
+    private placeFish = (id: number, position: GameObjectPosition, ticksUntilVisible: number) => {
+        this._state = {
+            ...this._state,
+            fishes: [
+                ...this._state.fishes,
+                {
+                    id,
+                    position,
+                    visibleAfterGameTime: this._state.clock + ticksUntilVisible
+                }
+            ]
+        };
+    };
+
+    private removeFish = (fishId: number) => {
+        this._state = {
+            ...this._state,
+            fishes: this._state.fishes.filter(fish => fish.id !== fishId)
+        };
+    };
+
     private setPeerPlayerPosition = (position: GameObjectPosition) => {
         this._state = {
             ...this._state,
@@ -109,6 +137,7 @@ export default class HostStateManager implements StateManager {
     private handleEventsFromPeer = (connection: DataConnection) => {
         connection.on('data', this.handleEvent);
     };
+
 
     private sendStateToPeer = (connection: DataConnection) => {
         connection.send(this.state);
