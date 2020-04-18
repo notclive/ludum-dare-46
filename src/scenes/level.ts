@@ -53,13 +53,13 @@ export class Level extends SceneBase {
         this.externalPlayer = this.add.sprite(0, 0, 'player2');
 
         this.heart = new Heart(this, 3 * leftGameWidth / 4, this.gameHeight / 2);
-        this.healthBar = new StatBar(this, leftGameWidth + 20, 50, 'HP');
+        this.healthBar = new StatBar(this, leftGameWidth + 20, 30, 'Blood');
 
         this.lungs = new Lungs(this, (leftGameWidth) / 4, this.gameHeight / 2);
-        this.breatheBar = new StatBar(this, leftGameWidth + 20, 90, 'O2');
+        this.breatheBar = new StatBar(this, leftGameWidth + 20, 60, 'O2');
 
         this.stomach = new Stomach(this, 5 * leftGameWidth / 8, (3 * this.gameHeight) / 4);
-        this.foodBar = new StatBar(this, leftGameWidth + 20, 130, 'Food');
+        this.foodBar = new StatBar(this, leftGameWidth + 20, 90, 'Food');
 
         this.brain = new Brain(this, leftGameWidth/2, this.gameHeight/3, this.player);
 
