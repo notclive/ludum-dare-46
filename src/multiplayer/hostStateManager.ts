@@ -1,4 +1,4 @@
-import {INITIAL_STATE, GameObjectPosition, StateChangeEvent, StateManager} from './stateManager';
+import {INITIAL_STATE, GameObjectPosition, StateChangeEvent, StateManager, PlayerState} from './stateManager';
 import {DataConnection} from 'peerjs';
 
 export default class HostStateManager implements StateManager {
@@ -37,18 +37,15 @@ export default class HostStateManager implements StateManager {
             || this._state.fullness === 0;
     }
 
-    public set myPosition(position: GameObjectPosition) {
+    public set myPlayer(hostPlayer: PlayerState) {
         this._state = {
             ...this._state,
-            hostPlayer: {
-                ...this._state.hostPlayer,
-                position: position
-            }
+            hostPlayer
         };
     };
 
-    public get otherPlayerPosition() {
-        return this.state.peerPlayer.position;
+    public get otherPlayer() {
+        return this.state.peerPlayer;
     };
 
     public handleEvent = (event: StateChangeEvent) => {
@@ -70,8 +67,8 @@ export default class HostStateManager implements StateManager {
         if (event.type === 'REMOVE_FISH') {
             this.removeFish(event.id);
         }
-        if (event.type === 'SET_PEER_PLAYER_POSITION') {
-            this.setPeerPlayerPosition(event.position);
+        if (event.type === 'SET_PEER_PLAYER_STATE') {
+            this.setPeerPlayerState(event.state);
         }
     };
 
@@ -124,13 +121,10 @@ export default class HostStateManager implements StateManager {
         };
     };
 
-    private setPeerPlayerPosition = (position: GameObjectPosition) => {
+    private setPeerPlayerState = (peerPlayer: PlayerState) => {
         this._state = {
             ...this._state,
-            peerPlayer: {
-                ...this.state.peerPlayer,
-                position
-            }
+            peerPlayer: peerPlayer
         };
     };
 

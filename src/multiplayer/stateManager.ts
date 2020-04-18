@@ -2,8 +2,8 @@ export interface StateManager {
     tick: () => void;
     state: GameState;
     handleEvent: (event: StateChangeEvent) => void;
-    myPosition: GameObjectPosition;
-    otherPlayerPosition: GameObjectPosition;
+    myPlayer: PlayerState;
+    otherPlayer: PlayerState;
 }
 
 export interface GameState {
@@ -18,7 +18,7 @@ export interface GameState {
     waterLevel: number;
 }
 
-interface PlayerState {
+export interface PlayerState {
     position: GameObjectPosition;
     holdingFish: boolean;
 }
@@ -34,7 +34,7 @@ export interface Fish {
     position: GameObjectPosition;
 }
 
-export type StateChangeEvent = PumpLungs | BeatHeart | DigestFood | DrainPlug | PlaceFish | RemoveFish | SetPeerPlayerPosition;
+export type StateChangeEvent = PumpLungs | BeatHeart | DigestFood | DrainPlug | PlaceFish | RemoveFish | SetPeerPlayerState;
 
 interface PumpLungs {
     type: 'PUMP_LUNGS';
@@ -64,9 +64,9 @@ interface RemoveFish {
     id: string;
 }
 
-interface SetPeerPlayerPosition {
-    type: 'SET_PEER_PLAYER_POSITION';
-    position: GameObjectPosition;
+interface SetPeerPlayerState {
+    type: 'SET_PEER_PLAYER_STATE';
+    state: PlayerState;
 }
 
 export const INITIAL_STATE: GameState = {

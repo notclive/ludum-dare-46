@@ -1,4 +1,11 @@
-import {GameState, INITIAL_STATE, GameObjectPosition, StateChangeEvent, StateManager} from './stateManager';
+import {
+    GameState,
+    INITIAL_STATE,
+    GameObjectPosition,
+    StateChangeEvent,
+    StateManager,
+    PlayerState
+} from './stateManager';
 import {DataConnection} from 'peerjs';
 
 export default class PeerStateManager implements StateManager {
@@ -15,15 +22,15 @@ export default class PeerStateManager implements StateManager {
         return this._state;
     }
 
-    public get otherPlayerPosition() {
-        return this.state.hostPlayer.position;
+    public set myPlayer(state: PlayerState) {
+        this.handleEvent({
+            type: 'SET_PEER_PLAYER_STATE',
+            state
+        });
     };
 
-    public set myPosition(position: GameObjectPosition) {
-        this.handleEvent({
-            type: 'SET_PEER_PLAYER_POSITION',
-            position
-        });
+    public get otherPlayer() {
+        return this.state.hostPlayer;
     };
 
     public handleEvent = (event: StateChangeEvent) => {

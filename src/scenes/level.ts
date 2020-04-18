@@ -59,11 +59,11 @@ export class Level extends SceneBase {
         this.stomach = new Stomach(this, 5 * leftGameWidth / 8, (3 * this.gameHeight) / 4);
         this.foodBar = new StatBar(this, leftGameWidth + 20, 90, 'Food');
 
-        this.brain = new Brain(this, leftGameWidth/2, this.gameHeight/3, this.player);
+        this.brain = new Brain(this, leftGameWidth / 2, this.gameHeight / 3, this.player);
 
         this.water = new Water(this, catXPosition, catTopY + catBackground.displayHeight, catTopY);
         this.plug = new Plug(this, 3 * leftGameWidth / 8, (3 * this.gameHeight) / 4, this.water);
-        
+
         this.physics.add.collider(this.player, this.heart);
         this.physics.add.collider(this.player, this.lungs);
         this.physics.add.collider(this.player, this.plug);
@@ -75,7 +75,7 @@ export class Level extends SceneBase {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
 
-        this.fishes = new Fishes(this, leftGameWidth / 2, this.gameHeight / 2,  this.player, this.stomach);
+        this.fishes = new Fishes(this, leftGameWidth / 2, this.gameHeight / 2, this.player, this.stomach);
         listenForMultiplayerHotkeys(this);
     }
 
@@ -93,7 +93,7 @@ export class Level extends SceneBase {
             : baseWalkingSpeed;
 
         this.player.update(walkingSpeed, this.cursors);
-        this.stateManager.myPosition = {x: this.player.x, y: this.player.y};
+        this.updateStateFromGameObjects();
         this.updateGameObjectsFromState();
 
         if (this.player.isTouching(this.brain)) {
@@ -121,8 +121,24 @@ export class Level extends SceneBase {
         this.player.gameOver();
     }
 
+    private updateStateFromGameObjects() {
+        this.stateManager.myPlayer = {
+            holdingFish: this.player.isHoldingFish,
+            position: {
+                x: this.player.x,
+                y: this.player.y
+            }
+        };
+    }
+
     private updateGameObjectsFromState() {
-        this.externalPlayer.setPosition(this.stateManager.otherPlayerPosition.x, this.stateManager.otherPlayerPosition.y);
+        this.externalPlayer.setPosition(this.stateManager.otherPlayer.position.x, this.stateManager.otherPlayer.position.y);
+        if (this.stateManager.otherPlayer.holdingFish) {
+            // Should be player2-with-fish.
+            this.externalPlayer.setTexture('player1-with-fish');
+        } else {
+            this.externalPlayer.setTexture('player2');
+        }
         this.fishes.update(this.stateManager.state.fishes, this.stateManager.state.gameTime);
         this.healthBar.update(this.stateManager.state.heart);
         this.breatheBar.update(this.stateManager.state.lungs);
