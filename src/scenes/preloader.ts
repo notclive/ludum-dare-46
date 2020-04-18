@@ -17,7 +17,7 @@ export class Preloader extends SceneBase {
             progressBar.fillStyle(0xffffff, 1);
             progressBar.fillRect(250, 280, 300 * value, 30);
         });
-         
+
         this.load.on('complete', () => {
             progressBar.destroy();
             progressBox.destroy();

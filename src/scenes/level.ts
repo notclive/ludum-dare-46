@@ -15,6 +15,7 @@ export class Level extends SceneBase {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private outsideView: OutsideView;
     private gameOver = false;
+    private spaceBarDown = false;
 
     create() {
         const background = this.add.image(0, 0, 'sky');
@@ -29,12 +30,12 @@ export class Level extends SceneBase {
         this.lungs = new Lungs(this, (3 * this.gameWidth) / 4, this.gameHeight / 2);
         this.breatheBar = new StatBar(this, 20, 90, 'O2');
 
-        this.physics.add.collider(this.player, this.heart, () => this.heart.pump(), null, this);
-        this.physics.add.collider(this.player, this.lungs, () => this.lungs.breathe(), null, this);
+        this.physics.add.collider(this.player, this.heart, () => this.handleCollidingWithInteractableObject(() => this.heart.pump()), null, this);
+        this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithInteractableObject(() => this.lungs.breathe()), null, this);
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
-    };
+    }
 
     update() {
         if (this.gameOver) {
@@ -50,11 +51,22 @@ export class Level extends SceneBase {
         this.player.update(this.cursors);
         this.healthBar.update(this.heart.getHealth());
         this.breatheBar.update(this.lungs.getHealth());
-    };
+    }
 
     private endGame() {
         this.physics.pause();
         this.player.gameOver();
         this.gameOver = true;
+    }
+
+    private handleCollidingWithInteractableObject(performAction: () => void) {
+        if (this.cursors.space.isDown) {
+            if (!this.spaceBarDown) {
+                performAction();
+            }
+            this.spaceBarDown = true;
+        } else {
+            this.spaceBarDown = false;
+        }
     }
 }

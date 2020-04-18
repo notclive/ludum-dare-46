@@ -1,6 +1,8 @@
 import * as Phaser from 'phaser';
 import { PHASER_STATIC_BODY } from '../consts';
 
+const HEALTH_INCREASE_PER_PUMP = 5;
+
 export class Lungs extends Phaser.Physics.Arcade.Image {
     private health = 100;
     constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -15,7 +17,10 @@ export class Lungs extends Phaser.Physics.Arcade.Image {
     }
 
     breathe() {
-        this.health = 100;
+        const newHealth = this.health + HEALTH_INCREASE_PER_PUMP;
+        this.health = newHealth > 100
+            ? 100
+            : newHealth;
     }
 
     getHealth() {
