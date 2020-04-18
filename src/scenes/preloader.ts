@@ -38,7 +38,6 @@ export class Preloader extends SceneBase {
         this.load.image('sky', sky);
         this.load.image('heart', heart);
         this.load.image('lungs', lungs);
-        this.load.image('brain', brain);
         this.load.image('buttonA', buttonA);
         this.load.image('buttonB', buttonB);
         this.load.image('stomach', stomach);
@@ -60,6 +59,10 @@ export class Preloader extends SceneBase {
         this.load.spritesheet('player1-with-fish',
             player1WithFish,
             { frameWidth: 39, frameHeight: 50 }
+        );
+        this.load.spritesheet('brain',
+            brain,
+            { frameWidth: 134, frameHeight: 130 }
         );
     }
 }

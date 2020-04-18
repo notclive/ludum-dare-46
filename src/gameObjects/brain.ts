@@ -23,6 +23,14 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
         this.decisionBox = new DecisionBox(scene, this.x, 20);
         this.buttonA = new DecisionButton(scene, this.x - 40, this.y, 'buttonA');
         this.buttonB = new DecisionButton(scene, this.x + 40, this.y, 'buttonB');
+
+        this.scene.anims.create({
+            key: 'brain-slowPulse',
+            frames: this.scene.anims.generateFrameNumbers('brain', { start: 0, end: 1 }),
+            frameRate: 5,
+            repeat: -1
+        });
+        this.anims.play('brain-slowPulse', true);
     }
 
     tryPressButton = () => {
