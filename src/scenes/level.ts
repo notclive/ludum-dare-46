@@ -10,7 +10,7 @@ import {Brain} from '../gameObjects/brain';
 import {Stomach} from '../gameObjects/stomach';
 import {Plug} from '../gameObjects/plug';
 import {Water} from '../gameObjects/water';
-import {StateManager} from '../multiplayer/stateManager';
+import {PlayerState, StateManager} from '../multiplayer/stateManager';
 import {listenForMultiplayerHotkeys} from '../multiplayer/multiplayer';
 import HostStateManager from '../multiplayer/hostStateManager';
 
@@ -132,18 +132,21 @@ export class Level extends SceneBase {
     }
 
     private updateGameObjectsFromState() {
-        this.externalPlayer.setPosition(this.stateManager.otherPlayer.position.x, this.stateManager.otherPlayer.position.y);
-        if (this.stateManager.otherPlayer.holdingFish) {
-            // Should be player2-with-fish.
-            this.externalPlayer.setTexture('player1-with-fish');
-        } else {
-            this.externalPlayer.setTexture('player2');
-        }
+        this.updateExternalPlayerFromState(this.stateManager.otherPlayer);
         this.fishes.update(this.stateManager.state.fishes, this.stateManager.state.gameTime);
         this.healthBar.update(this.stateManager.state.heart);
         this.breatheBar.update(this.stateManager.state.lungs);
         this.plug.update(this.stateManager.state.waterLevel);
         this.foodBar.update(this.stateManager.state.fullness);
+    }
+
+    private updateExternalPlayerFromState(otherPlayer: PlayerState) {
+        this.externalPlayer.setPosition(otherPlayer.position.x, otherPlayer.position.y);
+        if (otherPlayer.holdingFish) {
+            this.externalPlayer.setTexture('player2-with-fish');
+        } else {
+            this.externalPlayer.setTexture('player2');
+        }
     }
 
     private handleSpaceBar() {

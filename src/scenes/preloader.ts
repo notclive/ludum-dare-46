@@ -8,9 +8,10 @@ import buttonB from '../assets/buttonB.png';
 import water from '../assets/water.png';
 import cork from '../assets/cork.png';
 import fish from '../assets/fish.png';
-import player1 from '../assets/player1.png';
-import player2 from '../assets/player2.png';
-import player1WithFish from '../assets/player1-with-fish.png';
+import player1 from '../assets/players/player1.png';
+import player2 from '../assets/players/player2.png';
+import player1WithFish from '../assets/players/player1-with-fish.png';
+import player2WithFish from '../assets/players/player2-with-fish.png';
 import cat from '../assets/outsideView/cat.webp';
 import catBackground from '../assets/cat-main.png';
 import wall from '../assets/wall.png';
@@ -53,6 +54,10 @@ export class Preloader extends SceneBase {
         );
         this.load.spritesheet('player1-with-fish',
             player1WithFish,
+            { frameWidth: 39, frameHeight: 50 }
+        );
+        this.load.spritesheet('player2-with-fish',
+            player2WithFish,
             { frameWidth: 39, frameHeight: 50 }
         );
         this.load.spritesheet('brain',

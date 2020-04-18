@@ -80,7 +80,7 @@ export const INITIAL_STATE: GameState = {
     },
     peerPlayer: {
         position: {
-            x: 500, y: 500
+            x: -500, y: -500 // If playing single player peer will be hidden by these coordinates.
         },
         holdingFish: false
     },
