@@ -41,18 +41,18 @@ export class Level extends SceneBase {
 
         this.player = new Player(this, leftGameWidth / 2, this.gameHeight / 2);
 
-        this.heart = new Heart(this, leftGameWidth / 4, this.gameHeight / 2);
+        this.heart = new Heart(this, 3 * leftGameWidth / 4, this.gameHeight / 2);
         this.healthBar = new StatBar(this, 20, 50, 'HP');
 
-        this.lungs = new Lungs(this, (3 * leftGameWidth) / 4, this.gameHeight / 2);
+        this.lungs = new Lungs(this, (leftGameWidth) / 4, this.gameHeight / 2);
         this.breatheBar = new StatBar(this, 20, 90, 'O2');
 
-        this.stomach = new Stomach(this, leftGameWidth / 2, (3 * this.gameHeight) / 4);
+        this.stomach = new Stomach(this, 5 * leftGameWidth / 8, (3 * this.gameHeight) / 4);
         this.foodBar = new StatBar(this, 20, 130, 'Food');
 
         this.brain = new Brain(this, leftGameWidth/2, this.gameHeight/3, this.player);
 
-        this.plug = new Plug(this, leftGameWidth / 4, (3 * this.gameHeight) / 4);
+        this.plug = new Plug(this, 3 * leftGameWidth / 8, (3 * this.gameHeight) / 4);
 
         this.physics.add.collider(this.player, this.heart, () => this.handleCollidingWithInteractableObject(() => this.heart.pump()), null, this);
         this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithInteractableObjectHold(() => this.lungs.breathe()), null, this);
