@@ -1,3 +1,4 @@
+import { DecisionBox } from './../gameObjects/decisionBox';
 import * as Phaser from 'phaser';
 import { SceneBase } from './sceneBase';
 import { Player } from '../gameObjects/player';
@@ -5,6 +6,8 @@ import { Heart } from '../gameObjects/heart';
 import { StatBar } from '../gameObjects/statBar';
 import { Lungs } from '../gameObjects/lungs';
 import OutsideView from '../subscene/outsideView';
+import { BannerPlugin } from 'webpack';
+import { Brain } from '../gameObjects/brain';
 
 export class Level extends SceneBase {
     private player: Player;
@@ -12,11 +15,13 @@ export class Level extends SceneBase {
     private healthBar: StatBar;
     private lungs: Lungs;
     private breatheBar: StatBar;
+    private brain: Brain;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private outsideView: OutsideView;
     private gameOver = false;
     private spaceBarDown = false;
     private walls: Phaser.Physics.Arcade.StaticGroup;
+    private decisionBox: DecisionBox;
 
     create() {
         const background = this.add.image(0, 0, 'sky');
@@ -31,8 +36,12 @@ export class Level extends SceneBase {
         this.lungs = new Lungs(this, (3 * this.gameWidth) / 4, this.gameHeight / 2);
         this.breatheBar = new StatBar(this, 20, 90, 'O2');
 
+        this.brain = new Brain(this, this.gameWidth/2, this.gameHeight/4);
+        this.decisionBox = new DecisionBox(this, this.gameWidth/2, 20);
+
         this.physics.add.collider(this.player, this.heart, () => this.handleCollidingWithInteractableObject(() => this.heart.pump()), null, this);
         this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithLungs(), null, this);
+        this.physics.add.collider(this.player, this.brain, () => this.handleCollidingWithBrain(), null, this);
 
         this.walls = this.physics.add.staticGroup();
         this.createWalls();
@@ -81,6 +90,10 @@ export class Level extends SceneBase {
         if (this.cursors.space.isDown && this.cursors.space.getDuration() > 200) {
             this.lungs.breathe();
         }
+    }
+
+    private handleCollidingWithBrain() {
+        this.decisionBox.show();
     }
 
     private generateFishEveryMinute() {
