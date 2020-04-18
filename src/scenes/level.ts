@@ -1,12 +1,12 @@
 import { DecisionBox } from './../gameObjects/decisionBox';
 import * as Phaser from 'phaser';
-import { SceneBase } from './sceneBase';
-import { Player } from '../gameObjects/player';
-import { Heart } from '../gameObjects/heart';
-import { StatBar } from '../gameObjects/statBar';
-import { Lungs } from '../gameObjects/lungs';
+import {SceneBase} from './sceneBase';
+import {Player} from '../gameObjects/player';
+import {Heart} from '../gameObjects/heart';
+import {StatBar} from '../gameObjects/statBar';
+import {Lungs} from '../gameObjects/lungs';
 import OutsideView from '../subscene/outsideView';
-import { BannerPlugin } from 'webpack';
+import Fishes from '../gameObjects/fishes';
 import { Brain } from '../gameObjects/brain';
 
 export class Level extends SceneBase {
@@ -50,7 +50,7 @@ export class Level extends SceneBase {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
 
-        this.generateFishEveryMinute();
+        new Fishes(this, this.player);
     }
 
     update() {
@@ -94,15 +94,6 @@ export class Level extends SceneBase {
 
     private handleCollidingWithBrain() {
         this.decisionBox.show();
-    }
-
-    private generateFishEveryMinute() {
-        setInterval(() => {
-            const xJitter = Math.random() / 10;
-            const yJitter = Math.random() / 10;
-            const fish = this.add.image(this.gameWidth / (2 + xJitter), this.gameHeight  / (4 + yJitter), 'fish');
-            this.scaleObjectToGameWidth(fish, 0.02);
-        }, 60 * 1000)
     }
 
     private createWalls() {
