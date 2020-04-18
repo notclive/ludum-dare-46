@@ -10,6 +10,7 @@ import Fishes from '../gameObjects/fishes';
 import { Brain } from '../gameObjects/brain';
 import { Stomach } from '../gameObjects/stomach';
 import { Plug } from '../gameObjects/plug';
+import { Water } from '../gameObjects/water';
 
 export class Level extends SceneBase {
     private player: Player;
@@ -21,6 +22,7 @@ export class Level extends SceneBase {
     private foodBar: StatBar;
     private brain: Brain;
     private plug: Plug;
+    private water: Water;
     private fishes: Fishes;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private outsideView: OutsideView;
@@ -36,7 +38,10 @@ export class Level extends SceneBase {
         const leftGameWidth = this.gameWidth / 2;
 
         const catBackground = this.add.image(0, 0, 'catBackground');
-        catBackground.x = (leftGameWidth / 2);
+        const catXPosition = (leftGameWidth / 2);
+        const catTopY = (this.gameHeight - catBackground.displayHeight) / 2;
+
+        catBackground.x = catXPosition;
         catBackground.y = this.gameHeight / 2;
 
         this.player = new Player(this, leftGameWidth / 2, this.gameHeight / 2);
@@ -52,7 +57,8 @@ export class Level extends SceneBase {
 
         this.brain = new Brain(this, leftGameWidth/2, this.gameHeight/3, this.player);
 
-        this.plug = new Plug(this, 3 * leftGameWidth / 8, (3 * this.gameHeight) / 4);
+        this.water = new Water(this, catXPosition, catTopY + (catBackground.displayHeight * 1.5), 0);
+        this.plug = new Plug(this, 3 * leftGameWidth / 8, (3 * this.gameHeight) / 4, this.water);
 
         this.physics.add.collider(this.player, this.heart, () => this.handleCollidingWithInteractableObject(() => this.heart.pump()), null, this);
         this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithInteractableObjectHold(() => this.lungs.breathe()), null, this);
@@ -71,6 +77,7 @@ export class Level extends SceneBase {
     }
 
     update() {
+        const baseWalkingSpeed = 160;
         if (this.gameOver) {
             return;
         }
@@ -83,7 +90,12 @@ export class Level extends SceneBase {
             this.endGame();
         }
 
-        this.player.update(this.cursors);
+        const walkingSpeed = this.player.y > this.water.YOfTheWaterLevel()
+            ? baseWalkingSpeed / 2
+            : baseWalkingSpeed;
+
+        this.player.update(walkingSpeed, this.cursors);
+
         this.healthBar.update(this.heart.getHealth());
         this.breatheBar.update(this.lungs.getHealth());
         this.foodBar.update(this.stomach.getHealth());

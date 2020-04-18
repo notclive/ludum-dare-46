@@ -47,9 +47,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         });
     }
 
-    update(cursors: Phaser.Types.Input.Keyboard.CursorKeys) {
-        const walkingSpeed = 160;
-
+    update(walkingSpeed: number, cursors: Phaser.Types.Input.Keyboard.CursorKeys) {
         if (cursors.left.isDown)
         {
             this.setVelocity(0);
