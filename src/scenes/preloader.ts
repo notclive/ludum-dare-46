@@ -6,6 +6,7 @@ import brain from '../assets/brain.png';
 import buttonA from '../assets/buttonA.png';
 import buttonB from '../assets/buttonB.png';
 import stomach from '../assets/stomach.jpg';
+import plug from '../assets/plug.jpg';
 import fish from '../assets/fish.png';
 import player1 from '../assets/player1.png';
 import player1WithFish from '../assets/player1-with-fish.png';
@@ -39,6 +40,7 @@ export class Preloader extends SceneBase {
         this.load.image('buttonA', buttonA);
         this.load.image('buttonB', buttonB);
         this.load.image('stomach', stomach);
+        this.load.image('plug', plug);
         this.load.image('fish', fish);
         this.load.image('cat', cat);
         this.load.image('catBackground', catBackground);

@@ -9,6 +9,7 @@ import OutsideView from '../subscene/outsideView';
 import Fishes from '../gameObjects/fishes';
 import { Brain } from '../gameObjects/brain';
 import { Stomach } from '../gameObjects/stomach';
+import { Plug } from '../gameObjects/plug';
 
 export class Level extends SceneBase {
     private player: Player;
@@ -19,6 +20,7 @@ export class Level extends SceneBase {
     private stomach: Stomach;
     private foodBar: StatBar;
     private brain: Brain;
+    private plug: Plug;
     private fishes: Fishes;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private outsideView: OutsideView;
@@ -47,11 +49,14 @@ export class Level extends SceneBase {
 
         this.brain = new Brain(this, this.gameWidth/2, this.gameHeight/3, this.player);
 
+        this.plug = new Plug(this, this.gameWidth / 4, (3 * this.gameHeight) / 4);
+
         this.physics.add.collider(this.player, this.heart, () => this.handleCollidingWithInteractableObject(() => this.heart.pump()), null, this);
-        this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithLungs(), null, this);
+        this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithInteractableObjectHold(() => this.lungs.breathe()), null, this);
+        this.physics.add.collider(this.player, this.plug, () => this.handleCollidingWithInteractableObjectHold(() => this.openPlug()), null, this);
 
         this.physics.add.overlap(this.player, this.brain, () => this.handleOverlapWithBrain(), null, this);
-
+        
         this.walls = this.physics.add.staticGroup();
         this.createWalls();
         this.physics.add.collider(this.player, this.walls);
@@ -59,7 +64,7 @@ export class Level extends SceneBase {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
 
-        new Fishes(this, this.player, this.handleFishPlaced);
+        this.fishes = new Fishes(this, this.player, this.handleFishPlaced);
     }
 
     update() {
@@ -70,6 +75,7 @@ export class Level extends SceneBase {
         this.heart.update(0.1);
         this.lungs.update(0.05);
         this.stomach.update(0.01);
+        this.plug.update(0.03);
         if (this.heart.hasFailed() || this.lungs.haveFailed()) {
             this.endGame();
         }
@@ -98,9 +104,9 @@ export class Level extends SceneBase {
         }
     }
 
-    private handleCollidingWithLungs() {
+    private handleCollidingWithInteractableObjectHold(performAction: () => void) {
         if (this.cursors.space.isDown && this.cursors.space.getDuration() > 200) {
-            this.lungs.breathe();
+            performAction();
         }
     }
 
@@ -138,5 +144,13 @@ export class Level extends SceneBase {
     private feedStomach = (fish: Phaser.GameObjects.Image) => {
         fish.destroy();
         this.stomach.feed();
+    }
+
+    private openPlug = () => {
+        if (this.plug.getIsPlugged()) {
+            this.cursors.space.once('up', () => this.plug.plug());
+            this.plug.unplug();
+        }
+        this.plug.drain();
     }
 }
