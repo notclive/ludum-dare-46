@@ -31,7 +31,7 @@ export class Level extends SceneBase {
         this.breatheBar = new StatBar(this, 20, 90, 'O2');
 
         this.physics.add.collider(this.player, this.heart, () => this.handleCollidingWithInteractableObject(() => this.heart.pump()), null, this);
-        this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithInteractableObject(() => this.lungs.breathe()), null, this);
+        this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithLungs(), null, this);
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
@@ -67,6 +67,12 @@ export class Level extends SceneBase {
             this.spaceBarDown = true;
         } else {
             this.spaceBarDown = false;
+        }
+    }
+
+    private handleCollidingWithLungs() {
+        if (this.cursors.space.isDown && this.cursors.space.getDuration() > 200) {
+            this.lungs.breathe();
         }
     }
 }
