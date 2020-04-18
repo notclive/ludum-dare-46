@@ -2,8 +2,8 @@ import { SceneBase } from './sceneBase';
 import sky from '../assets/sky.png';
 import heart from '../assets/heart.png';
 import lungs from '../assets/lungs.jpg';
-import dude from '../assets/dude.png';
 import fish from '../assets/fish.png';
+import dude from '../assets/player1.png';
 import cat from '../assets/outsideView/cat.webp';
 import wall from '../assets/wall.png';
 
@@ -35,7 +35,7 @@ export class Preloader extends SceneBase {
         this.load.image('wall', wall);
         this.load.spritesheet('dude', 
             dude,
-            { frameWidth: 32, frameHeight: 48 }
+            { frameWidth: 39, frameHeight: 50 }
         );
     }
 }

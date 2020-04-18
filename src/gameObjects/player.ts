@@ -14,22 +14,16 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.setCollideWorldBounds(true);
 
         this.scene.anims.create({
-            key: 'left',
-            frames: this.scene.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+            key: 'still',
+            frames: this.scene.anims.generateFrameNumbers('dude', { start: 0, end: 2 }),
             frameRate: 10,
             repeat: -1
         });
 
         this.scene.anims.create({
-            key: 'turn',
-            frames: [ { key: 'dude', frame: 4 } ],
-            frameRate: 20
-        });
-
-        this.scene.anims.create({
-            key: 'right',
-            frames: this.scene.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-            frameRate: 10,
+            key: 'moving',
+            frames: this.scene.anims.generateFrameNumbers('dude', { start: 0, end: 2 }),
+            frameRate: 20,
             repeat: -1
         });
     }
@@ -41,35 +35,35 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         {
             this.setVelocity(0);
             this.setVelocityX(-1 * walkingSpeed);
-            this.anims.play('left', true);
+            this.anims.play('moving', true);
         }
         else if (cursors.right.isDown)
         {
             this.setVelocity(0);
             this.setVelocityX(walkingSpeed);
-            this.anims.play('right', true);
+            this.anims.play('moving', true);
         }
         else if (cursors.up.isDown)
         {
             this.setVelocity(0);
             this.setVelocityY(-1 * walkingSpeed);
-            this.anims.play('turn', true);
+            this.anims.play('moving', true);
         }
         else if (cursors.down.isDown)
         {
             this.setVelocity(0);
             this.setVelocityY(walkingSpeed);
-            this.anims.play('turn', true);
+            this.anims.play('moving', true);
         }
         else
         {
             this.setVelocity(0);
-            this.anims.play('turn', true);
+            this.anims.play('still', true);
         }
     }
 
     gameOver() {
         this.setTint(0xff0000);
-        this.anims.play('turn');
+        this.anims.play('still');
     }
 }
