@@ -13,6 +13,7 @@ import {Water} from '../gameObjects/water';
 import {PlayerState, StateManager} from '../multiplayer/stateManager';
 import {listenForMultiplayerHotkeys} from '../multiplayer/multiplayer';
 import HostStateManager from '../multiplayer/hostStateManager';
+import {Decision} from '../gameObjects/decision';
 
 export class Level extends SceneBase {
 
@@ -76,6 +77,9 @@ export class Level extends SceneBase {
         this.outsideView = new OutsideView(this);
 
         this.fishes = new Fishes(this, leftGameWidth / 2, this.gameHeight / 2, this.player, this.stomach);
+
+        this.brain.setAvailableDecision(this, this.wakeOrNotDecision());
+
         listenForMultiplayerHotkeys(this);
     }
 
@@ -167,7 +171,7 @@ export class Level extends SceneBase {
         }
         if (this.bIsTouchingA(this.player, this.brain)) {
             if (!this.spaceBarDown) {
-                this.brain.tryPressButton(this.fishes.generateFishRegularlyForAWhile);
+                this.brain.tryPressButton();
             }
         }
     }
@@ -214,5 +218,41 @@ export class Level extends SceneBase {
 
     public set stateManager(stateManager) {
         this._stateManager = stateManager;
+    }
+
+    private fishOrNotDecision(): Decision {
+        return {
+            optionA: {
+                label: 'eat some fish',
+                action: this.fishes.generateFishRegularlyForAWhile
+            },
+
+            optionB: {
+                label: 'go back to sleep',
+                action: this.goToSleep
+            }
+        }
+    }
+
+    private wakeOrNotDecision(): Decision {
+        return {
+            optionA: {
+                label: 'wake up',
+                action: this.wakeUp
+            },
+
+            optionB: {
+                label: 'nahhh',
+                action: null
+            }
+        }
+    }
+
+    private wakeUp = () => {
+        this.brain.setAvailableDecision(this, this.fishOrNotDecision());
+    }
+
+    private goToSleep = () => {
+        this.brain.setAvailableDecision(this, this.wakeOrNotDecision());
     }
 }
