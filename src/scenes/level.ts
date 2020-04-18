@@ -4,6 +4,7 @@ import { Player } from '../gameObjects/player';
 import { Heart } from '../gameObjects/heart';
 import { StatBar } from '../gameObjects/statBar';
 import { Lungs } from '../gameObjects/lungs';
+import OutsideView from '../subscene/outsideView';
 
 export class Level extends SceneBase {
     private player: Player;
@@ -12,6 +13,7 @@ export class Level extends SceneBase {
     private lungs: Lungs;
     private breatheBar: StatBar;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+    private outsideView: OutsideView;
     private gameOver = false;
 
     create() {
@@ -31,6 +33,7 @@ export class Level extends SceneBase {
         this.physics.add.collider(this.player, this.lungs, () => this.lungs.breathe(), null, this);
 
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.outsideView = new OutsideView(this);
     };
 
     update() {

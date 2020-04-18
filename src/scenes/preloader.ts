@@ -1,9 +1,9 @@
-import * as Phaser from 'phaser';
 import { SceneBase } from './sceneBase';
 import sky from '../assets/sky.png';
 import heart from '../assets/heart.png';
 import lungs from '../assets/lungs.jpg';
 import dude from '../assets/dude.png';
+import cat from '../assets/outsideView/cat.webp';
 
 export class Preloader extends SceneBase {
     preload() {
@@ -27,6 +27,8 @@ export class Preloader extends SceneBase {
         this.load.image('sky', sky);
         this.load.image('heart', heart);
         this.load.image('lungs', lungs);
+        this.load.image('cat', cat);
+
         this.load.spritesheet('dude', 
             dude,
             { frameWidth: 32, frameHeight: 48 }
