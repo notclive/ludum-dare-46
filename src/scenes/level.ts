@@ -1,4 +1,3 @@
-import { DecisionBox } from './../gameObjects/decisionBox';
 import * as Phaser from 'phaser';
 import {SceneBase} from './sceneBase';
 import {Player} from '../gameObjects/player';
@@ -7,12 +6,14 @@ import {StatBar} from '../gameObjects/statBar';
 import {Lungs} from '../gameObjects/lungs';
 import OutsideView from '../subscene/outsideView';
 import Fishes from '../gameObjects/fishes';
-import { Brain } from '../gameObjects/brain';
-import { Stomach } from '../gameObjects/stomach';
-import { Plug } from '../gameObjects/plug';
-import { Water } from '../gameObjects/water';
+import {Brain} from '../gameObjects/brain';
+import {Stomach} from '../gameObjects/stomach';
+import {Plug} from '../gameObjects/plug';
+import {Water} from '../gameObjects/water';
+import {Game} from '../game';
 
 export class Level extends SceneBase {
+
     private player: Player;
     private heart: Heart;
     private healthBar: StatBar;
@@ -26,7 +27,6 @@ export class Level extends SceneBase {
     private fishes: Fishes;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private outsideView: OutsideView;
-    private gameOver = false;
     private spaceBarDown = false;
     private walls: Phaser.Physics.Arcade.StaticGroup;
 
@@ -60,9 +60,9 @@ export class Level extends SceneBase {
         this.water = new Water(this, catXPosition, catTopY + (catBackground.displayHeight * 1.5), 0);
         this.plug = new Plug(this, 3 * leftGameWidth / 8, (3 * this.gameHeight) / 4, this.water);
 
-        this.physics.add.collider(this.player, this.heart, () => this.handleCollidingWithInteractableObject(() => this.heart.pump()), null, this);
-        this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithInteractableObjectHold(() => this.lungs.breathe()), null, this);
-        this.physics.add.collider(this.player, this.plug, () => this.handleCollidingWithInteractableObjectHold(() => this.openPlug()), null, this);
+        this.physics.add.collider(this.player, this.heart, () => this.handleCollidingWithInteractableObject(this.beatHeart), null, this);
+        this.physics.add.collider(this.player, this.lungs, () => this.handleCollidingWithInteractableObjectHold(this.pumpLungs), null, this);
+        this.physics.add.collider(this.player, this.plug, () => this.handleCollidingWithInteractableObjectHold(this.openPlug), null, this);
 
         this.physics.add.overlap(this.player, this.brain, () => this.handleOverlapWithBrain(), null, this);
         
@@ -78,26 +78,23 @@ export class Level extends SceneBase {
 
     update() {
         const baseWalkingSpeed = 160;
-        if (this.gameOver) {
+        if (this.stateManager.state.gameOver) {
+            this.endGame();
             return;
         }
 
-        this.heart.update(0.1);
-        this.lungs.update(0.05);
         this.stomach.update(0.01);
         this.plug.update(0.03);
-        if (this.heart.hasFailed() || this.lungs.haveFailed()) {
-            this.endGame();
-        }
+
+        this.stateManager.tick();
 
         const walkingSpeed = this.player.y > this.water.YOfTheWaterLevel()
             ? baseWalkingSpeed / 2
             : baseWalkingSpeed;
 
         this.player.update(walkingSpeed, this.cursors);
-
-        this.healthBar.update(this.heart.getHealth());
-        this.breatheBar.update(this.lungs.getHealth());
+        this.healthBar.update(this.stateManager.state.heart);
+        this.breatheBar.update(this.stateManager.state.lungs);
         this.foodBar.update(this.stomach.getHealth());
     }
 
@@ -105,7 +102,6 @@ export class Level extends SceneBase {
         this.physics.pause();
         this.player.gameOver();
         this.fishes.stopGeneratingFish();
-        this.gameOver = true;
     }
 
     private handleCollidingWithInteractableObject(performAction: () => void) {
@@ -123,6 +119,18 @@ export class Level extends SceneBase {
         if (this.cursors.space.isDown && this.cursors.space.getDuration() > 200) {
             performAction();
         }
+    }
+
+    private beatHeart() {
+        this.stateManager.handleEvent({
+            type: 'BEAT_HEART'
+        });
+    }
+
+    private pumpLungs() {
+        this.stateManager.handleEvent({
+            type: 'PUMP_LUNGS'
+        });
     }
 
     private handleOverlapWithBrain() {
@@ -154,12 +162,12 @@ export class Level extends SceneBase {
 
     private handleFishPlaced = (fish: Phaser.GameObjects.Image) => {
         this.physics.add.collider(fish, this.stomach, () => this.feedStomach(fish), null, this);
-    }
+    };
 
     private feedStomach = (fish: Phaser.GameObjects.Image) => {
         fish.destroy();
         this.stomach.feed();
-    }
+    };
 
     private openPlug = () => {
         if (this.plug.getIsPlugged()) {
@@ -167,5 +175,9 @@ export class Level extends SceneBase {
             this.plug.unplug();
         }
         this.plug.drain();
+    };
+
+    public get stateManager() {
+        return (this.game as Game).stateManager;
     }
 }
