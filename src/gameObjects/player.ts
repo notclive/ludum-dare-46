@@ -53,7 +53,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         {
             this.setVelocity(0);
             this.setVelocityY(-1 * walkingSpeed);
-            this.anims.play('right', true);
+            this.anims.play('turn', true);
         }
         else if (cursors.down.isDown)
         {
