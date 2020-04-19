@@ -11,7 +11,7 @@ export class Game extends Phaser.Game {
     constructor() {
         super({
             type: Phaser.AUTO,
-            backgroundColor: '#125555',
+            backgroundColor: '#FFFFFF',
             scale: {
                 width: 1280,
                 height: 1024,

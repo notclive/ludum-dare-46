@@ -18,19 +18,33 @@ import player1WithFish from '../assets/players/player1-with-fish.png';
 import player2WithFish from '../assets/players/player2-with-fish.png';
 import outsideCat from '../assets/outsideView/outside-cat.png';
 import catBackground from '../assets/cat-main.png';
+import { BUTTON_BACKGROUND_COLOUR_HEX } from '../menuObjects/menuConstants';
+
+const BAR_WIDTH = 320;
+const BAR_HEIGHT = 50;
+const BAR_RADIUS = 10;
 
 export class Preloader extends SceneBase {
 
     preload() {
+        this.setupBackground();
+        this.add.image(this.gameWidth / 2, this.gameHeight / 2, 'background');
+
         const progressBar = this.add.graphics();
+        progressBar.setDepth(1);
         var progressBox = this.add.graphics();
-        progressBox.fillStyle(0x222222, 0.8);
-        progressBox.fillRect((this.gameWidth / 2) - 160, (this.gameHeight / 2) - 25, 320, 50);
+        progressBox.fillStyle(BUTTON_BACKGROUND_COLOUR_HEX, 0.8);
+        progressBox.fillRoundedRect((this.gameWidth / 2) - (BAR_WIDTH / 2), (this.gameHeight / 2) - (BAR_HEIGHT / 2), BAR_WIDTH, BAR_HEIGHT, BAR_RADIUS);
 
         this.load.on('progress', (value: number) => {
             progressBar.clear();
-            progressBar.fillStyle(0xffffff, 1);
-            progressBar.fillRect((this.gameWidth / 2) - 150, (this.gameHeight / 2) - 15, 300 * value, 30);
+            progressBar.fillStyle(0xFFFFFF, 1);
+            const barWidth = BAR_WIDTH * value;
+            if (value < 1 * BAR_HEIGHT / BAR_WIDTH) {
+                progressBar.fillEllipse((this.gameWidth / 2) - (BAR_WIDTH / 2) + (barWidth / 2), (this.gameHeight / 2), barWidth, BAR_HEIGHT);
+            } else {
+                progressBar.fillRoundedRect((this.gameWidth / 2) - (BAR_WIDTH / 2), (this.gameHeight / 2) - (BAR_HEIGHT / 2), barWidth, BAR_HEIGHT, BAR_RADIUS);
+            }
         });
 
         this.load.on('complete', () => {
@@ -86,8 +100,6 @@ export class Preloader extends SceneBase {
             outsideCat,
             { frameWidth: 100, frameHeight: 100 }
         );
-
-        this.setupBackground();
     }
 
     private setupBackground = () => {
