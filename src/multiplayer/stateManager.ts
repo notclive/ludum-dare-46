@@ -16,6 +16,8 @@ export interface GameState {
     lungs: number;
     fullness: number;
     waterLevel: number;
+    baseWalkingSpeed: number;
+    waterWalkingSpeed: number;
 }
 
 export interface PlayerState {
@@ -88,5 +90,7 @@ export const INITIAL_STATE: GameState = {
     heart: 100,
     lungs: 100,
     fullness: 100,
-    waterLevel: 0
+    waterLevel: 0,
+    baseWalkingSpeed: null, // Set by config in HostStateManager
+    waterWalkingSpeed: null, // Set by config in HostStateManager
 };

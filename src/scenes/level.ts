@@ -85,10 +85,9 @@ export class Level extends SceneBase {
 
         this.stateManager.tick();
 
-        const baseWalkingSpeed = 160;
         const walkingSpeed = this.player.y > this.water.YOfTheWaterLevel()
-            ? baseWalkingSpeed / 2
-            : baseWalkingSpeed;
+            ? this.stateManager.state.waterWalkingSpeed
+            : this.stateManager.state.baseWalkingSpeed;
 
         this.player.update(walkingSpeed, this.cursors);
         this.updateStateFromGameObjects();

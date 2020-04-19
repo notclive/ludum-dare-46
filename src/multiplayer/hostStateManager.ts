@@ -1,14 +1,17 @@
 import {INITIAL_STATE, GameObjectPosition, StateChangeEvent, StateManager, PlayerState} from './stateManager';
 import {DataConnection} from 'peerjs';
+import { singlePlayerConfig } from '../gameConfig';
 
 export default class HostStateManager implements StateManager {
-
+    private _gameConfig = singlePlayerConfig;
     private _state = INITIAL_STATE;
 
     public constructor(private connection?: DataConnection) {
         if (this.connection) {
             this.handleEventsFromPeer(this.connection);
         }
+        this._state.baseWalkingSpeed = this._gameConfig.baseWalkingSpeed;
+        this._state.waterWalkingSpeed = this._gameConfig.waterWalkingSpeed;
     }
 
     public get state() {
@@ -20,10 +23,10 @@ export default class HostStateManager implements StateManager {
             ...this._state,
             gameTime: this._state.gameTime + 1,
             gameOver: this.isGameOver(),
-            heart: Math.max(this._state.heart - 0.1, 0),
-            lungs: Math.max(this._state.lungs - 0.05, 0),
-            fullness: Math.max(this._state.fullness - 0.01, 0),
-            waterLevel: Math.min(this._state.waterLevel + 0.03, 100)
+            heart: Math.max(this._state.heart - this._gameConfig.bloodLossPerTick, 0),
+            lungs: Math.max(this._state.lungs - this._gameConfig.o2LossPerTick, 0),
+            fullness: Math.max(this._state.fullness - this._gameConfig.foodLossPerTick, 0),
+            waterLevel: Math.min(this._state.waterLevel + this._gameConfig.waterRisePerTick, 100)
         };
         if (this.connection) {
             this.sendStateToPeer(this.connection)
@@ -75,28 +78,28 @@ export default class HostStateManager implements StateManager {
     private pumpLungs = () => {
         this._state = {
             ...this._state,
-            lungs: Math.min(this._state.lungs + 0.5, 100)
+            lungs: Math.min(this._state.lungs + this._gameConfig.o2RisePerTick, 100)
         };
     };
 
     private beatHeart = () => {
         this._state = {
             ...this._state,
-            heart: Math.min(this._state.heart + 10, 100)
+            heart: Math.min(this._state.heart + this._gameConfig.bloodRisePerPump, 100)
         };
     };
 
     private digestFood = () => {
         this._state = {
             ...this._state,
-            fullness: Math.min(this._state.fullness + 20, 100)
+            fullness: Math.min(this._state.fullness + this._gameConfig.foodRisePerFish, 100)
         };
     };
 
     private drainPlug = () => {
         this._state = {
             ...this._state,
-            waterLevel: Math.max(this._state.waterLevel - 0.8, 0)
+            waterLevel: Math.max(this._state.waterLevel - this._gameConfig.waterLossPerTick, 0)
         };
     };
 
