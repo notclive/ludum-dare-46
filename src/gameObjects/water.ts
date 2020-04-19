@@ -14,7 +14,7 @@ export class Water extends Image {
     private configureHowItLooks() {
         const mask = this.createBitmapMask(this.catBackground);
         this.setMask(mask);
-        this.setAlpha(0.5);
+        this.setAlpha(0.55);
         this.setDepth(1);
         this.scale = 1.2;
     }
