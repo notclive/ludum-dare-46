@@ -19,43 +19,43 @@ export class OutsideCat extends Phaser.Physics.Arcade.Sprite {
     setUpAnimations() {
         this.scene.anims.create({
             key: 'asleep',
-            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 0, end: 1 }),
+            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 0, end: 3 }),
             frameRate: 2,
             repeat: -1
         });
 
         this.scene.anims.create({
             key: 'awake',
-            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 2, end: 3 }),
+            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 4, end: 9 }),
             frameRate: 2,
             repeat: -1
         });
 
         this.scene.anims.create({
             key: 'drinking',
-            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 4, end: 5 }),
+            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 10, end: 10 }),
             frameRate: 2,
             repeat: -1
         });
 
         this.scene.anims.create({
             key: 'ill',
-            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 6, end: 7 }),
+            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 11, end: 11 }),
+            frameRate: 2,
+            repeat: -1
+        });
+
+        this.scene.anims.create({
+            key: 'eating',
+            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 12, end: 12 }),
             frameRate: 2,
             repeat: -1
         });
 
         this.scene.anims.create({
             key: 'dead',
-            frames: [ { key: 'outside-cat', frame: 8 } ],
+            frames: [ { key: 'outside-cat', frame: 13 } ],
             frameRate: 2
-        });
-
-        this.scene.anims.create({
-            key: 'eating',
-            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 9, end: 10 }),
-            frameRate: 2,
-            repeat: -1
         });
     }
 

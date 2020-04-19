@@ -36,13 +36,13 @@ export default class OutsideView {
 
     private drawBorder = () => {
         const {x, y} = this.viewPositionToGamePosition(0.5, 0.5);
-        this.scene.add.rectangle(x, y, this.viewWidth, this.viewHeight, 0);
+        this.scene.add.rectangle(x, y, this.viewWidth, this.viewHeight, 0xFF696D);
     };
 
     private drawCat = () => {
         const {x, y} = this.viewPositionToGamePosition(0.5, 0.5);
         this.cat = new OutsideCat(this.scene, x, y);
-        this.cat.scale = (this.viewWidth * 0.5) / this.cat.displayWidth;
+        this.cat.scale = (this.viewWidth * 0.75) / this.cat.displayWidth;
     };
 
     private viewPositionToGamePosition = (x: number, y: number) => ({

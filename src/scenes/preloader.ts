@@ -98,7 +98,7 @@ export class Preloader extends SceneBase {
         );
         this.load.spritesheet('outside-cat',
             outsideCat,
-            { frameWidth: 100, frameHeight: 100 }
+            { frameWidth: 400, frameHeight: 320 }
         );
     }
 
