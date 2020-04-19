@@ -13,6 +13,8 @@ import { Water } from '../gameObjects/water';
 import { PlayerState, StateManager } from '../state/stateManager';
 import { Decision, CatStatus } from '../gameObjects/decision';
 import {Viruses} from '../gameObjects/viruses';
+import { Alarm } from '../gameObjects/alarm';
+import { WhiteBloodCell } from '../gameObjects/whiteBloodCell';
 
 export class Level extends SceneBase {
 
@@ -26,10 +28,12 @@ export class Level extends SceneBase {
     private stomach: Stomach;
     private foodBar: StatBar;
     private brain: Brain;
+    private alarm: Alarm;
     private plug: Plug;
     private water: Water;
     private fishes: Fishes;
     private viruses: Viruses;
+    private whiteBloodCell: WhiteBloodCell;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private outsideView: OutsideView;
     private spaceBarDown = false;
@@ -58,6 +62,7 @@ export class Level extends SceneBase {
         this.foodBar = new StatBar(this, 700, 120, 'Food');
 
         this.brain = new Brain(this, 240, 260, this.player);
+        this.alarm = new Alarm(this, 460, 260);
 
         this.water = new Water(this, catBackground);
         this.plug = new Plug(this, 200, 910);
@@ -65,12 +70,14 @@ export class Level extends SceneBase {
         this.physics.add.collider(this.player, this.heart);
         this.physics.add.collider(this.player, this.lungs);
         this.physics.add.collider(this.player, this.plug);
+        this.physics.add.collider(this.player, this.alarm);
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
 
         this.fishes = new Fishes(this, this.player, this.stomach);
         this.viruses = new Viruses(this, this.player, [this.player, this.externalPlayer]);
+        this.whiteBloodCell = new WhiteBloodCell(this, this.alarm.x, this.alarm.y, this.viruses);
     }
 
     update() {
@@ -122,10 +129,16 @@ export class Level extends SceneBase {
                 y: this.player.y
             }
         };
-        this.stateManager.viruses = this.viruses.updateVirusesMovement(
+        this.stateManager.viruses = this.viruses.getUpdatedGameState(
             this.stateManager.state.viruses,
             this.stateManager.state.speeds.virusBaseSpeed,
             this.stateManager.state.speeds.virusWaterSpeed,
+            this.water.YOfTheWaterLevel());
+        this.stateManager.whiteBloodCell = this.whiteBloodCell.getUpdatedGameState(
+            this.stateManager.state.whiteBloodCell,
+            this.stateManager.state.viruses,
+            this.stateManager.state.speeds.bloodCellsBaseSpeed,
+            this.stateManager.state.speeds.bloodCellsWaterSpeed,
             this.water.YOfTheWaterLevel());
     }
 
@@ -133,6 +146,7 @@ export class Level extends SceneBase {
         this.updateExternalPlayerFromState(this.stateManager.otherPlayer);
         this.fishes.update(this.stateManager.state.fishes, this.stateManager.state.gameTime);
         this.viruses.update(this.stateManager.state.viruses);
+        this.whiteBloodCell.update(this.stateManager.state.whiteBloodCell);
         this.healthBar.update(this.stateManager.state.heart);
         this.breatheBar.update(this.stateManager.state.lungs);
         this.water.update(this.stateManager.state.waterLevel);
@@ -170,6 +184,11 @@ export class Level extends SceneBase {
                 this.brain.tryPressButton();
             }
         }
+        if (this.bIsTouchingA(this.player, this.alarm)) {
+            if (!this.spaceBarDown) {
+                this.ringAlarm();
+            }
+        }
     }
 
     private beatHeart = () => {
@@ -191,6 +210,12 @@ export class Level extends SceneBase {
         }
         this.stateManager.handleEvent({
             type: 'DRAIN_PLUG'
+        });
+    };
+
+    private ringAlarm = () => {
+        this.stateManager.handleEvent({
+            type: 'RING_ALARM'
         });
     };
 

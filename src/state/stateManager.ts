@@ -7,6 +7,7 @@ export interface StateManager {
     myPlayer: PlayerState;
     otherPlayer: PlayerState;
     viruses: Virus[];
+    whiteBloodCell: WhiteBloodCellState;
     generateGloballyUniqueId: () => string;
 }
 
@@ -17,6 +18,7 @@ export interface GameState {
     peerPlayer: PlayerState;
     fishes: Fish[];
     viruses: Virus[];
+    whiteBloodCell: WhiteBloodCellState;
     heart: number;
     lungs: number;
     fullness: number;
@@ -39,6 +41,12 @@ export interface SpeedState {
     bloodCellsWaterSpeed: number;
 }
 
+export interface WhiteBloodCellState {
+    position: GameObjectPosition;
+    velocity: GameObjectVelocity;
+    enabled: boolean;
+}
+
 export interface GameObjectPosition {
     x: number;
     y: number;
@@ -58,7 +66,8 @@ export interface Virus {
     velocity: GameObjectVelocity;
 }
 
-export type StateChangeEvent = PumpLungs | BeatHeart | DigestFood | DrainPlug | PlaceFish | RemoveFish | PlaceVirus | SetCatStatus | SetPeerPlayerState;
+export type StateChangeEvent = PumpLungs | BeatHeart | DigestFood | DrainPlug | RingAlarm |
+    PlaceFish | RemoveFish | PlaceVirus | VirusDestroyed | SetCatStatus | SetPeerPlayerState;
 
 interface PumpLungs {
     type: 'PUMP_LUNGS';
@@ -74,6 +83,10 @@ interface DigestFood {
 
 interface DrainPlug {
     type: 'DRAIN_PLUG';
+}
+
+interface RingAlarm {
+    type: 'RING_ALARM';
 }
 
 interface PlaceFish {
@@ -99,6 +112,16 @@ interface PlaceVirus {
     position: GameObjectPosition;
 }
 
+interface VirusDestroyed {
+    type: 'VIRUS_DESTROYED';
+    id: string;
+}
+
+interface SetCatStatus {
+    type: 'SET_CAT_STATUS';
+    catStatus: CatStatus;
+}
+
 interface SetPeerPlayerState {
     type: 'SET_PEER_PLAYER_STATE';
     state: PlayerState;
@@ -120,11 +143,16 @@ export const INITIAL_STATE: GameState = {
         holdingFish: false
     },
     fishes: [],
-    viruses: [{
+    viruses: [{ // TODO remove this - just a test
         id: 'firstVirus',
         position: {x: 340, y: 340},
         velocity: {x: 0, y: 0}
     }],
+    whiteBloodCell: { // Set within the whiteBloodCell Sprite
+        position: {x: 0, y: 0},
+        velocity: {x: 0, y: 0},
+        enabled: false,
+    },
     heart: 100,
     lungs: 100,
     fullness: 100,

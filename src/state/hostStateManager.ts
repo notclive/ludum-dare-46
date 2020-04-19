@@ -1,5 +1,5 @@
 import {CatStatus} from '../gameObjects/decision';
-import {GameObjectPosition, INITIAL_STATE, PlayerState, StateChangeEvent, StateManager, Virus} from './stateManager';
+import {GameObjectPosition, INITIAL_STATE, PlayerState, StateChangeEvent, StateManager, Virus, WhiteBloodCellState} from './stateManager';
 import {DataConnection} from 'peerjs';
 import {multiPlayerConfig, singlePlayerConfig} from '../gameConfig';
 
@@ -65,6 +65,13 @@ export default class HostStateManager implements StateManager {
         };
     }
 
+    public set whiteBloodCell(whiteBloodCell: WhiteBloodCellState) {
+        this._state = {
+            ...this._state,
+            whiteBloodCell: whiteBloodCell
+        };
+    };
+
     public handleEvent = (event: StateChangeEvent) => {
         if (event.type === 'PUMP_LUNGS') {
             this.pumpLungs();
@@ -78,6 +85,9 @@ export default class HostStateManager implements StateManager {
         if (event.type === 'DRAIN_PLUG') {
             this.drainPlug();
         }
+        if (event.type === 'RING_ALARM') {
+            this.ringAlarm();
+        }
         if (event.type === 'PLACE_FISH') {
             this.placeFish(event.id, event.position, event.ticksUntilVisible);
         }
@@ -86,6 +96,9 @@ export default class HostStateManager implements StateManager {
         }
         if (event.type === 'PLACE_VIRUS') {
             this.placeVirus(event.id, event.position);
+        }
+        if (event.type === 'VIRUS_DESTROYED') {
+            this.virusDestroyed(event.id);
         }
         if (event.type === 'SET_PEER_PLAYER_STATE') {
             this.setPeerPlayerState(event.state);
@@ -120,6 +133,16 @@ export default class HostStateManager implements StateManager {
         this._state = {
             ...this._state,
             waterLevel: Math.max(this._state.waterLevel - this._gameConfig.waterLossPerTick, 0)
+        };
+    };
+
+    private ringAlarm = () => {
+        this._state = {
+            ...this._state,
+            whiteBloodCell: {
+                ...this._state.whiteBloodCell,
+                enabled: true,
+            }
         };
     };
 
@@ -162,6 +185,14 @@ export default class HostStateManager implements StateManager {
                     velocity: {x: 0, y: 0}
                 }
             ]
+        }
+    };
+
+    private virusDestroyed = (id: string) => {
+        const newViruses = this._state.viruses.filter(x => x.id !== id);
+        this._state = {
+            ...this._state,
+            viruses: newViruses,
         }
     };
 

@@ -5,7 +5,8 @@ import {
     StateChangeEvent,
     StateManager,
     PlayerState,
-    Virus
+    Virus,
+    WhiteBloodCellState
 } from './stateManager';
 import {DataConnection} from 'peerjs';
 
@@ -35,6 +36,10 @@ export default class PeerStateManager implements StateManager {
     };
 
     public set viruses(viruses: Virus[]) {
+        // Do nothing, handled by host
+    };
+
+    public set whiteBloodCell(whiteBloodCell: WhiteBloodCellState) {
         // Do nothing, handled by host
     };
 

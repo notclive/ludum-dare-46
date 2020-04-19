@@ -3,7 +3,7 @@ import Sprite = Phaser.Physics.Arcade.Sprite;
 import GameObject = Phaser.GameObjects.GameObject;
 import {Level} from '../scenes/level';
 import {Player} from './player';
-import {GameObjectPosition, Virus} from '../multiplayer/stateManager';
+import {GameObjectPosition, Virus} from '../state/stateManager';
 
 export class Viruses extends StaticGroup {
     public constructor(
@@ -32,13 +32,16 @@ export class Viruses extends StaticGroup {
             });
     };
 
-    public updateVirusesMovement = (viruses: Virus[], baseSpeed: number, waterSpeed: number, waterLevelY: number) => {
+    public getUpdatedGameState = (viruses: Virus[], baseSpeed: number, waterSpeed: number, waterLevelY: number) => {
         return this.getVirusSpritePair(viruses).map(({virus, sprite}) => {
             if (!sprite) {
                 return virus;
             }
             const speed = sprite.y >= waterLevelY ? waterSpeed : baseSpeed;
             const target = this.scene.physics.closest(sprite, this.targets) as Phaser.GameObjects.Sprite;
+            if (!target) {
+                return virus;
+            }
             const xDistance = target.x - sprite.x;
             const yDistance = target.y - sprite.y;
             const distance = Math.sqrt((xDistance * xDistance) + (yDistance * yDistance));
