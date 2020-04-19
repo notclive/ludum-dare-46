@@ -40,8 +40,8 @@ export class OutsideCat extends Phaser.Physics.Arcade.Sprite {
 
         this.scene.anims.create({
             key: 'ill',
-            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 21, end: 21 }),
-            frameRate: 2,
+            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 21, end: 23 }),
+            frameRate: 5,
             repeat: -1
         });
 
@@ -54,7 +54,7 @@ export class OutsideCat extends Phaser.Physics.Arcade.Sprite {
 
         this.scene.anims.create({
             key: 'dead',
-            frames: [ { key: 'outside-cat', frame: 21 } ],
+            frames: [ { key: 'outside-cat', frame: 24 } ],
             frameRate: 2
         });
     }
