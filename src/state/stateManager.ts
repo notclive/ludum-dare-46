@@ -64,6 +64,7 @@ export interface Virus {
     id: string;
     position: GameObjectPosition;
     velocity: GameObjectVelocity;
+    reproducesAt: number;
 }
 
 export type StateChangeEvent = PumpLungs | BeatHeart | DigestFood | DrainPlug | RingAlarm |
@@ -113,7 +114,7 @@ interface PlaceVirus {
 }
 
 interface VirusDestroyed {
-    type: 'VIRUS_DESTROYED';
+    type: 'DESTROY_VIRUS';
     id: string;
 }
 
@@ -146,7 +147,8 @@ export const INITIAL_STATE: GameState = {
     viruses: [{ // TODO remove this - just a test
         id: 'firstVirus',
         position: {x: 340, y: 340},
-        velocity: {x: 0, y: 0}
+        velocity: {x: 0, y: 0},
+        reproducesAt: 360,
     }],
     whiteBloodCell: { // Set within the whiteBloodCell Sprite
         position: {x: 0, y: 0},

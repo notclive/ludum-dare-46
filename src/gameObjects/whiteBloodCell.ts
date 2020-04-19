@@ -6,6 +6,8 @@ import {Virus, WhiteBloodCellState} from '../state/stateManager';
 import { Viruses } from './viruses';
 
 export class WhiteBloodCell extends Sprite {
+    private _isAttackingVirus = false;
+
     public constructor(
         public scene: Level,
         private initialX: number,
@@ -16,6 +18,7 @@ export class WhiteBloodCell extends Sprite {
 
         scene.physics.world.enable(this);
         scene.add.existing(this);
+        this.setDepth(1);
     }
 
     public update = (whiteBloodCellState: WhiteBloodCellState) => {
@@ -23,11 +26,19 @@ export class WhiteBloodCell extends Sprite {
         this.y = whiteBloodCellState.position.y;
         this.setVisible(whiteBloodCellState.enabled);
         const closestTarget = this.scene.physics.closest(this, this.targets.getChildren()) as Sprite;
-        if (closestTarget && this.scene.getDistanceBetweenBandACentres(this, closestTarget) < this.displayHeight) {
-            this.scene.stateManager.handleEvent({
-                type: 'VIRUS_DESTROYED',
-                id: closestTarget.name,
-            });
+        if (closestTarget
+            && this.scene.getDistanceBetweenBandACentres(this, closestTarget) < this.displayHeight
+            && !this._isAttackingVirus
+        ) {
+            // Use a timeout to give the impression that the white blood cells are taking time to kill the virus
+            this._isAttackingVirus = true;
+            setTimeout(() => {
+                this._isAttackingVirus = false;
+                this.scene.stateManager.handleEvent({
+                    type: 'DESTROY_VIRUS',
+                    id: closestTarget.name,
+                });
+            }, 1000);
         }
     };
 

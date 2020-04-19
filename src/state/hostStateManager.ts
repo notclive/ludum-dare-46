@@ -35,6 +35,7 @@ export default class HostStateManager implements StateManager {
             fullness: Math.max(this._state.fullness - this._gameConfig.foodLossPerTick, 0),
             waterLevel: Math.min(this._state.waterLevel + this._gameConfig.waterRisePerTick, 100)
         };
+        this.reproduceViruses();
         if (this.connection) {
             this.sendStateToPeer(this.connection)
         }
@@ -97,8 +98,8 @@ export default class HostStateManager implements StateManager {
         if (event.type === 'PLACE_VIRUS') {
             this.placeVirus(event.id, event.position);
         }
-        if (event.type === 'VIRUS_DESTROYED') {
-            this.virusDestroyed(event.id);
+        if (event.type === 'DESTROY_VIRUS') {
+            this.destroyVirus(event.id);
         }
         if (event.type === 'SET_PEER_PLAYER_STATE') {
             this.setPeerPlayerState(event.state);
@@ -182,18 +183,35 @@ export default class HostStateManager implements StateManager {
                 {
                     id,
                     position,
-                    velocity: {x: 0, y: 0}
+                    velocity: {x: 0, y: 0},
+                    reproducesAt: this._state.gameTime + this._gameConfig.ticksForVirusToReproduce,
                 }
             ]
         }
     };
 
-    private virusDestroyed = (id: string) => {
+    private destroyVirus = (id: string) => {
         const newViruses = this._state.viruses.filter(x => x.id !== id);
         this._state = {
             ...this._state,
             viruses: newViruses,
         }
+    };
+
+    private reproduceViruses = () => {
+        this._state.viruses.filter(virus => virus.reproducesAt === this._state.gameTime)
+            .forEach(virus => {
+                    this.handleEvent({
+                    type: 'PLACE_VIRUS',
+                    id: this.generateGloballyUniqueId(),
+                    position: {
+                        x: virus.position.x - (Math.random() * 100) - 50,
+                        y: virus.position.y - (Math.random() * 100) - 50
+                    },
+                });
+                // Make original virus reproduce again, a little later than the new one to stop batching.
+                virus.reproducesAt = this._state.gameTime + (this._gameConfig.ticksForVirusToReproduce * 1.7);
+            });
     };
 
     private setPeerPlayerState = (peerPlayer: PlayerState) => {

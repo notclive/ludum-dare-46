@@ -17,6 +17,8 @@ export interface GameConfig {
 
     bloodCellsBaseSpeed: number;
     bloodCellsWaterSpeed: number;
+
+    ticksForVirusToReproduce: number;
 }
 
 export const singlePlayerConfig: GameConfig = {
@@ -36,8 +38,10 @@ export const singlePlayerConfig: GameConfig = {
     virusBaseSpeed: 75,
     virusWaterSpeed: 50,
 
-    bloodCellsBaseSpeed: 100,
-    bloodCellsWaterSpeed: 80,
+    bloodCellsBaseSpeed: 65,
+    bloodCellsWaterSpeed: 45,
+
+    ticksForVirusToReproduce: 6 * 60, // 60FPS
 };
 
 export const multiPlayerConfig: GameConfig = {
@@ -57,6 +61,8 @@ export const multiPlayerConfig: GameConfig = {
     virusBaseSpeed: 75,
     virusWaterSpeed: 50,
 
-    bloodCellsBaseSpeed: 100,
-    bloodCellsWaterSpeed: 80,
+    bloodCellsBaseSpeed: 65,
+    bloodCellsWaterSpeed: 45,
+
+    ticksForVirusToReproduce: 5 * 60, // 60FPS
 };
