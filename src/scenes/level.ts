@@ -82,8 +82,8 @@ export class Level extends SceneBase {
         this.stateManager.tick();
 
         const walkingSpeed = this.player.y > this.water.YOfTheWaterLevel()
-            ? this.stateManager.state.waterWalkingSpeed
-            : this.stateManager.state.baseWalkingSpeed;
+            ? this.stateManager.state.speeds.waterWalkingSpeed
+            : this.stateManager.state.speeds.baseWalkingSpeed;
 
         this.player.update(walkingSpeed, this.cursors);
         this.updateStateFromGameObjects();
@@ -122,7 +122,11 @@ export class Level extends SceneBase {
                 y: this.player.y
             }
         };
-        this.stateManager.viruses = this.viruses.updateVirusesMovement(this.stateManager.state.viruses);
+        this.stateManager.viruses = this.viruses.updateVirusesMovement(
+            this.stateManager.state.viruses,
+            this.stateManager.state.speeds.virusBaseSpeed,
+            this.stateManager.state.speeds.virusWaterSpeed,
+            this.water.YOfTheWaterLevel());
     }
 
     private updateGameObjectsFromState() {

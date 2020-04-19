@@ -21,14 +21,22 @@ export interface GameState {
     lungs: number;
     fullness: number;
     waterLevel: number;
-    baseWalkingSpeed: number;
-    waterWalkingSpeed: number;
     catStatus: CatStatus;
+    speeds: SpeedState;
 }
 
 export interface PlayerState {
     position: GameObjectPosition;
     holdingFish: boolean;
+}
+
+export interface SpeedState {
+    baseWalkingSpeed: number;
+    waterWalkingSpeed: number;
+    virusBaseSpeed: number;
+    virusWaterSpeed: number;
+    bloodCellsBaseSpeed: number;
+    bloodCellsWaterSpeed: number;
 }
 
 export interface GameObjectPosition {
@@ -121,7 +129,14 @@ export const INITIAL_STATE: GameState = {
     lungs: 100,
     fullness: 100,
     waterLevel: 0,
-    baseWalkingSpeed: null, // Set by config in HostStateManager
-    waterWalkingSpeed: null, // Set by config in HostStateManager
     catStatus: CatStatus.Asleep,
+    // These are all set my the host using the config when the gameplay starts
+    speeds: {
+        baseWalkingSpeed: null,
+        waterWalkingSpeed: null,
+        virusBaseSpeed: null,
+        virusWaterSpeed: null,
+        bloodCellsBaseSpeed: null,
+        bloodCellsWaterSpeed: null,
+    },
 };

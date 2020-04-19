@@ -11,6 +11,12 @@ export interface GameConfig {
 
     baseWalkingSpeed: number;
     waterWalkingSpeed: number;
+
+    virusBaseSpeed: number;
+    virusWaterSpeed: number;
+
+    bloodCellsBaseSpeed: number;
+    bloodCellsWaterSpeed: number;
 }
 
 export const singlePlayerConfig: GameConfig = {
@@ -26,6 +32,12 @@ export const singlePlayerConfig: GameConfig = {
 
     baseWalkingSpeed: 160,
     waterWalkingSpeed: 80,
+
+    virusBaseSpeed: 75,
+    virusWaterSpeed: 50,
+
+    bloodCellsBaseSpeed: 100,
+    bloodCellsWaterSpeed: 80,
 };
 
 export const multiPlayerConfig: GameConfig = {
@@ -41,4 +53,10 @@ export const multiPlayerConfig: GameConfig = {
 
     baseWalkingSpeed: 140,
     waterWalkingSpeed: 70,
+
+    virusBaseSpeed: 75,
+    virusWaterSpeed: 50,
+
+    bloodCellsBaseSpeed: 100,
+    bloodCellsWaterSpeed: 80,
 };

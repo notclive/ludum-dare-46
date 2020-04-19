@@ -13,8 +13,12 @@ export default class HostStateManager implements StateManager {
             this._gameConfig = multiPlayerConfig;
             this.handleEventsFromPeer(this.connection);
         }
-        this._state.baseWalkingSpeed = this._gameConfig.baseWalkingSpeed;
-        this._state.waterWalkingSpeed = this._gameConfig.waterWalkingSpeed;
+        this._state.speeds.baseWalkingSpeed = this._gameConfig.baseWalkingSpeed;
+        this._state.speeds.waterWalkingSpeed = this._gameConfig.waterWalkingSpeed;
+        this._state.speeds.virusBaseSpeed = this._gameConfig.virusBaseSpeed;
+        this._state.speeds.virusWaterSpeed = this._gameConfig.virusWaterSpeed;
+        this._state.speeds.bloodCellsBaseSpeed = this._gameConfig.bloodCellsBaseSpeed;
+        this._state.speeds.bloodCellsWaterSpeed = this._gameConfig.bloodCellsWaterSpeed;
     }
 
     public get state() {

@@ -32,12 +32,12 @@ export class Viruses extends StaticGroup {
             });
     };
 
-    public updateVirusesMovement = (viruses: Virus[]) => {
-        const speed = 100;
+    public updateVirusesMovement = (viruses: Virus[], baseSpeed: number, waterSpeed: number, waterLevelY: number) => {
         return this.getVirusSpritePair(viruses).map(({virus, sprite}) => {
             if (!sprite) {
                 return virus;
             }
+            const speed = sprite.y >= waterLevelY ? waterSpeed : baseSpeed;
             const target = this.scene.physics.closest(sprite, this.targets) as Phaser.GameObjects.Sprite;
             const xDistance = target.x - sprite.x;
             const yDistance = target.y - sprite.y;
