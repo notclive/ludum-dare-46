@@ -1,8 +1,10 @@
 import * as Phaser from 'phaser';
 import {PHASER_STATIC_BODY} from '../consts';
+import {OrganShaker} from './OrganShaker';
 
 export class Plug extends Phaser.Physics.Arcade.Sprite {
 
+    private readonly shaker = new OrganShaker(this);
     private isPlugged = true;
 
     constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -24,6 +26,14 @@ export class Plug extends Phaser.Physics.Arcade.Sprite {
             repeat: -1
         });
         this.anims.play('plug-plugged', true);
+
+        // Organ shaker rotates around this point.
+        this.setOrigin(0.31, 0.81);
+    }
+
+    public update(waterLevel: number) {
+        // A water level of 50% is pretty problematic.
+        this.shaker.shakeIfUrgent(waterLevel * 2);
     }
 
     unplug = () => {

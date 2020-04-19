@@ -149,10 +149,14 @@ export class Level extends SceneBase {
     private updateGameObjectsFromState() {
         this.updateExternalPlayerFromState(this.stateManager.otherPlayer);
         this.fishes.update(this.stateManager.state.fishes, this.stateManager.state.gameTime);
+        this.alarm.update(this.stateManager.state.viruses);
         this.viruses.update(this.stateManager.state.viruses);
         this.whiteBloodCell.update(this.stateManager.state.whiteBloodCell);
+        this.heart.update(this.stateManager.state.heart);
         this.healthBar.update(this.stateManager.state.heart);
+        this.lungs.update(this.stateManager.state.lungs);
         this.breatheBar.update(this.stateManager.state.lungs);
+        this.plug.update(this.stateManager.state.waterLevel);
         this.water.update(this.stateManager.state.waterLevel);
         this.foodBar.update(this.stateManager.state.fullness);
         this.brain.update(this, this.stateManager.state.catStatus);
