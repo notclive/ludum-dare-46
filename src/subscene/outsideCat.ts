@@ -33,14 +33,14 @@ export class OutsideCat extends Phaser.Physics.Arcade.Sprite {
 
         this.scene.anims.create({
             key: 'drinking',
-            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 17, end: 17 }),
-            frameRate: 2,
+            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 17, end: 20 }),
+            frameRate: 3,
             repeat: -1
         });
 
         this.scene.anims.create({
             key: 'ill',
-            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 17, end: 17 }),
+            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 21, end: 21 }),
             frameRate: 2,
             repeat: -1
         });
@@ -54,7 +54,7 @@ export class OutsideCat extends Phaser.Physics.Arcade.Sprite {
 
         this.scene.anims.create({
             key: 'dead',
-            frames: [ { key: 'outside-cat', frame: 17 } ],
+            frames: [ { key: 'outside-cat', frame: 21 } ],
             frameRate: 2
         });
     }
