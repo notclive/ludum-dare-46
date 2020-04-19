@@ -19,7 +19,7 @@ export class Menu extends SceneBase {
 
         const multiplayer = this.add.text(0, 545, 'multiplayer', {fontSize: '30px', color: this.defaultTextColour});
         this.centreObjectX(multiplayer);
-        this.makeTextClickable(multiplayer, this.startMultiplayerGame);
+        this.makeTextClickable(multiplayer, this.startMultiplayerSetup);
     }
 
     private makeTextClickable = (text: Phaser.GameObjects.Text, onClick: () => void) => {
@@ -42,12 +42,10 @@ export class Menu extends SceneBase {
     };
 
     private startSingleplayerGame = () => {
-        console.log('Starting game...');
         this.scene.start('Level');
     };
 
-    private startMultiplayerGame = () => {
-        console.log('Starting game...');
-        this.scene.start('Level');
+    private startMultiplayerSetup = () => {
+        this.scene.start('MultiplayerSetup');
     };
 }

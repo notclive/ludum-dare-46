@@ -10,9 +10,3 @@ html, body {
     width: 100vw;
 }
 
-body {
-    /* Position game in center of page. */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}

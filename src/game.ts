@@ -3,6 +3,7 @@ import { Boot } from './scenes/boot';
 import { Preloader } from './scenes/preloader';
 import { Menu } from './scenes/menu';
 import { Level } from './scenes/level';
+import {MultiplayerSetup} from './scenes/multiplayerSetup';
 
 export class Game extends Phaser.Game {
 
@@ -22,11 +23,18 @@ export class Game extends Phaser.Game {
                     debug: true,
                 },
             },
+            // Parent and dom.createContainer allow HTML elements to be laid over the canvas.
+            // Used for game ID input when setting up multiplayer games.
+            parent: 'body',
+            dom: {
+                createContainer: true
+            },
         });
 
         this.scene.add('Boot', Boot);
         this.scene.add('Preloader', Preloader);
         this.scene.add('Menu', Menu);
+        this.scene.add('MultiplayerSetup', MultiplayerSetup);
         this.scene.add('Level', Level);
 
         // start
