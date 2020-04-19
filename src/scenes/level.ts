@@ -10,7 +10,7 @@ import { Brain } from '../gameObjects/brain';
 import { Stomach } from '../gameObjects/stomach';
 import { Plug } from '../gameObjects/plug';
 import { Water } from '../gameObjects/water';
-import { PlayerState, StateManager } from '../multiplayer/stateManager';
+import { PlayerState, StateManager } from '../state/stateManager';
 import { Decision, CatStatus } from '../gameObjects/decision';
 
 export class Level extends SceneBase {

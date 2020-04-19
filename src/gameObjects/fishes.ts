@@ -3,7 +3,7 @@ import Image = Phaser.GameObjects.Image;
 import GameObject = Phaser.GameObjects.GameObject;
 import {Level} from '../scenes/level';
 import {Player} from './player';
-import {Fish} from '../multiplayer/stateManager';
+import {Fish} from '../state/stateManager';
 import {Stomach} from './stomach';
 
 export default class Fishes extends StaticGroup {

@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import {SceneBase} from './sceneBase';
-import HostStateManager from '../multiplayer/hostStateManager';
+import HostStateManager from '../state/hostStateManager';
 
 export class Menu extends SceneBase {
 

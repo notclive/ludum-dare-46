@@ -1,10 +1,10 @@
 import * as Phaser from 'phaser';
 import {SceneBase} from './sceneBase';
 import * as PeerDefinition from 'peerjs';
-import PeerStateManager from '../multiplayer/peerStateManager';
-import HostStateManager from '../multiplayer/hostStateManager';
+import PeerStateManager from '../state/peerStateManager';
+import HostStateManager from '../state/hostStateManager';
 import {Level} from './level';
-import {StateManager} from '../multiplayer/stateManager';
+import {StateManager} from '../state/stateManager';
 import Text = Phaser.GameObjects.Text;
 // Module does not quite match Typescript definitions.
 const Peer = (PeerDefinition as any).default;
