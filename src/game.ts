@@ -11,8 +11,8 @@ export class Game extends Phaser.Game {
             type: Phaser.AUTO,
             backgroundColor: '#125555',
             scale: {
-                width: window.innerWidth,
-                height: window.innerHeight,
+                width: 1280,
+                height: 1024,
             },
             physics: {
                 default: 'arcade',
