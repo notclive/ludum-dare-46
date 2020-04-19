@@ -41,12 +41,8 @@ export class Level extends SceneBase {
 
         const leftGameWidth = this.gameWidth / 2;
 
-        const catBackground = this.add.image(0, 0, 'catBackground');
-        const catXPosition = (leftGameWidth / 2);
-        const catTopY = (this.gameHeight - catBackground.displayHeight) / 2;
-
-        catBackground.x = catXPosition;
-        catBackground.y = this.gameHeight / 2;
+        const catBackground = this.add.image(350, 510, 'catBackground');
+        catBackground.scale = 1.15;
 
         this.player = new Player(this, leftGameWidth / 2, this.gameHeight / 2);
         this.externalPlayer = this.add.sprite(0, 0, 'player2');
@@ -62,7 +58,7 @@ export class Level extends SceneBase {
 
         this.brain = new Brain(this, leftGameWidth / 2, this.gameHeight / 3, this.player);
 
-        this.water = new Water(this, catXPosition, catTopY + catBackground.displayHeight, catTopY);
+        this.water = new Water(this, catBackground);
         this.plug = new Plug(this, 3 * leftGameWidth / 8, (3 * this.gameHeight) / 4, this.water);
 
         this.physics.add.collider(this.player, this.heart);
