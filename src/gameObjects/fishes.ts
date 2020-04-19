@@ -17,10 +17,10 @@ export default class Fishes extends StaticGroup {
         this.handleFishKeyBeingPressed();
     }
 
-    public generateFishRegularlyForAWhile = () => {
+    public generateFishRegularlyForNSeconds = (durationInSeconds: number) => {
         // Not exact, but it doesn't matter.
         const ticksPerSecond = 60;
-        for (let delayInSeconds = 10; delayInSeconds < 50; delayInSeconds += 10) {
+        for (let delayInSeconds = 10; delayInSeconds <= durationInSeconds; delayInSeconds += 10) {
             this.scene.stateManager.handleEvent({
                 type: 'PLACE_FISH',
                 id: this.scene.stateManager.generateGloballyUniqueId(),

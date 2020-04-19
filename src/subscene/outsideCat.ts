@@ -50,6 +50,13 @@ export class OutsideCat extends Phaser.Physics.Arcade.Sprite {
             frames: [ { key: 'outside-cat', frame: 8 } ],
             frameRate: 2
         });
+
+        this.scene.anims.create({
+            key: 'eating',
+            frames: this.scene.anims.generateFrameNumbers('outside-cat', { start: 9, end: 10 }),
+            frameRate: 2,
+            repeat: -1
+        });
     }
 
     wakeUp = () => {
@@ -63,6 +70,13 @@ export class OutsideCat extends Phaser.Physics.Arcade.Sprite {
       if (this.status === CatStatus.Awake) {
         this.status = CatStatus.Drinking;
         this.anims.play('drinking', true);
+      }
+    }
+
+    eat = () => {
+      if (this.status !== CatStatus.Eating) {
+        this.status = CatStatus.Eating;
+        this.anims.play('eating', true);
       }
     }
 

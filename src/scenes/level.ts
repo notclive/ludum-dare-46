@@ -42,6 +42,9 @@ export class Level extends SceneBase {
     private spaceBarDown = false;
     private isInBrain: boolean;
 
+    private drinkingInterval: NodeJS.Timeout;
+    private drinkingTimeout: NodeJS.Timeout;
+
     create(stateManager: StateManager) {
         this._stateManager = stateManager;
         this.add.image(this.gameWidth / 2, this.gameHeight / 2, 'background');
@@ -241,16 +244,30 @@ export class Level extends SceneBase {
         const durationOfEachDrink = 3 * 1000;
         const timeBetweenDrinks = 10 * 1000;
 
-        setInterval(() => {
+        this.drinkingInterval = setInterval(() => {
             this.setCatStatus(CatStatus.Drinking);
-            setTimeout(() => {
+            this.drinkingTimeout = setTimeout(() => {
                 this.setCatStatus(CatStatus.Awake);
             }, durationOfEachDrink)
         }, timeBetweenDrinks)
     }
 
+    private clearDrinkTimeouts = () => {
+        clearInterval(this.drinkingInterval);
+        clearTimeout(this.drinkingTimeout);
+    }
+
     private eatFish = () => {
-        this.fishes.generateFishRegularlyForAWhile();
+        const generateFishDurationInSeconds = 40;
+
+        this.fishes.generateFishRegularlyForNSeconds(generateFishDurationInSeconds);
+        this.setCatStatus(CatStatus.Eating);
+
+        this.clearDrinkTimeouts();
+
+        setTimeout(() => {
+            this.wakeUp();
+        }, generateFishDurationInSeconds * 1000)
     }
 
     public mapCatStatusToDecision = (status: CatStatus) => {
