@@ -25,6 +25,7 @@ export interface GameState {
     waterLevel: number;
     catStatus: CatStatus;
     speeds: SpeedState;
+    organInteractionTimes: OrganInteractionTimes;
 }
 
 export interface PlayerState {
@@ -132,6 +133,10 @@ interface SetPeerPlayerState {
     state: PlayerState;
 }
 
+export interface OrganInteractionTimes {
+    plugUsed: number;
+}
+
 export const INITIAL_STATE: GameState = {
     gameOver: false,
     gameTime: 0,
@@ -173,4 +178,7 @@ export const INITIAL_STATE: GameState = {
         bloodCellsBaseSpeed: null,
         bloodCellsWaterSpeed: null,
     },
+    organInteractionTimes: {
+        plugUsed: null
+    }
 };

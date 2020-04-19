@@ -156,7 +156,7 @@ export class Level extends SceneBase {
         this.healthBar.update(this.stateManager.state.heart);
         this.lungs.update(this.stateManager.state.lungs);
         this.breatheBar.update(this.stateManager.state.lungs);
-        this.plug.update(this.stateManager.state.waterLevel);
+        this.plug.update(this.stateManager.state);
         this.water.update(this.stateManager.state.waterLevel);
         this.foodBar.update(this.stateManager.state.fullness);
         this.brain.update(this, this.stateManager.state.catStatus);
@@ -213,10 +213,6 @@ export class Level extends SceneBase {
     };
 
     private openPlug = () => {
-        if (this.plug.getIsPlugged()) {
-            this.cursors.space.once('up', () => this.plug.plug());
-            this.plug.unplug();
-        }
         this.stateManager.handleEvent({
             type: 'DRAIN_PLUG'
         });

@@ -148,7 +148,11 @@ export default class HostStateManager implements StateManager {
     private drainPlug = () => {
         this._state = {
             ...this._state,
-            waterLevel: Math.max(this._state.waterLevel - this._gameConfig.waterLossPerTick, 0)
+            waterLevel: Math.max(this._state.waterLevel - this._gameConfig.waterLossPerTick, 0),
+            organInteractionTimes: {
+                ...this._state.organInteractionTimes,
+                plugUsed: this._state.gameTime
+            }
         };
     };
 
