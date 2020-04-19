@@ -38,8 +38,6 @@ export class Level extends SceneBase {
     create() {
         this.add.image(this.gameWidth / 2, this.gameHeight / 2, 'background');
 
-        const leftGameWidth = this.gameWidth / 2;
-
         const catBackground = this.add.image(350, 510, 'catBackground');
         catBackground.scale = 1.15;
 
