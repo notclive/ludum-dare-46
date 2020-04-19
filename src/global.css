@@ -1,7 +1,20 @@
 html,
 body,
 canvas {
+    /* Game has fixed dimensions ensure the page is at least that big. */
+    min-width: 1280px;
+    min-height: 1024px;
     margin: 0 !important;
     padding: 0 !important;
-    overflow: hidden !important;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    /* Position game in center of page. */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
