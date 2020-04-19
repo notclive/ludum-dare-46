@@ -4,5 +4,6 @@ export enum CatStatus {
   Drinking,
   Eating,
   LickingSomething,
-  Ill
+  Ill,
+  Dead
 }

@@ -66,14 +66,6 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    setAvailableDecision(scene: Level, catStatus: CatStatus) {
-        console.log('setting decision');
-        scene.stateManager.handleEvent({
-            type: 'SET_CAT_STATUS',
-            catStatus: catStatus
-        });
-    }
-
     update(scene: Level, catStatus: CatStatus) {
         if (this.currentDecision?.catStatuses.includes(catStatus)){
             return;

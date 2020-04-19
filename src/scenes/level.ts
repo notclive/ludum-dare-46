@@ -229,8 +229,15 @@ export class Level extends SceneBase {
         return this._stateManager;
     }
 
+    private setCatStatus(catStatus: CatStatus) {
+        this.stateManager.handleEvent({
+            type: 'SET_CAT_STATUS',
+            catStatus: catStatus
+        });
+    }
+
     private wakeUp = () => {
-        this.brain.setAvailableDecision(this, CatStatus.Awake);
+        this.setCatStatus(CatStatus.Awake);
         this.drinkPeriodically();
     }
 
@@ -239,9 +246,9 @@ export class Level extends SceneBase {
         const timeBetweenDrinks = 10 * 1000;
 
         setInterval(() => {
-            this.brain.setAvailableDecision(this, CatStatus.Drinking);
+            this.setCatStatus(CatStatus.Drinking);
             setTimeout(() => {
-                this.brain.setAvailableDecision(this, CatStatus.Awake);
+                this.setCatStatus(CatStatus.Awake);
             }, durationOfEachDrink)
         }, timeBetweenDrinks)
     }
