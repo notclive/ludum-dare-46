@@ -10,12 +10,11 @@ export default class Fishes extends StaticGroup {
 
     public constructor(
         public scene: Level,
-        private x: number,
-        private y: number,
         private player: Player,
         private stomach: Stomach
     ) {
         super(scene.physics.world, scene);
+        this.generateFishRegularlyForAWhile()
         this.handleFishKeyBeingPressed();
     }
 
@@ -34,11 +33,11 @@ export default class Fishes extends StaticGroup {
 
     // Jitter is added so that multiple fish look like a pile rather than one fish.
     private generateFishCoordinates = () => {
+        const catMouthX = 340;
+        const catMouthY = 340;
         const xJitter = Math.random() * 40;
         const yJitter = Math.random() * 40;
-        const x = this.x + xJitter;
-        const y = this.y + yJitter;
-        return {x, y};
+        return {x: catMouthX + xJitter, y: catMouthY + yJitter};
     };
 
     private handleFishKeyBeingPressed = () => {

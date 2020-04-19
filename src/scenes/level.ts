@@ -46,7 +46,7 @@ export class Level extends SceneBase {
         // World bounds are rectangular so don't perfectly match catBackground.
         this.physics.world.setBounds(80, 150, 580, 830);
 
-        this.player = new Player(this, leftGameWidth / 2, this.gameHeight / 2);
+        this.player = new Player(this, 350, 610);
         this.externalPlayer = this.add.sprite(0, 0, 'player2');
 
         this.heart = new Heart(this, 420, 470);
@@ -70,7 +70,7 @@ export class Level extends SceneBase {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
 
-        this.fishes = new Fishes(this, leftGameWidth / 2, this.gameHeight / 2, this.player, this.stomach);
+        this.fishes = new Fishes(this, this.player, this.stomach);
 
         this.brain.setAvailableDecision(this, this.wakeOrNotDecision());
 
