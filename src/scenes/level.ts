@@ -12,6 +12,7 @@ import { Plug } from '../gameObjects/plug';
 import { Water } from '../gameObjects/water';
 import { PlayerState, StateManager } from '../state/stateManager';
 import { Decision, CatStatus } from '../gameObjects/decision';
+import {Viruses} from '../gameObjects/viruses';
 
 export class Level extends SceneBase {
 
@@ -28,6 +29,7 @@ export class Level extends SceneBase {
     private plug: Plug;
     private water: Water;
     private fishes: Fishes;
+    private viruses: Viruses;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private outsideView: OutsideView;
     private spaceBarDown = false;
@@ -44,7 +46,7 @@ export class Level extends SceneBase {
         this.physics.world.setBounds(80, 150, 580, 830);
 
         this.player = new Player(this, 350, 610);
-        this.externalPlayer = this.add.sprite(0, 0, 'player2');
+        this.externalPlayer = this.physics.add.sprite(0, 0, 'player2');
 
         this.heart = new Heart(this, 420, 470);
         this.healthBar = new StatBar(this, 700, 40, 'Blood');
@@ -68,6 +70,7 @@ export class Level extends SceneBase {
         this.outsideView = new OutsideView(this);
 
         this.fishes = new Fishes(this, this.player, this.stomach);
+        this.viruses = new Viruses(this, this.player, [this.player, this.externalPlayer]);
     }
 
     update() {
@@ -119,11 +122,13 @@ export class Level extends SceneBase {
                 y: this.player.y
             }
         };
+        this.stateManager.viruses = this.viruses.updateVirusesMovement(this.stateManager.state.viruses);
     }
 
     private updateGameObjectsFromState() {
         this.updateExternalPlayerFromState(this.stateManager.otherPlayer);
         this.fishes.update(this.stateManager.state.fishes, this.stateManager.state.gameTime);
+        this.viruses.update(this.stateManager.state.viruses);
         this.healthBar.update(this.stateManager.state.heart);
         this.breatheBar.update(this.stateManager.state.lungs);
         this.water.update(this.stateManager.state.waterLevel);

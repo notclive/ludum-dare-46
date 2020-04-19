@@ -1,5 +1,5 @@
 import {CatStatus} from '../gameObjects/decision';
-import {GameObjectPosition, INITIAL_STATE, PlayerState, StateChangeEvent, StateManager} from './stateManager';
+import {GameObjectPosition, INITIAL_STATE, PlayerState, StateChangeEvent, StateManager, Virus} from './stateManager';
 import {DataConnection} from 'peerjs';
 import {multiPlayerConfig, singlePlayerConfig} from '../gameConfig';
 
@@ -54,6 +54,13 @@ export default class HostStateManager implements StateManager {
         return this.state.peerPlayer;
     };
 
+    public set viruses(viruses: Virus[]) {
+        this._state = {
+            ...this._state,
+            viruses: viruses
+        };
+    }
+
     public handleEvent = (event: StateChangeEvent) => {
         if (event.type === 'PUMP_LUNGS') {
             this.pumpLungs();
@@ -72,6 +79,9 @@ export default class HostStateManager implements StateManager {
         }
         if (event.type === 'REMOVE_FISH') {
             this.removeFish(event.id);
+        }
+        if (event.type === 'PLACE_VIRUS') {
+            this.placeVirus(event.id, event.position);
         }
         if (event.type === 'SET_PEER_PLAYER_STATE') {
             this.setPeerPlayerState(event.state);
@@ -137,6 +147,20 @@ export default class HostStateManager implements StateManager {
         }
     }
 
+    private placeVirus = (id: string, position: GameObjectPosition) => {
+        this._state = {
+            ...this._state,
+            viruses: [
+                ...this._state.viruses,
+                {
+                    id,
+                    position,
+                    velocity: {x: 0, y: 0}
+                }
+            ]
+        }
+    };
+
     private setPeerPlayerState = (peerPlayer: PlayerState) => {
         this._state = {
             ...this._state,
@@ -151,5 +175,12 @@ export default class HostStateManager implements StateManager {
 
     private sendStateToPeer = (connection: DataConnection) => {
         connection.send(this.state);
+    };
+
+    public generateGloballyUniqueId = () => {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
     };
 }

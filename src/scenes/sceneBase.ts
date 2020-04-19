@@ -27,6 +27,12 @@ export class SceneBase extends Phaser.Scene {
         return Math.abs(a.x - b.x) <= xAllowableDistance && Math.abs(a.y - b.y) <= yAllowableDistance;
     }
 
+    public getDistanceBetweenBandACentres(a: MoveableGameObject, b: MoveableGameObject) {
+        const xDistance = Math.abs(a.x - b.x);
+        const yDistance = Math.abs(a.y - b.y);
+        return Math.sqrt((xDistance * xDistance) + (yDistance * yDistance));
+    }
+
     protected centreObjectX(object: MoveableGameObject) {
         object.x = (this.gameWidth / 2) - (object.displayWidth / 2);
     }

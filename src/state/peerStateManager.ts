@@ -4,7 +4,8 @@ import {
     GameObjectPosition,
     StateChangeEvent,
     StateManager,
-    PlayerState
+    PlayerState,
+    Virus
 } from './stateManager';
 import {DataConnection} from 'peerjs';
 
@@ -33,11 +34,22 @@ export default class PeerStateManager implements StateManager {
         return this.state.hostPlayer;
     };
 
+    public set viruses(viruses: Virus[]) {
+        // Do nothing, handled by host
+    };
+
     public handleEvent = (event: StateChangeEvent) => {
         this.connection.send(event);
     };
 
     public tick = () => {
         // Do nothing, the host manages game state.
+    };
+
+    public generateGloballyUniqueId = () => {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
     };
 }

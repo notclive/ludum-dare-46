@@ -23,7 +23,7 @@ export default class Fishes extends StaticGroup {
         for (let delayInSeconds = 10; delayInSeconds < 50; delayInSeconds += 10) {
             this.scene.stateManager.handleEvent({
                 type: 'PLACE_FISH',
-                id: this.generateGloballyUniqueFishId(),
+                id: this.scene.stateManager.generateGloballyUniqueId(),
                 position: this.generateFishCoordinates(),
                 ticksUntilVisible: ticksPerSecond * delayInSeconds
             });
@@ -75,19 +75,11 @@ export default class Fishes extends StaticGroup {
         } else {
             this.scene.stateManager.handleEvent({
                 type: 'PLACE_FISH',
-                id: this.generateGloballyUniqueFishId(),
+                id: this.scene.stateManager.generateGloballyUniqueId(),
                 position: {x: this.player.x, y: this.player.y},
                 ticksUntilVisible: 0
             });
         }
-    };
-
-    // Globally unique so that other players can generate fish.
-    private generateGloballyUniqueFishId = () => {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-            return v.toString(16);
-        });
     };
 
     public update = (fishes: Fish[], gameTime: number) => {
