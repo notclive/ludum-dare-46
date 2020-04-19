@@ -4,7 +4,8 @@ import * as Phaser from 'phaser';
 import { PHASER_STATIC_BODY } from '../consts';
 import { DecisionButton } from './decisionButton';
 import { Level } from '../scenes/level';
-import { Decision, CatStatus } from './decision';
+import { Decision } from './decision';
+import { CatStatus } from './catStatus';
 
 export class Brain extends Phaser.Physics.Arcade.Sprite {
     private decisionBox: DecisionBox;

@@ -12,10 +12,11 @@ import { Stomach } from '../gameObjects/stomach';
 import { Plug } from '../gameObjects/plug';
 import { Water } from '../gameObjects/water';
 import { PlayerState, StateManager } from '../state/stateManager';
-import { Decision, CatStatus } from '../gameObjects/decision';
+import { Decision } from '../gameObjects/decision';
 import {Viruses} from '../gameObjects/viruses';
 import { Alarm } from '../gameObjects/alarm';
 import { WhiteBloodCell } from '../gameObjects/whiteBloodCell';
+import { CatStatus } from '../gameObjects/catStatus';
 
 export class Level extends SceneBase {
 
@@ -280,7 +281,7 @@ export class Level extends SceneBase {
             },
 
             optionB: {
-                label: 'chill',
+                label: 'keep chillin\'',
                 action: null
             }
         },

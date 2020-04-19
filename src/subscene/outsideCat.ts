@@ -1,4 +1,4 @@
-import { CatStatus } from './../gameObjects/decision';
+import { CatStatus } from './../gameObjects/catStatus';
 import * as Phaser from 'phaser';
 import { Level } from '../scenes/level';
 

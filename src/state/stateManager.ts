@@ -1,4 +1,4 @@
-import { CatStatus } from './../gameObjects/decision';
+import { CatStatus } from './../gameObjects/catStatus';
 
 export interface StateManager {
     tick: () => void;

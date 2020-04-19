@@ -1,4 +1,4 @@
-import {CatStatus} from '../gameObjects/decision';
+import {CatStatus} from '../gameObjects/catStatus';
 import {GameObjectPosition, INITIAL_STATE, PlayerState, StateChangeEvent, StateManager, Virus, WhiteBloodCellState} from './stateManager';
 import {DataConnection} from 'peerjs';
 import {multiPlayerConfig, singlePlayerConfig} from '../gameConfig';
