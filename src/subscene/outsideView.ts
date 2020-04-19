@@ -21,6 +21,7 @@ export default class OutsideView {
         switch (status) {
             case CatStatus.Awake: this.cat.wakeUp(); break;
             case CatStatus.Drinking: this.cat.drink(); break;
+            case CatStatus.Dead: this.cat.die(); break;
         }
     }
 

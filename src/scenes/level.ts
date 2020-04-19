@@ -123,6 +123,7 @@ export class Level extends SceneBase {
 
     private endGame() {
         this.physics.pause();
+        this.outsideView.update(CatStatus.Dead);
         this.player.gameOver();
     }
 
