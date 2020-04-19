@@ -106,7 +106,7 @@ export default class Fishes extends StaticGroup {
     private drawNewFish = (fish: Fish) => {
         const image = new Image(this.scene, fish.position.x, fish.position.y, 'fish');
         image.name = fish.id;
-        image.scale = this.scene.gameWidth * 0.02 / image.displayWidth;
+        image.scale = this.scene.gameWidth * 0.03 / image.displayWidth;
         this.add(image);
         this.scene.add.existing(image);
     };
