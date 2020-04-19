@@ -153,12 +153,7 @@ export const INITIAL_STATE: GameState = {
         holdingFish: false
     },
     fishes: [],
-    viruses: [{ // TODO remove this - just a test
-        id: 'firstVirus',
-        position: {x: 340, y: 340},
-        velocity: {x: 0, y: 0},
-        reproducesAt: 360,
-    }],
+    viruses: [],
     whiteBloodCell: { // Set within the whiteBloodCell Sprite
         position: {x: 0, y: 0},
         velocity: {x: 0, y: 0},

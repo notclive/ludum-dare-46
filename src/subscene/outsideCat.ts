@@ -80,6 +80,13 @@ export class OutsideCat extends Phaser.Physics.Arcade.Sprite {
       }
     }
 
+    becomeIll = () => {
+      if (this.status !== CatStatus.Ill) {
+        this.status = CatStatus.Ill;
+        this.anims.play('ill', true);
+      }
+    }
+
     die = () => {
       this.status = CatStatus.Dead;
       this.anims.play('dead', true);

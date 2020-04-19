@@ -22,6 +22,7 @@ export default class OutsideView {
             case CatStatus.Awake: this.cat.wakeUp(); break;
             case CatStatus.Drinking: this.cat.drink(); break;
             case CatStatus.Eating: this.cat.eat(); break;
+            case CatStatus.Ill: this.cat.becomeIll(); break;
             case CatStatus.Dead: this.cat.die(); break;
         }
     }

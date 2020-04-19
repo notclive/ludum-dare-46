@@ -215,6 +215,13 @@ export default class HostStateManager implements StateManager {
             ...this._state,
             viruses: newViruses,
         }
+        
+        if (newViruses.length === 0) {
+            this.handleEvent({
+                type: 'SET_CAT_STATUS',
+                catStatus: CatStatus.Awake
+            });
+        }
     };
 
     private reproduceViruses = () => {

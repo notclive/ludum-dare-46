@@ -44,6 +44,7 @@ export class Level extends SceneBase {
 
     private drinkingInterval: NodeJS.Timeout;
     private drinkingTimeout: NodeJS.Timeout;
+    private illnessInterval: NodeJS.Timeout;
 
     create(stateManager: StateManager) {
         this._stateManager = stateManager;
@@ -229,6 +230,10 @@ export class Level extends SceneBase {
     }
 
     private setCatStatus(catStatus: CatStatus) {
+        if (![CatStatus.Awake, CatStatus.Drinking].includes(catStatus)) {
+            this.clearDrinkTimeouts();
+        }
+
         this.stateManager.handleEvent({
             type: 'SET_CAT_STATUS',
             catStatus: catStatus
@@ -238,6 +243,17 @@ export class Level extends SceneBase {
     private wakeUp = () => {
         this.setCatStatus(CatStatus.Awake);
         this.drinkPeriodically();
+
+        if (!this.illnessInterval) {
+            this.illnessInterval = setInterval(() => {
+                this.becomeIll();
+            }, 60 * 1000);
+        }
+    }
+
+    private becomeIll = () => {
+        this.setCatStatus(CatStatus.Ill);
+        this.viruses.createNewVirus();
     }
 
     private drinkPeriodically = () => {
@@ -262,8 +278,6 @@ export class Level extends SceneBase {
 
         this.fishes.generateFishRegularlyForNSeconds(generateFishDurationInSeconds);
         this.setCatStatus(CatStatus.Eating);
-
-        this.clearDrinkTimeouts();
 
         setTimeout(() => {
             this.wakeUp();
