@@ -1,3 +1,5 @@
+import { CatStatus } from './../gameObjects/decision';
+
 export interface StateManager {
     tick: () => void;
     state: GameState;
@@ -18,6 +20,7 @@ export interface GameState {
     waterLevel: number;
     baseWalkingSpeed: number;
     waterWalkingSpeed: number;
+    catStatus: CatStatus;
 }
 
 export interface PlayerState {
@@ -36,7 +39,8 @@ export interface Fish {
     position: GameObjectPosition;
 }
 
-export type StateChangeEvent = PumpLungs | BeatHeart | DigestFood | DrainPlug | PlaceFish | RemoveFish | SetPeerPlayerState;
+export type StateChangeEvent = PumpLungs | BeatHeart | DigestFood | DrainPlug | PlaceFish | RemoveFish | SetCatStatus
+ | SetPeerPlayerState;
 
 interface PumpLungs {
     type: 'PUMP_LUNGS';
@@ -66,6 +70,11 @@ interface RemoveFish {
     id: string;
 }
 
+interface SetCatStatus {
+    type: 'SET_CAT_STATUS';
+    catStatus: CatStatus;
+}
+
 interface SetPeerPlayerState {
     type: 'SET_PEER_PLAYER_STATE';
     state: PlayerState;
@@ -93,4 +102,5 @@ export const INITIAL_STATE: GameState = {
     waterLevel: 0,
     baseWalkingSpeed: null, // Set by config in HostStateManager
     waterWalkingSpeed: null, // Set by config in HostStateManager
+    catStatus: CatStatus.Asleep,
 };

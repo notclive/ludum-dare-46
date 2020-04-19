@@ -1,19 +1,19 @@
 import * as Phaser from 'phaser';
-import {SceneBase} from './sceneBase';
-import {Player} from '../gameObjects/player';
-import {Heart} from '../gameObjects/heart';
-import {StatBar} from '../gameObjects/statBar';
-import {Lungs} from '../gameObjects/lungs';
+import { SceneBase } from './sceneBase';
+import { Player } from '../gameObjects/player';
+import { Heart } from '../gameObjects/heart';
+import { StatBar } from '../gameObjects/statBar';
+import { Lungs } from '../gameObjects/lungs';
 import OutsideView from '../subscene/outsideView';
 import Fishes from '../gameObjects/fishes';
-import {Brain} from '../gameObjects/brain';
-import {Stomach} from '../gameObjects/stomach';
-import {Plug} from '../gameObjects/plug';
-import {Water} from '../gameObjects/water';
-import {PlayerState, StateManager} from '../multiplayer/stateManager';
-import {listenForMultiplayerHotkeys} from '../multiplayer/multiplayer';
+import { Brain } from '../gameObjects/brain';
+import { Stomach } from '../gameObjects/stomach';
+import { Plug } from '../gameObjects/plug';
+import { Water } from '../gameObjects/water';
+import { PlayerState, StateManager } from '../multiplayer/stateManager';
+import { listenForMultiplayerHotkeys } from '../multiplayer/multiplayer';
 import HostStateManager from '../multiplayer/hostStateManager';
-import {Decision} from '../gameObjects/decision';
+import { Decision, CatStatus } from '../gameObjects/decision';
 
 export class Level extends SceneBase {
 
@@ -69,9 +69,6 @@ export class Level extends SceneBase {
         this.outsideView = new OutsideView(this);
 
         this.fishes = new Fishes(this, this.player, this.stomach);
-
-        this.brain.setAvailableDecision(this, this.wakeOrNotDecision());
-
         listenForMultiplayerHotkeys(this);
     }
 
@@ -133,6 +130,7 @@ export class Level extends SceneBase {
         this.breatheBar.update(this.stateManager.state.lungs);
         this.water.update(this.stateManager.state.waterLevel);
         this.foodBar.update(this.stateManager.state.fullness);
+        this.brain.update(this, this.stateManager.state.catStatus);
     }
 
     private updateExternalPlayerFromState(otherPlayer: PlayerState) {
@@ -197,22 +195,25 @@ export class Level extends SceneBase {
         this._stateManager = stateManager;
     }
 
-    private fishOrNotDecision(): Decision {
-        return {
-            optionA: {
-                label: 'eat some fish',
-                action: this.fishes.generateFishRegularlyForAWhile
-            },
-
-            optionB: {
-                label: 'go back to sleep',
-                action: this.goToSleep
-            }
-        }
+    private wakeUp = () => {
+        this.brain.setAvailableDecision(this, CatStatus.Awake);
     }
 
-    private wakeOrNotDecision(): Decision {
-        return {
+    private goToSleep = () => {
+        this.brain.setAvailableDecision(this, CatStatus.Asleep);
+    }
+
+    private catchFish = () => {
+        this.fishes.generateFishRegularlyForAWhile();
+    }
+
+    public mapCatStatusToDecision = (status: CatStatus) => {
+        return this.decisions.find(d => d.catStatus === status);
+    }
+
+    private decisions: Decision[] = [
+        {
+            catStatus: CatStatus.Asleep,
             optionA: {
                 label: 'wake up',
                 action: this.wakeUp
@@ -222,14 +223,18 @@ export class Level extends SceneBase {
                 label: 'nahhh',
                 action: null
             }
-        }
-    }
+        },
+        {
+            catStatus: CatStatus.Awake,
+            optionA: {
+                label: 'eat some fish',
+                action: this.catchFish
+            },
 
-    private wakeUp = () => {
-        this.brain.setAvailableDecision(this, this.fishOrNotDecision());
-    }
-
-    private goToSleep = () => {
-        this.brain.setAvailableDecision(this, this.wakeOrNotDecision());
-    }
+            optionB: {
+                label: 'go back to sleep',
+                action: this.goToSleep
+            }
+        },
+    ]
 }

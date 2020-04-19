@@ -1,6 +1,8 @@
+import { CatStatus } from './../gameObjects/decision';
 import {INITIAL_STATE, GameObjectPosition, StateChangeEvent, StateManager, PlayerState} from './stateManager';
 import {DataConnection} from 'peerjs';
 import { singlePlayerConfig } from '../gameConfig';
+import { Decision } from '../gameObjects/decision';
 
 export default class HostStateManager implements StateManager {
     private _gameConfig = singlePlayerConfig;
@@ -73,6 +75,9 @@ export default class HostStateManager implements StateManager {
         if (event.type === 'SET_PEER_PLAYER_STATE') {
             this.setPeerPlayerState(event.state);
         }
+        if (event.type === 'SET_CAT_STATUS') {
+            this.setCatStatus(event.catStatus);
+        }
     };
 
     private pumpLungs = () => {
@@ -123,6 +128,13 @@ export default class HostStateManager implements StateManager {
             fishes: this._state.fishes.filter(fish => fish.id !== fishId)
         };
     };
+
+    private setCatStatus = (catStatus: CatStatus) => {
+        this._state = {
+            ...this._state,
+            catStatus: catStatus
+        }
+    }
 
     private setPeerPlayerState = (peerPlayer: PlayerState) => {
         this._state = {

@@ -4,6 +4,12 @@ type Option = {
 }
 
 export type Decision = {
+  catStatus: CatStatus,
   optionA: Option,
   optionB: Option,
+}
+
+export enum CatStatus {
+  Asleep,
+  Awake
 }

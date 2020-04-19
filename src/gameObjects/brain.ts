@@ -4,14 +4,13 @@ import * as Phaser from 'phaser';
 import { PHASER_STATIC_BODY } from '../consts';
 import { DecisionButton } from './decisionButton';
 import { Level } from '../scenes/level';
-import { Decision } from './decision';
+import { Decision, CatStatus } from './decision';
 
 export class Brain extends Phaser.Physics.Arcade.Sprite {
     private decisionBox: DecisionBox;
     private buttonA: DecisionButton;
     private buttonB: DecisionButton;
     private currentDecision: Decision;
-
     private decisionIsVisible: boolean;
 
     playerIsOverlapping: boolean;
@@ -66,15 +65,26 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    setAvailableDecision(scene: Level, decision: Decision) {
-        this.currentDecision = decision;
+    setAvailableDecision(scene: Level, catStatus: CatStatus) {
+        console.log('setting decision');
+        scene.stateManager.handleEvent({
+            type: 'SET_CAT_STATUS',
+            catStatus: catStatus
+        });
+    }
+
+    update(scene: Level, catStatus: CatStatus) {
+        if (this.currentDecision?.catStatus === catStatus){
+            return;
+        }
+        this.currentDecision = scene.mapCatStatusToDecision(catStatus);
 
         //TODO: Not sure how to destroy these things, rather than just hide them.
         this.decisionBox?.hide();
         this.buttonA?.hide();
         this.buttonB?.hide();
 
-        this.decisionBox = new DecisionBox(scene, this.x, 20, decision);
+        this.decisionBox = new DecisionBox(scene, this.x, 20, this.currentDecision);
         this.buttonA = new DecisionButton(scene, this.x - 30, this.y, 'buttonA');
         this.buttonB = new DecisionButton(scene, this.x + 30, this.y - 30, 'buttonB');
     }
