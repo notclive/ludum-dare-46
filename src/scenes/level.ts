@@ -152,6 +152,7 @@ export class Level extends SceneBase {
         this.water.update(this.stateManager.state.waterLevel);
         this.foodBar.update(this.stateManager.state.fullness);
         this.brain.update(this, this.stateManager.state.catStatus);
+        this.outsideView.update(this.stateManager.state.catStatus);
     }
 
     private updateExternalPlayerFromState(otherPlayer: PlayerState) {
@@ -225,23 +226,32 @@ export class Level extends SceneBase {
 
     private wakeUp = () => {
         this.brain.setAvailableDecision(this, CatStatus.Awake);
+        this.drinkPeriodically();
     }
 
-    private goToSleep = () => {
-        this.brain.setAvailableDecision(this, CatStatus.Asleep);
+    private drinkPeriodically = () => {
+        const durationOfEachDrink = 3 * 1000;
+        const timeBetweenDrinks = 10 * 1000;
+
+        setInterval(() => {
+            this.brain.setAvailableDecision(this, CatStatus.Drinking);
+            setTimeout(() => {
+                this.brain.setAvailableDecision(this, CatStatus.Awake);
+            }, durationOfEachDrink)
+        }, timeBetweenDrinks)
     }
 
-    private catchFish = () => {
+    private eatFish = () => {
         this.fishes.generateFishRegularlyForAWhile();
     }
 
     public mapCatStatusToDecision = (status: CatStatus) => {
-        return this.decisions.find(d => d.catStatus === status);
+        return this.decisions.find(d => d.catStatuses.includes(status));
     }
 
     private decisions: Decision[] = [
         {
-            catStatus: CatStatus.Asleep,
+            catStatuses: [CatStatus.Asleep],
             optionA: {
                 label: 'wake up',
                 action: this.wakeUp
@@ -253,15 +263,21 @@ export class Level extends SceneBase {
             }
         },
         {
-            catStatus: CatStatus.Awake,
+            catStatuses: [
+                CatStatus.Awake,
+                CatStatus.Drinking,
+                CatStatus.Eating,
+                CatStatus.LickingSomething,
+                CatStatus.Ill,
+            ],
             optionA: {
                 label: 'eat some fish',
-                action: this.catchFish
+                action: this.eatFish
             },
 
             optionB: {
-                label: 'go back to sleep',
-                action: this.goToSleep
+                label: 'chill',
+                action: null
             }
         },
     ];

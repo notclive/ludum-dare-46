@@ -74,7 +74,7 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(scene: Level, catStatus: CatStatus) {
-        if (this.currentDecision?.catStatus === catStatus){
+        if (this.currentDecision?.catStatuses.includes(catStatus)){
             return;
         }
         this.currentDecision = scene.mapCatStatusToDecision(catStatus);

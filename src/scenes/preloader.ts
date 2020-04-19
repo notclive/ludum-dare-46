@@ -15,7 +15,7 @@ import player1 from '../assets/players/player1.png';
 import player2 from '../assets/players/player2.png';
 import player1WithFish from '../assets/players/player1-with-fish.png';
 import player2WithFish from '../assets/players/player2-with-fish.png';
-import cat from '../assets/outsideView/cat.webp';
+import outsideCat from '../assets/outsideView/outside-cat.png';
 import catBackground from '../assets/cat-main.png';
 import wall from '../assets/wall.png';
 
@@ -43,13 +43,13 @@ export class Preloader extends SceneBase {
         this.load.image('stomach', stomach);
         this.load.image('water', water);
         this.load.image('fish', fish);
-        this.load.image('cat', cat);
         this.load.image('catBackground', catBackground);
         this.load.image('virus', virus);
         this.load.image('whiteBloodCell', whiteBloodCell);
         this.load.image('alarm', alarm);
 
         this.load.image('wall', wall);
+
         this.load.spritesheet('player1',
             player1,
             { frameWidth: 39, frameHeight: 50 }
@@ -82,6 +82,11 @@ export class Preloader extends SceneBase {
             cork,
             { frameWidth: 76, frameHeight: 65 }
         );
+        this.load.spritesheet('outside-cat',
+            outsideCat,
+            { frameWidth: 100, frameHeight: 100 }
+        );
+
         this.setupBackground();
     }
 

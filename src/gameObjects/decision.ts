@@ -4,12 +4,16 @@ type Option = {
 }
 
 export type Decision = {
-  catStatus: CatStatus,
+  catStatuses: CatStatus[],
   optionA: Option,
   optionB: Option,
 }
 
 export enum CatStatus {
   Asleep,
-  Awake
+  Awake,
+  Drinking,
+  Eating,
+  LickingSomething,
+  Ill
 }

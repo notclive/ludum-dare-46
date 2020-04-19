@@ -1,3 +1,5 @@
+import { CatStatus } from './../gameObjects/decision';
+import { OutsideCat } from './outsideCat';
 import {Level} from '../scenes/level';
 
 export default class OutsideView {
@@ -7,10 +9,19 @@ export default class OutsideView {
     private viewTopLeftX: number;
     private viewTopLeftY: number;
 
+    private cat: OutsideCat;
+
     public constructor(private scene: Level) {
         this.calculateBounds();
         this.drawBorder();
         this.drawCat();
+    }
+
+    update(status: CatStatus) {
+        switch (status) {
+            case CatStatus.Awake: this.cat.wakeUp(); break;
+            case CatStatus.Drinking: this.cat.drink(); break;
+        }
     }
 
     // Outside view takes up 40% of height and width of game, and is positioned in bottom right corner.
@@ -28,8 +39,8 @@ export default class OutsideView {
 
     private drawCat = () => {
         const {x, y} = this.viewPositionToGamePosition(0.5, 0.5);
-        let catImage = this.scene.add.image(x, y, 'cat');
-        catImage.scale = (this.viewWidth * 0.5) / catImage.displayWidth;
+        this.cat = new OutsideCat(this.scene, x, y);
+        this.cat.scale = (this.viewWidth * 0.5) / this.cat.displayWidth;
     };
 
     private viewPositionToGamePosition = (x: number, y: number) => ({
