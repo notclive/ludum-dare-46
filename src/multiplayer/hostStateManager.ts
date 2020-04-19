@@ -1,15 +1,16 @@
-import { CatStatus } from './../gameObjects/decision';
-import {INITIAL_STATE, GameObjectPosition, StateChangeEvent, StateManager, PlayerState} from './stateManager';
+import {CatStatus} from '../gameObjects/decision';
+import {GameObjectPosition, INITIAL_STATE, PlayerState, StateChangeEvent, StateManager} from './stateManager';
 import {DataConnection} from 'peerjs';
-import { singlePlayerConfig } from '../gameConfig';
-import { Decision } from '../gameObjects/decision';
+import {multiPlayerConfig, singlePlayerConfig} from '../gameConfig';
 
 export default class HostStateManager implements StateManager {
+
     private _gameConfig = singlePlayerConfig;
     private _state = INITIAL_STATE;
 
     public constructor(private connection?: DataConnection) {
         if (this.connection) {
+            this._gameConfig = multiPlayerConfig;
             this.handleEventsFromPeer(this.connection);
         }
         this._state.baseWalkingSpeed = this._gameConfig.baseWalkingSpeed;

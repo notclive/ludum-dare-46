@@ -11,13 +11,11 @@ import { Stomach } from '../gameObjects/stomach';
 import { Plug } from '../gameObjects/plug';
 import { Water } from '../gameObjects/water';
 import { PlayerState, StateManager } from '../multiplayer/stateManager';
-import { listenForMultiplayerHotkeys } from '../multiplayer/multiplayer';
-import HostStateManager from '../multiplayer/hostStateManager';
 import { Decision, CatStatus } from '../gameObjects/decision';
 
 export class Level extends SceneBase {
 
-    private _stateManager: StateManager = new HostStateManager();
+    private _stateManager: StateManager;
     private player: Player;
     private externalPlayer: Phaser.GameObjects.Sprite;
     private heart: Heart;
@@ -35,7 +33,8 @@ export class Level extends SceneBase {
     private spaceBarDown = false;
     private isInBrain: boolean;
 
-    create() {
+    create(stateManager: StateManager) {
+        this._stateManager = stateManager;
         this.add.image(this.gameWidth / 2, this.gameHeight / 2, 'background');
 
         const catBackground = this.add.image(350, 510, 'catBackground');
@@ -69,7 +68,6 @@ export class Level extends SceneBase {
         this.outsideView = new OutsideView(this);
 
         this.fishes = new Fishes(this, this.player, this.stomach);
-        listenForMultiplayerHotkeys(this);
     }
 
     update() {
@@ -191,10 +189,6 @@ export class Level extends SceneBase {
         return this._stateManager;
     }
 
-    public set stateManager(stateManager) {
-        this._stateManager = stateManager;
-    }
-
     private wakeUp = () => {
         this.brain.setAvailableDecision(this, CatStatus.Awake);
     }
@@ -236,5 +230,5 @@ export class Level extends SceneBase {
                 action: this.goToSleep
             }
         },
-    ]
+    ];
 }

@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import {SceneBase} from './sceneBase';
+import HostStateManager from '../multiplayer/hostStateManager';
 
 export class Menu extends SceneBase {
 
@@ -42,7 +43,7 @@ export class Menu extends SceneBase {
     };
 
     private startSingleplayerGame = () => {
-        this.scene.start('Level');
+        this.scene.start('Level', new HostStateManager());
     };
 
     private startMultiplayerSetup = () => {
