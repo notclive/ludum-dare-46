@@ -15,7 +15,7 @@ export class GameOver extends SceneBase {
         const title = this.add.text(0, 150, 'game over', {fontSize: '50px', color: BUTTON_BACKGROUND_COLOUR});
         this.centreObjectX(title);
 
-        const deadCat = this.add.image(640, 325, 'outside-cat', 8);
+        const deadCat = this.add.image(640, 250, 'outside-cat', 24);
         deadCat.scale = 1.5;
 
         const yourScore = this.add.text(0, 460, `your scored ${stateManager.state.gameTime} points`, {fontSize: '30px', color: BUTTON_BACKGROUND_COLOUR});
