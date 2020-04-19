@@ -18,3 +18,23 @@ Run `npm run dev`, the game will be available at http://localhost:8080.
 3. Push the committed `dist` directory to the `gh-pages` branch using `git subtree push --prefix dist origin gh-pages`.
 
 The game will be available at https://notclive.github.io/ludum-dare-46.
+
+#### Conflict during deployment
+
+You may get the following message if a different branch has been deployed to gh-pages
+
+```
+$ git subtree push --prefix dist origin gh-pages
+git push using:  origin gh-pages
+To https://github.com/notclive/ludum-dare-46.git
+ ! [rejected]        5e8628c3702c5d6758e0655a0eb980c61b7a66aa -> gh-pages (non-fast-forward)
+error: failed to push some refs to 'https://github.com/notclive/ludum-dare-46.git'
+hint: Updates were rejected because a pushed branch tip is behind its remote
+hint: counterpart. Check out this branch and integrate the remote changes
+hint: (e.g. 'git pull ...') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+```
+
+Resolve this with
+`git push origin 5e8628c3702c5d6758e0655a0eb980c61b7a66aa:gh-pages --force`
+using the SHA1 from the error message.
