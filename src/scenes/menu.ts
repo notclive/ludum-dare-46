@@ -35,7 +35,10 @@ export class Menu extends SceneBase {
             this.game.canvas.style.cursor = 'default';
         });
 
-        text.on('pointerdown', onClick);
+        text.on('pointerdown', () => {
+            this.game.canvas.style.cursor = 'default';
+            onClick();
+        });
     };
 
     private startSingleplayerGame = () => {
