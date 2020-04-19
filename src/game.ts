@@ -13,6 +13,7 @@ export class Game extends Phaser.Game {
             scale: {
                 width: 1280,
                 height: 1024,
+                mode: Phaser.Scale.FIT,
             },
             physics: {
                 default: 'arcade',

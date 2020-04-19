@@ -1,15 +1,13 @@
 html,
 body,
 canvas {
-    /* Game has fixed dimensions ensure the page is at least that big. */
-    min-width: 1280px;
-    min-height: 1024px;
     margin: 0 !important;
     padding: 0 !important;
 }
 
 html, body {
-    height: 100%;
+    height: 100vh;
+    width: 100vw;
 }
 
 body {
