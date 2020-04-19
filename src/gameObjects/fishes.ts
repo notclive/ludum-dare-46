@@ -14,7 +14,6 @@ export default class Fishes extends StaticGroup {
         private stomach: Stomach
     ) {
         super(scene.physics.world, scene);
-        this.generateFishRegularlyForAWhile()
         this.handleFishKeyBeingPressed();
     }
 
