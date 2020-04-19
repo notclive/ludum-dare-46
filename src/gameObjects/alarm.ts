@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
-import { PHASER_STATIC_BODY } from '../consts';
+import {PHASER_STATIC_BODY} from '../consts';
 import {OrganShaker} from './OrganShaker';
-import {Virus} from '../state/stateManager';
+import {GameState, Virus} from '../state/stateManager';
 
 export class Alarm extends Phaser.Physics.Arcade.Sprite {
 
@@ -14,7 +14,8 @@ export class Alarm extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
     }
 
-    public update(viruses: Virus[]) {
-        this.shaker.shakeIfUrgent(viruses.length * 40)
+    public update({viruses, whiteBloodCell}: GameState) {
+        const urgency = whiteBloodCell.enabled ? 0 : viruses.length * 40;
+        this.shaker.shakeIfUrgent(urgency);
     }
 }
