@@ -1,11 +1,11 @@
 import * as Phaser from 'phaser';
-import { PHASER_STATIC_BODY } from '../consts';
-import { Water } from './water';
+import {PHASER_STATIC_BODY} from '../consts';
 
 export class Plug extends Phaser.Physics.Arcade.Sprite {
+
     private isPlugged = true;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, private water: Water) {
+    constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'plug');
 
         scene.physics.world.enable(this, PHASER_STATIC_BODY);
@@ -34,10 +34,6 @@ export class Plug extends Phaser.Physics.Arcade.Sprite {
     plug = () => {
         this.isPlugged = true;
         this.anims.play('plug-plugged', true);
-    };
-
-    update = (waterLevel: number) => {
-        this.water.update(waterLevel);
     };
 
     getIsPlugged = () => this.isPlugged;

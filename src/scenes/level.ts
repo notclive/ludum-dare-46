@@ -47,19 +47,19 @@ export class Level extends SceneBase {
         this.player = new Player(this, leftGameWidth / 2, this.gameHeight / 2);
         this.externalPlayer = this.add.sprite(0, 0, 'player2');
 
-        this.heart = new Heart(this, 3 * leftGameWidth / 4, this.gameHeight / 2);
+        this.heart = new Heart(this, 420, 470);
         this.healthBar = new StatBar(this, leftGameWidth + 20, 30, 'Blood');
 
-        this.lungs = new Lungs(this, (leftGameWidth) / 4, this.gameHeight / 2);
+        this.lungs = new Lungs(this, 220, 540);
         this.breatheBar = new StatBar(this, leftGameWidth + 20, 60, 'O2');
 
-        this.stomach = new Stomach(this, 5 * leftGameWidth / 8, (3 * this.gameHeight) / 4);
+        this.stomach = new Stomach(this, 500, 750);
         this.foodBar = new StatBar(this, leftGameWidth + 20, 90, 'Food');
 
-        this.brain = new Brain(this, leftGameWidth / 2, this.gameHeight / 3, this.player);
+        this.brain = new Brain(this, 260, 260, this.player);
 
         this.water = new Water(this, catBackground);
-        this.plug = new Plug(this, 3 * leftGameWidth / 8, (3 * this.gameHeight) / 4, this.water);
+        this.plug = new Plug(this, 200, 910);
 
         this.physics.add.collider(this.player, this.heart);
         this.physics.add.collider(this.player, this.lungs);
@@ -136,7 +136,7 @@ export class Level extends SceneBase {
         this.fishes.update(this.stateManager.state.fishes, this.stateManager.state.gameTime);
         this.healthBar.update(this.stateManager.state.heart);
         this.breatheBar.update(this.stateManager.state.lungs);
-        this.plug.update(this.stateManager.state.waterLevel);
+        this.water.update(this.stateManager.state.waterLevel);
         this.foodBar.update(this.stateManager.state.fullness);
     }
 
