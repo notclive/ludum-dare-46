@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 
-export const STAT_BAR_WIDTH = 250;
-export const STAT_BAR_HEIGHT = 20;
+export const STAT_BAR_WIDTH = 460;
+export const STAT_BAR_HEIGHT = 30;
 export const LABEL_WIDTH = 70;
 export const STAT_BAR_RADIUS = 10;
 
@@ -17,7 +17,7 @@ export class StatBar extends Phaser.GameObjects.Graphics {
         var progressBox = this.scene.add.graphics();
         progressBox.fillStyle(0x8B0000, 0.8);
         progressBox.fillRoundedRect(this.xPosition + LABEL_WIDTH, this.yPosition, STAT_BAR_WIDTH, STAT_BAR_HEIGHT, STAT_BAR_RADIUS);
-        this.scene.add.text(this.xPosition, this.yPosition, this.label, { fontSize: '20px', fill: '#000' });
+        this.scene.add.text(this.xPosition, this.yPosition + 5, this.label, { fontSize: '20px', fill: '#000' });
     }
 
     update(value: number) {
