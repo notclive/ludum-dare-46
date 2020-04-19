@@ -36,7 +36,9 @@ module.exports = {
         contentBase: path.resolve(__dirname, 'dist'),
     },
     plugins: [
-        new HtmlWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            title: 'ginger\'s day in'
+        }),
         new webpack.DefinePlugin({
           CANVAS_RENDERER: JSON.stringify(true),
           WEBGL_RENDERER: JSON.stringify(true)
