@@ -33,7 +33,6 @@ export class Level extends SceneBase {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private outsideView: OutsideView;
     private spaceBarDown = false;
-    private walls: Phaser.Physics.Arcade.StaticGroup;
     private isInBrain: boolean;
 
     create() {
@@ -43,6 +42,9 @@ export class Level extends SceneBase {
 
         const catBackground = this.add.image(350, 510, 'catBackground');
         catBackground.scale = 1.15;
+
+        // World bounds are rectangular so don't perfectly match catBackground.
+        this.physics.world.setBounds(80, 150, 580, 830);
 
         this.player = new Player(this, leftGameWidth / 2, this.gameHeight / 2);
         this.externalPlayer = this.add.sprite(0, 0, 'player2');
@@ -64,10 +66,6 @@ export class Level extends SceneBase {
         this.physics.add.collider(this.player, this.heart);
         this.physics.add.collider(this.player, this.lungs);
         this.physics.add.collider(this.player, this.plug);
-
-        this.walls = this.physics.add.staticGroup();
-        this.createWalls();
-        this.physics.add.collider(this.player, this.walls);
 
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
@@ -183,20 +181,6 @@ export class Level extends SceneBase {
             type: 'PUMP_LUNGS'
         });
     };
-
-    private createWalls() {
-        const wallSize = 20;
-        const leftMargin = 100;
-        const topMargin = 150;
-
-        const xScale = (this.gameWidth - leftMargin * 2) / wallSize;
-        const yScale = (this.gameHeight - topMargin * 2) / wallSize;
-
-        this.walls.create(this.gameWidth / 2, topMargin, 'wall').setScale(xScale, 1).refreshBody();
-        this.walls.create(this.gameWidth / 2, this.gameHeight - topMargin, 'wall').setScale(xScale, 1).refreshBody();
-        this.walls.create(leftMargin, this.gameHeight / 2, 'wall').setScale(1, yScale).refreshBody();
-        this.walls.create(this.gameWidth - leftMargin, this.gameHeight / 2, 'wall').setScale(1, yScale).refreshBody();
-    }
 
     private openPlug = () => {
         if (this.plug.getIsPlugged()) {
