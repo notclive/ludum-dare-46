@@ -1,34 +1,50 @@
 import * as Phaser from 'phaser';
-import { SceneBase } from './sceneBase';
+import {SceneBase} from './sceneBase';
 
 export class Menu extends SceneBase {
-    private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
-    private text: Phaser.GameObjects.Text;
+
+    // Colours are darker shades of the palette colour #484d6d.
+    private readonly defaultTextColour: string = '#3b405a';
+    private readonly hoverTextColour: string = '#282a3c';
 
     create() {
-        this.cameras.main.backgroundColor = Phaser.Display.Color.ValueToColor(0x808080);
+        this.add.image(640, 512, 'background');
 
-        // red circle
-        let circle = this.add.graphics();
-        circle.fillStyle(0xff0000);
-        circle.fillCircle(this.gameWidth / 2, this.gameHeight / 2, 50);
+        const title = this.add.text(0, 150, 'ginger\'s day in', {fontSize: '50px', color: this.defaultTextColour});
+        this.centreObjectX(title);
 
-        this.cursors = this.input.keyboard.createCursorKeys();
-        this.text = this.add.text(0, (this.gameHeight / 2) + 75, 'Press "space" to start', { fontSize: '32px', fill: '#000' });
-        this.centreObjectX(this.text);
+        const singleplayer = this.add.text(0, 460, 'singleplayer', {fontSize: '30px', color: this.defaultTextColour});
+        this.centreObjectX(singleplayer);
+        this.makeTextClickable(singleplayer, this.startSingleplayerGame);
 
-        // Skip menu so we can develop quicker.
-        this.startGame();
+        const multiplayer = this.add.text(0, 545, 'multiplayer', {fontSize: '30px', color: this.defaultTextColour});
+        this.centreObjectX(multiplayer);
+        this.makeTextClickable(multiplayer, this.startMultiplayerGame);
     }
 
-    update() {
-        if (this.cursors.space.isDown) {
-            this.startGame();
-        }
-    }
+    private makeTextClickable = (text: Phaser.GameObjects.Text, onClick: () => void) => {
+        text.setInteractive();
 
-    private startGame() {
+        text.on('pointerover', () => {
+            text.setColor(this.hoverTextColour);
+            this.game.canvas.style.cursor = 'pointer';
+        });
+
+        text.on('pointerout', () => {
+            text.setColor(this.defaultTextColour);
+            this.game.canvas.style.cursor = 'default';
+        });
+
+        text.on('pointerdown', onClick);
+    };
+
+    private startSingleplayerGame = () => {
         console.log('Starting game...');
         this.scene.start('Level');
-    }
+    };
+
+    private startMultiplayerGame = () => {
+        console.log('Starting game...');
+        this.scene.start('Level');
+    };
 }
