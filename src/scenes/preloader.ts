@@ -4,6 +4,7 @@ import heart from '../assets/organs/organ-heart.png';
 import lungs from '../assets/organs/organ-lungs.png';
 import brain from '../assets/organs/organ-brain.png';
 import stomach from '../assets/organs/organ-stomach.png';
+import lymph from '../assets/organs/organ-lymph.png';
 import buttonA from '../assets/buttonA.png';
 import buttonB from '../assets/buttonB.png';
 import water from '../assets/water.png';
@@ -11,7 +12,6 @@ import cork from '../assets/organs/cork.png';
 import fish from '../assets/fish.png';
 import virus from '../assets/virus.png';
 import whiteBloodCell from '../assets/whiteBloodCell.jpeg';
-import alarm from '../assets/alarmBell.png';
 import player1 from '../assets/players/player1.png';
 import player2 from '../assets/players/player2.png';
 import player1WithFish from '../assets/players/player1-with-fish.png';
@@ -62,7 +62,6 @@ export class Preloader extends SceneBase {
         this.load.image('catBackground', catBackground);
         this.load.image('virus', virus);
         this.load.image('whiteBloodCell', whiteBloodCell);
-        this.load.image('alarm', alarm);
 
         this.load.spritesheet('player1',
             player1,
@@ -91,6 +90,10 @@ export class Preloader extends SceneBase {
         this.load.spritesheet('lungs',
             lungs,
             { frameWidth: 165, frameHeight: 257 }
+        );
+        this.load.spritesheet('lymph',
+            lymph,
+            { frameWidth: 100, frameHeight: 140 }
         );
         this.load.spritesheet('plug',
             cork,

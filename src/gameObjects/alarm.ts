@@ -12,6 +12,14 @@ export class Alarm extends Phaser.Physics.Arcade.Sprite {
 
         scene.physics.world.enable(this, PHASER_STATIC_BODY);
         scene.add.existing(this);
+
+        this.scene.anims.create({
+            key: 'lymph-slowPulse',
+            frames: this.scene.anims.generateFrameNumbers('lymph', { start: 0, end: 1 }),
+            frameRate: 3,
+            repeat: -1
+        });
+        this.anims.play('lymph-slowPulse', true);
     }
 
     public update({viruses, whiteBloodCell}: GameState) {
