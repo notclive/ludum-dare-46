@@ -1,4 +1,4 @@
-import { CatStatus } from './../gameObjects/catStatus';
+import {CatStatus} from '../gameObjects/catStatus';
 
 export interface StateManager {
     tick: () => void;
@@ -67,8 +67,12 @@ export interface Virus {
     reproducesAt: number;
 }
 
-export type StateChangeEvent = PumpLungs | BeatHeart | DigestFood | DrainPlug | RingAlarm |
+export type StateChangeEvent = RestartGame | PumpLungs | BeatHeart | DigestFood | DrainPlug | RingAlarm |
     PlaceFish | RemoveFish | PlaceVirus | VirusDestroyed | SetCatStatus | SetPeerPlayerState;
+
+interface RestartGame {
+    type: 'RESTART_GAME';
+}
 
 interface PumpLungs {
     type: 'PUMP_LUNGS';

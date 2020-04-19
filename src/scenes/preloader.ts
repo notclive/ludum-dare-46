@@ -1,4 +1,4 @@
-import { SceneBase } from './sceneBase';
+import {SceneBase} from './sceneBase';
 import mouth from '../assets/organs/mouth.png';
 import heart from '../assets/organs/organ-heart.png';
 import lungs from '../assets/organs/organ-lungs.png';
@@ -18,9 +18,9 @@ import player1WithFish from '../assets/players/player1-with-fish.png';
 import player2WithFish from '../assets/players/player2-with-fish.png';
 import outsideCat from '../assets/outsideView/outside-cat.png';
 import catBackground from '../assets/cat-main.png';
-import wall from '../assets/wall.png';
 
 export class Preloader extends SceneBase {
+
     preload() {
         const progressBar = this.add.graphics();
         var progressBox = this.add.graphics();
@@ -49,8 +49,6 @@ export class Preloader extends SceneBase {
         this.load.image('virus', virus);
         this.load.image('whiteBloodCell', whiteBloodCell);
         this.load.image('alarm', alarm);
-
-        this.load.image('wall', wall);
 
         this.load.spritesheet('player1',
             player1,

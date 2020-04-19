@@ -87,7 +87,8 @@ export class Level extends SceneBase {
 
     update() {
         if (this.stateManager.state.gameOver) {
-            this.endGame();
+            // I'm hoping that starting another scene will tear down everything in this scene.
+            this.scene.start('GameOver', this.stateManager);
             return;
         }
 
@@ -119,12 +120,6 @@ export class Level extends SceneBase {
         } else {
             this.spaceBarDown = false;
         }
-    }
-
-    private endGame() {
-        this.physics.pause();
-        this.outsideView.update(CatStatus.Dead);
-        this.player.gameOver();
     }
 
     private updateStateFromGameObjects() {

@@ -1,5 +1,5 @@
 export type MoveableGameObject =
-    Phaser.GameObjects.Sprite | Phaser.GameObjects.Text | Phaser.GameObjects.Image;
+    Phaser.GameObjects.Sprite | Phaser.GameObjects.Text | Phaser.GameObjects.Image | Phaser.GameObjects.Shape;
 
 export class SceneBase extends Phaser.Scene {
 
@@ -33,21 +33,16 @@ export class SceneBase extends Phaser.Scene {
         return Math.sqrt((xDistance * xDistance) + (yDistance * yDistance));
     }
 
-    protected centreObjectX(object: MoveableGameObject) {
+    public centreObjectX(object: MoveableGameObject) {
         object.x = (this.gameWidth / 2) - (object.displayWidth / 2);
     }
 
-    protected centreObjectY(object: MoveableGameObject) {
+    public centreObjectY(object: MoveableGameObject) {
         object.y = (this.gameHeight / 2) - (object.displayHeight / 2);
     }
 
-    protected centreObject(object: MoveableGameObject) {
+    public centreObject(object: MoveableGameObject) {
         this.centreObjectX(object);
         this.centreObjectY(object);
-    }
-
-    protected scaleObjectToGameWidth(object: MoveableGameObject, percentage: number) {
-        object.displayWidth = this.gameWidth * percentage;
-        object.scaleY = object.scaleX;
     }
 }

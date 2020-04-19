@@ -4,6 +4,7 @@ import { Preloader } from './scenes/preloader';
 import { Menu } from './scenes/menu';
 import { Level } from './scenes/level';
 import {MultiplayerSetup} from './scenes/multiplayerSetup';
+import {GameOver} from './scenes/gameOver';
 
 export class Game extends Phaser.Game {
 
@@ -36,6 +37,7 @@ export class Game extends Phaser.Game {
         this.scene.add('Menu', Menu);
         this.scene.add('MultiplayerSetup', MultiplayerSetup);
         this.scene.add('Level', Level);
+        this.scene.add('GameOver', GameOver);
 
         // start
         this.scene.start('Boot');

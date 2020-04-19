@@ -1,5 +1,13 @@
 import {CatStatus} from '../gameObjects/catStatus';
-import {GameObjectPosition, INITIAL_STATE, PlayerState, StateChangeEvent, StateManager, Virus, WhiteBloodCellState} from './stateManager';
+import {
+    GameObjectPosition,
+    INITIAL_STATE,
+    PlayerState,
+    StateChangeEvent,
+    StateManager,
+    Virus,
+    WhiteBloodCellState
+} from './stateManager';
 import {DataConnection} from 'peerjs';
 import {multiPlayerConfig, singlePlayerConfig} from '../gameConfig';
 
@@ -74,6 +82,9 @@ export default class HostStateManager implements StateManager {
     };
 
     public handleEvent = (event: StateChangeEvent) => {
+        if (event.type === 'RESTART_GAME') {
+            this.restartGame();
+        }
         if (event.type === 'PUMP_LUNGS') {
             this.pumpLungs();
         }
@@ -107,6 +118,10 @@ export default class HostStateManager implements StateManager {
         if (event.type === 'SET_CAT_STATUS') {
             this.setCatStatus(event.catStatus);
         }
+    };
+
+    private restartGame = () => {
+        this._state = INITIAL_STATE;
     };
 
     private pumpLungs = () => {
@@ -173,7 +188,7 @@ export default class HostStateManager implements StateManager {
             ...this._state,
             catStatus: catStatus
         }
-    }
+    };
 
     private placeVirus = (id: string, position: GameObjectPosition) => {
         this._state = {
@@ -224,7 +239,6 @@ export default class HostStateManager implements StateManager {
     private handleEventsFromPeer = (connection: DataConnection) => {
         connection.on('data', this.handleEvent);
     };
-
 
     private sendStateToPeer = (connection: DataConnection) => {
         connection.send(this.state);
