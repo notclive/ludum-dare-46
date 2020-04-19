@@ -1,4 +1,5 @@
 import { SceneBase } from './sceneBase';
+import mouth from '../assets/organs/mouth.png';
 import heart from '../assets/organs/organ-heart.png';
 import lungs from '../assets/organs/organ-lungs.png';
 import brain from '../assets/organs/organ-brain.png';
@@ -40,6 +41,7 @@ export class Preloader extends SceneBase {
 
         this.load.image('buttonA', buttonA);
         this.load.image('buttonB', buttonB);
+        this.load.image('mouth', mouth);
         this.load.image('stomach', stomach);
         this.load.image('water', water);
         this.load.image('fish', fish);

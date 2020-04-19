@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import { SceneBase } from './sceneBase';
 import { Player } from '../gameObjects/player';
+import { Mouth } from '../gameObjects/mouth';
 import { Heart } from '../gameObjects/heart';
 import { StatBar } from '../gameObjects/statBar';
 import { Lungs } from '../gameObjects/lungs';
@@ -21,6 +22,7 @@ export class Level extends SceneBase {
     private _stateManager: StateManager;
     private player: Player;
     private externalPlayer: Phaser.GameObjects.Sprite;
+    private mouth: Mouth;
     private heart: Heart;
     private healthBar: StatBar;
     private lungs: Lungs;
@@ -51,6 +53,8 @@ export class Level extends SceneBase {
 
         this.player = new Player(this, 350, 610);
         this.externalPlayer = this.physics.add.sprite(0, 0, 'player2');
+
+        this.mouth = new Mouth(this, 350, 360);
 
         this.heart = new Heart(this, 420, 470);
         this.healthBar = new StatBar(this, 700, 40, 'Blood');

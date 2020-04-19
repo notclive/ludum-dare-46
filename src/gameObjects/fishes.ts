@@ -32,10 +32,10 @@ export default class Fishes extends StaticGroup {
 
     // Jitter is added so that multiple fish look like a pile rather than one fish.
     private generateFishCoordinates = () => {
-        const catMouthX = 340;
-        const catMouthY = 340;
-        const xJitter = Math.random() * 40;
-        const yJitter = Math.random() * 40;
+        const catMouthX = 325;
+        const catMouthY = 365;
+        const xJitter = Math.random() * 45;
+        const yJitter = Math.random() * 30;
         return {x: catMouthX + xJitter, y: catMouthY + yJitter};
     };
 
