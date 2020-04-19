@@ -12,7 +12,7 @@ export class Lungs extends Phaser.Physics.Arcade.Sprite {
         this.scene.anims.create({
             key: 'lungs-slowPulse',
             frames: this.scene.anims.generateFrameNumbers('lungs', { start: 0, end: 1 }),
-            frameRate: 3,
+            frameRate: 2,
             repeat: -1
         });
         this.anims.play('lungs-slowPulse', true);
