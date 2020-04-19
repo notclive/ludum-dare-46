@@ -41,8 +41,14 @@ export class MultiplayerSetup extends SceneBase {
             this.showInstructions(gameId);
         });
         this.peer.on('connection', (connection) => {
+            connection.on('error', (error) => {
+                console.error('Connection error', error);
+            });
             this.startGameWithStateManager(new HostStateManager(connection))
         });
+        this.peer.on('error', (error) => {
+            console.error('Peer error', error);
+        })
     };
 
     private showInstructions = (gameId: string) => {
@@ -81,6 +87,9 @@ export class MultiplayerSetup extends SceneBase {
         connection.on('open', () => {
             this.startGameWithStateManager(new PeerStateManager(connection));
         });
+        connection.on('error', (error) => {
+            console.error('Connection error', error);
+        })
     };
 
     private startGameWithStateManager = (stateManager: StateManager) => {
