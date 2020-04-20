@@ -29,22 +29,36 @@ export class StatBar {
     }
 
     public update(value: number) {
+        if (value < 1) {
+            return;
+        }
         this.fillCurrentBar(value);
         this.fillLaggingBar();
     }
 
     private fillLaggingBar = () => {
         const lagWidth = this.widthHistory.shift();
-        this.laggingBar.clear();
-        this.laggingBar.fillStyle(Color.HexStringToColor('#DB484C').color);
-        this.laggingBar.fillRoundedRect(this.x + LABEL_WIDTH, this.y, lagWidth, STAT_BAR_HEIGHT, STAT_BAR_RADIUS);
+        this.fillBar(this.laggingBar, Color.HexStringToColor('#DB484C'), lagWidth);
     };
 
     private fillCurrentBar = (value: number) => {
         const barWidth = STAT_BAR_WIDTH * value / 100;
         this.widthHistory.push(barWidth);
-        this.currentValueBar.clear();
-        this.currentValueBar.fillStyle(Color.HexStringToColor('#FFCA3A').color);
-        this.currentValueBar.fillRoundedRect(this.x + LABEL_WIDTH, this.y, barWidth, STAT_BAR_HEIGHT, STAT_BAR_RADIUS);
+        this.fillBar(this.currentValueBar, Color.HexStringToColor('#FFCA3A'), barWidth);
     };
+
+    private fillBar = (bar: Graphics, {color}: Color, desiredWidth: number) => {
+        if (desiredWidth < 1) {
+            return;
+        }
+        bar.clear();
+        bar.fillStyle(color);
+        const desiredWidthCannotBeDrawnWithRoundedRectangle = desiredWidth < 100 * STAT_BAR_HEIGHT / STAT_BAR_WIDTH;
+        if (desiredWidthCannotBeDrawnWithRoundedRectangle) {
+            bar.fillEllipse(this.x + LABEL_WIDTH + (desiredWidth / 2), this.y + (STAT_BAR_HEIGHT / 2), desiredWidth, STAT_BAR_HEIGHT);
+        } else {
+            bar.fillRoundedRect(this.x + LABEL_WIDTH, this.y, desiredWidth, STAT_BAR_HEIGHT, STAT_BAR_RADIUS);
+        }
+
+    }
 }
