@@ -14,11 +14,19 @@ export class WhiteBloodCell extends Sprite {
         private initialY: number,
         private targets: Viruses
     ) {
-        super(scene, initialX, initialY, 'whiteBloodCell');
+        super(scene, initialX, initialY, 'bloodcells');
 
         scene.physics.world.enable(this);
         scene.add.existing(this);
         this.setDepth(1);
+
+        this.scene.anims.create({
+            key: 'bloodcells-pulse',
+            frames: this.scene.anims.generateFrameNumbers('bloodcells', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: -1
+        });
+        this.anims.play('bloodcells-pulse', true);
     }
 
     public update = (whiteBloodCellState: WhiteBloodCellState) => {

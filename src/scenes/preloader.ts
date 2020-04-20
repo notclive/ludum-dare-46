@@ -11,7 +11,7 @@ import water from '../assets/water.png';
 import cork from '../assets/organs/cork.png';
 import fish from '../assets/fish.png';
 import disease from '../assets/disease.png';
-import whiteBloodCell from '../assets/whiteBloodCell.jpeg';
+import bloodcells from '../assets/bloodcells.png';
 import player1 from '../assets/players/player1.png';
 import player2 from '../assets/players/player2.png';
 import player1WithFish from '../assets/players/player1-with-fish.png';
@@ -61,7 +61,6 @@ export class Preloader extends SceneBase {
         this.load.image('water', water);
         this.load.image('fish', fish);
         this.load.image('catBackground', catBackground);
-        this.load.image('whiteBloodCell', whiteBloodCell);
 
         this.load.spritesheet('player1',
             player1,
@@ -102,6 +101,10 @@ export class Preloader extends SceneBase {
         this.load.spritesheet('disease',
             disease,
             { frameWidth: 70, frameHeight: 70 }
+        );
+        this.load.spritesheet('bloodcells',
+            bloodcells,
+            { frameWidth: 80, frameHeight: 80 }
         );
         this.load.spritesheet('outside-cat',
             outsideCat,
