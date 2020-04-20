@@ -234,7 +234,7 @@ export class Level extends SceneBase {
 
             optionB: {
                 label: 'nahhh',
-                action: null
+                action: () => {}
             }
         },
         {
@@ -252,7 +252,7 @@ export class Level extends SceneBase {
 
             optionB: {
                 label: 'keep chillin\'',
-                action: null
+                action: () => {}
             }
         },
     ];
