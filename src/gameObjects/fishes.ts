@@ -55,6 +55,7 @@ export default class Fishes extends StaticGroup {
     private drawFish = () => {
         const {x, y} = this.generateFishCoordinates();
         const image = new Image(this.scene, x, y, 'fish');
+        image.scale = 0.6;
         this.add(image);
         this.scene.add.existing(image);
     };

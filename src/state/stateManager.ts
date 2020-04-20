@@ -161,7 +161,7 @@ export const INITIAL_STATE: GameState = {
     },
     fishes: {
         queuedFish: [],
-        numberOfFishInPile: 3
+        numberOfFishInPile: 0
     },
     viruses: [],
     whiteBloodCell: { // Set within the whiteBloodCell Sprite
