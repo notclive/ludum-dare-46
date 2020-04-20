@@ -56,6 +56,7 @@ export class Level extends SceneBase {
 
         this.player = new Player(this, 350, 610);
         this.externalPlayer = this.physics.add.sprite(0, 0, 'player2');
+        this.externalPlayer.depth = 1;
 
         this.mouth = new Mouth(this, 350, 360);
 
