@@ -257,7 +257,7 @@ export default class HostStateManager implements StateManager {
             ...this._state,
             whiteBloodCell: {
                 ...this._state.whiteBloodCell,
-                enabled: true,
+                enabled: this._state.viruses.length > 0,
             }
         };
     };
