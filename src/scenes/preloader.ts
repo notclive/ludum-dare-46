@@ -17,6 +17,7 @@ import player2 from '../assets/players/player2.png';
 import player1WithFish from '../assets/players/player1-with-fish.png';
 import player2WithFish from '../assets/players/player2-with-fish.png';
 import outsideCat from '../assets/outsideView/outside-cat.png';
+import decisionBox from '../assets/decisions.png';
 import catBackground from '../assets/cat-main.png';
 import spacebar from '../assets/spacebar.png';
 import fastMusic from '../assets/music/fast.mp3';
@@ -112,6 +113,10 @@ export class Preloader extends SceneBase {
         this.load.spritesheet('outside-cat',
             outsideCat,
             { frameWidth: 400, frameHeight: 320 }
+        );
+        this.load.spritesheet('decision-box',
+            decisionBox,
+            { frameWidth: 757, frameHeight: 371 }
         );
         this.load.spritesheet('spacebar',
             spacebar,
