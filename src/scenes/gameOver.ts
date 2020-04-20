@@ -29,6 +29,9 @@ export class GameOver extends SceneBase {
         this.centreObjectX(yourScore);
 
         new MenuButton(this, 545, 'try again', this.restart);
+        
+        new MenuButton(this, 635, 'main menu', () =>
+            this.scene.start('Menu', {muteButton: this.mute, music: this.music}));
     }
 
     public update() {

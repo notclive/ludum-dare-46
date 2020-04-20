@@ -61,7 +61,7 @@ export class Preloader extends SceneBase {
         this.load.on('complete', () => {
             progressBar.destroy();
             progressBox.destroy();
-            this.scene.start('Menu');
+            this.scene.start('Menu', {muteButton: null, music: null});
         });
 
         this.load.image('buttonA', buttonA);

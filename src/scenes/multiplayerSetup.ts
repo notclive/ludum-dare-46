@@ -33,6 +33,9 @@ export class MultiplayerSetup extends SceneBase {
         this.loading = this.add.text(0, 400, 'establishing connection to the kittynet...', {fontSize: '30px', color: BUTTON_BACKGROUND_COLOUR});
         this.centreObjectX(this.loading);
 
+        new MenuButton(this, this.gameHeight - 75, 'main menu', () =>
+            this.scene.start('Menu', {muteButton: this.mute, music: this.music}));
+
         this.startListeningForJoiners();
     }
 
@@ -56,6 +59,9 @@ export class MultiplayerSetup extends SceneBase {
     };
 
     private showInstructions = (gameId: string) => {
+        if (!this.scene.isActive()) {
+            return;
+        }
         this.drawGameIdMessage(gameId);
         const gameIdInput = this.drawGameIdInput();
         new MenuButton(this, 660, 'join', () => {
