@@ -20,7 +20,7 @@ export class InteractionManager {
         private player: Player,
         private interactionType: InteractionType,
         private notifyParentOfInteraction: () => void,
-        private interactionAnimationConfiguration?: InteractionAnimationConfiguration
+        private interactionEffectsConfiguration?: InteractionEffectsConfiguration
     ) {
         this.player.scene.anims.create({
             key: 'pump-spacebar',
@@ -51,7 +51,7 @@ export class InteractionManager {
     public update = (state: GameState) => {
         const playerIsTouchingOrgan = this.player.isTouching(this.organ);
         this.showOrHideInteractionHint(playerIsTouchingOrgan);
-        this.pickOrganAnimation(state);
+        this.pickAnimationsAndSounds(state);
         if (playerIsTouchingOrgan) {
             this.checkForInteraction();
         }
@@ -95,29 +95,41 @@ export class InteractionManager {
         }
     };
 
-    private pickOrganAnimation = ({organInteractionTimes, gameTime}: GameState) => {
-        if (this.interactionAnimationConfiguration) {
-            const lastInteractionTime = this.interactionAnimationConfiguration.pickInteractionTime(organInteractionTimes);
+    private pickAnimationsAndSounds = ({organInteractionTimes, gameTime}: GameState) => {
+        if (this.interactionEffectsConfiguration) {
+            const lastInteractionTime = this.interactionEffectsConfiguration.pickInteractionTime(organInteractionTimes);
+
             // I don't know how reliably a multiplayer peer will call update for every game state.
             // A buffer of 10 ticks makes it very likely a peer will notice that the plug was used.
             const interactionIsCurrentlyHappening = lastInteractionTime && lastInteractionTime > gameTime - 10;
-            const animation = interactionIsCurrentlyHappening
-                ? this.interactionAnimationConfiguration.interactionAnimation
-                : this.interactionAnimationConfiguration.normalAnimation;
-            this.organ.anims.play(animation, true);
 
-            if (interactionIsCurrentlyHappening && !this.interactionSound?.isPlaying) {
-                const key = this.interactionAnimationConfiguration.interactionSound;
-                this.interactionSound = this.player.scene.sound.add(key, {loop: true}) as Phaser.Sound.WebAudioSound;
-                this.interactionSound.setVolume(1);
-                this.interactionSound.play();
-            }
-
-            if (!interactionIsCurrentlyHappening && this.interactionSound && !this.interactionSound.isPaused) {
-                this.interactionSound.pause();
+            if (this.interactionEffectsConfiguration.interactionAnimation) {
+                this.pickOrganAnimation(interactionIsCurrentlyHappening);
+            } else if (this.interactionEffectsConfiguration.interactionSound) {
+                this.playOrPauseOrganSoundEffect(interactionIsCurrentlyHappening);
             }
         }
     };
+
+    private pickOrganAnimation(interactionIsCurrentlyHappening: boolean) {
+        const animation = interactionIsCurrentlyHappening
+            ? this.interactionEffectsConfiguration.interactionAnimation
+            : this.interactionEffectsConfiguration.normalAnimation;
+        this.organ.anims.play(animation, true);
+    }
+
+    private playOrPauseOrganSoundEffect(interactionIsCurrentlyHappening: boolean) {
+        if (interactionIsCurrentlyHappening && !this.interactionSound?.isPlaying) {
+            const key = this.interactionEffectsConfiguration.interactionSound;
+            this.interactionSound = this.player.scene.sound.add(key, {loop: true}) as Phaser.Sound.WebAudioSound;
+            this.interactionSound.setVolume(1);
+            this.interactionSound.play();
+        }
+
+        if (!interactionIsCurrentlyHappening && this.interactionSound && !this.interactionSound.isPaused) {
+            this.interactionSound.pause();
+        }
+    }
 
     private checkForInteraction = () => {
         // Pump and press are the same, they only differ in the hint.
@@ -149,7 +161,7 @@ export class InteractionManager {
     };
 }
 
-interface InteractionAnimationConfiguration {
+interface InteractionEffectsConfiguration {
     pickInteractionTime: (OrganInteractionTimes) => number;
     normalAnimation: string;
     interactionAnimation: string;
