@@ -4,6 +4,7 @@ import {MoveableGameObject} from '../scenes/sceneBase';
 import Image = Phaser.GameObjects.Image;
 import {GameState} from '../state/stateManager';
 import {Water} from './water';
+import Vector2 = Phaser.Math.Vector2;
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
 
@@ -80,28 +81,30 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     private moveUsingCursor = (state: GameState) => {
+        const direction = new Vector2();
+        if (this.cursors.left.isDown) {
+            direction.add(Vector2.LEFT);
+        }
+        if (this.cursors.right.isDown) {
+            direction.add(Vector2.RIGHT);
+        }
+        if (this.cursors.up.isDown) {
+            direction.add(Vector2.UP);
+        }
+        if (this.cursors.down.isDown) {
+            direction.add(Vector2.DOWN);
+        }
+
         const walkingSpeed = this.isUnderwater()
             ? state.speeds.waterWalkingSpeed
             : state.speeds.baseWalkingSpeed;
-        if (this.cursors.left.isDown) {
-            this.setVelocity(0);
-            this.setVelocityX(-1 * walkingSpeed);
-            this.playMovingAnimation();
-        } else if (this.cursors.right.isDown) {
-            this.setVelocity(0);
-            this.setVelocityX(walkingSpeed);
-            this.playMovingAnimation();
-        } else if (this.cursors.up.isDown) {
-            this.setVelocity(0);
-            this.setVelocityY(-1 * walkingSpeed);
-            this.playMovingAnimation();
-        } else if (this.cursors.down.isDown) {
-            this.setVelocity(0);
-            this.setVelocityY(walkingSpeed);
+        const velocity = direction.normalize().scale(walkingSpeed);
+        this.setVelocity(velocity.x, velocity.y);
+
+        if (velocity.x > 0 || velocity.y > 0) {
             this.playMovingAnimation();
         } else {
-            this.setVelocity(0);
-            this.playStillAnimation()
+            this.playStillAnimation();
         }
     };
 
