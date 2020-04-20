@@ -143,7 +143,7 @@ export class Level extends SceneBase {
         this.updateMusicFromState();
 
         this.updateExternalPlayerFromState(this.stateManager.otherPlayer);
-        this.fishes.update(this.stateManager.state.fishes, this.stateManager.state.gameTime);
+        this.fishes.update(this.stateManager.state);
         this.alarm.update(this.stateManager.state);
         this.viruses.update(this.stateManager.state.viruses);
         this.whiteBloodCell.update(this.stateManager.state.whiteBloodCell);
@@ -218,16 +218,11 @@ export class Level extends SceneBase {
         clearTimeout(this.drinkingTimeout);
     }
 
-    private eatFish = () => {
-        const generateFishDurationInSeconds = 40;
-
-        this.fishes.generateFishRegularlyForNSeconds(generateFishDurationInSeconds);
-        this.setCatStatus(CatStatus.Eating);
-
-        setTimeout(() => {
-            this.wakeUp();
-        }, generateFishDurationInSeconds * 1000)
-    }
+    private transitionToEating = () => {
+        this.stateManager.handleEvent({
+            type: 'TRANSITION_TO_EATING'
+        });
+    };
 
     private updateMusicFromState = () => {
         const numberOfExistingViruses = this.viruses.getChildren().length;
@@ -274,7 +269,7 @@ export class Level extends SceneBase {
             ],
             optionA: {
                 label: 'eat some fish',
-                action: this.eatFish
+                action: this.transitionToEating
             },
 
             optionB: {

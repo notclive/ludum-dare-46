@@ -43,6 +43,7 @@ export default class HostStateManager implements StateManager {
             fullness: Math.max(this._state.fullness - this._gameConfig.foodLossPerTick, 0),
             waterLevel: this.tickWaterLevel()
         };
+        this.checkForQueuedEvents();
         this.reproduceViruses();
         if (this.connection) {
             this.sendStateToPeer(this.connection)
@@ -60,6 +61,35 @@ export default class HostStateManager implements StateManager {
         return this._state.catStatus === CatStatus.Drinking
             ? Math.min(this._state.waterLevel + this._gameConfig.waterRisePerTick, 100)
             : this._state.waterLevel;
+    };
+
+    private checkForQueuedEvents = () => {
+        this.maybeTransitionToQueuedState();
+        this.generateAnyQueuedFish();
+    };
+
+    private maybeTransitionToQueuedState = () => {
+        if (this._state.queuedCatStatus && this._state.queuedCatStatus.time <= this._state.gameTime) {
+            this._state = {
+                ...this._state,
+                catStatus: this._state.queuedCatStatus.status,
+                queuedCatStatus: undefined
+            }
+        }
+    };
+
+    private generateAnyQueuedFish = () => {
+        if (this._state.fishes.queuedFish) {
+            const futureQueuedFish = this.state.fishes.queuedFish.filter(time => time > this._state.gameTime);
+            const fishToGenerateNow = this.state.fishes.queuedFish.length - futureQueuedFish.length;
+            if (fishToGenerateNow > 0) {
+                this._state.fishes = {
+                    ...this._state.fishes,
+                    numberOfFishInPile: this._state.fishes.numberOfFishInPile + fishToGenerateNow,
+                    queuedFish: futureQueuedFish
+                }
+            }
+        }
     };
 
     public set myPlayer(hostPlayer: PlayerState) {
@@ -110,11 +140,11 @@ export default class HostStateManager implements StateManager {
         if (event.type === 'RING_ALARM') {
             this.ringAlarm();
         }
-        if (event.type === 'PLACE_FISH') {
-            this.placeFish(event.id, event.position, event.ticksUntilVisible);
+        if (event.type === 'TRANSITION_TO_EATING') {
+            this.transitionToEating();
         }
-        if (event.type === 'REMOVE_FISH') {
-            this.removeFish(event.id);
+        if (event.type === 'TAKE_FISH_FROM_PILE') {
+            this.takeFishFromPile();
         }
         if (event.type === 'PLACE_VIRUS') {
             this.placeVirus(event.id, event.position);
@@ -176,24 +206,34 @@ export default class HostStateManager implements StateManager {
         };
     };
 
-    private placeFish = (id: string, position: GameObjectPosition, ticksUntilVisible: number) => {
+    private transitionToEating = () => {
         this._state = {
             ...this._state,
-            fishes: [
+            catStatus: CatStatus.Eating,
+            queuedCatStatus: {
+                status: CatStatus.Awake,
+                time: this.gameTimeNSecondsFromNow(8)
+            },
+            fishes: {
                 ...this._state.fishes,
-                {
-                    id,
-                    position,
-                    visibleAfterGameTime: this._state.gameTime + ticksUntilVisible
-                }
-            ]
-        };
+                queuedFish: [
+                    ...this._state.fishes.queuedFish,
+                    this.gameTimeNSecondsFromNow(2),
+                    this.gameTimeNSecondsFromNow(4),
+                    this.gameTimeNSecondsFromNow(6)
+                ]
+            }
+        }
+
     };
 
-    private removeFish = (fishId: string) => {
+    private takeFishFromPile = () => {
         this._state = {
             ...this._state,
-            fishes: this._state.fishes.filter(fish => fish.id !== fishId)
+            fishes: {
+                ...this._state.fishes,
+                numberOfFishInPile: this._state.fishes.numberOfFishInPile - 1
+            }
         };
     };
 
@@ -270,5 +310,10 @@ export default class HostStateManager implements StateManager {
             const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         });
+    };
+
+    private gameTimeNSecondsFromNow = (seconds: number) => {
+        const ticksPerSecond = 60;
+        return this._state.gameTime + ticksPerSecond * seconds;
     };
 }

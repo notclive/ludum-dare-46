@@ -99,7 +99,7 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
 
     private calculateUrgency(state: GameState) {
         const fishAreAvailable = state.catStatus === CatStatus.Eating
-            || state.fishes.length > 0
+            || state.fishes.numberOfFishInPile > 0
             || this.scene.stateManager.myPlayer.holdingFish;
         if (fishAreAvailable) {
             return 0;

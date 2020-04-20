@@ -16,7 +16,7 @@ export interface GameState {
     gameTime: number;
     hostPlayer: PlayerState;
     peerPlayer: PlayerState;
-    fishes: Fish[];
+    fishes: FishState;
     viruses: Virus[];
     whiteBloodCell: WhiteBloodCellState;
     heart: number;
@@ -24,6 +24,7 @@ export interface GameState {
     fullness: number;
     waterLevel: number;
     catStatus: CatStatus;
+    queuedCatStatus?: QueuedCatStatus;
     speeds: SpeedState;
     organInteractionTimes: OrganInteractionTimes;
 }
@@ -31,6 +32,11 @@ export interface GameState {
 export interface PlayerState {
     position: GameObjectPosition;
     holdingFish: boolean;
+}
+
+export interface QueuedCatStatus {
+    status: CatStatus;
+    time: number;
 }
 
 export interface SpeedState {
@@ -55,6 +61,11 @@ export interface GameObjectPosition {
 
 export type GameObjectVelocity = GameObjectPosition;
 
+interface FishState {
+    queuedFish: number[];
+    numberOfFishInPile: number;
+}
+
 export interface Fish {
     id: string;
     visibleAfterGameTime: number;
@@ -69,7 +80,7 @@ export interface Virus {
 }
 
 export type StateChangeEvent = RestartGame | BreathLungs | PumpHeart | DigestFood | DrainPlug | RingAlarm |
-    PlaceFish | RemoveFish | PlaceVirus | VirusDestroyed | SetCatStatus | SetPeerPlayerState;
+    TransitionToEating | TakeFishFromPile | PlaceVirus | VirusDestroyed | SetCatStatus | SetPeerPlayerState;
 
 interface RestartGame {
     type: 'RESTART_GAME';
@@ -95,16 +106,12 @@ interface RingAlarm {
     type: 'RING_ALARM';
 }
 
-interface PlaceFish {
-    type: 'PLACE_FISH';
-    id: string;
-    position: GameObjectPosition;
-    ticksUntilVisible: number;
+interface TransitionToEating {
+    type: 'TRANSITION_TO_EATING';
 }
 
-interface RemoveFish {
-    type: 'REMOVE_FISH';
-    id: string;
+interface TakeFishFromPile {
+    type: 'TAKE_FISH_FROM_PILE';
 }
 
 interface SetCatStatus {
@@ -152,7 +159,10 @@ export const INITIAL_STATE: GameState = {
         },
         holdingFish: false
     },
-    fishes: [],
+    fishes: {
+        queuedFish: [],
+        numberOfFishInPile: 0
+    },
     viruses: [],
     whiteBloodCell: { // Set within the whiteBloodCell Sprite
         position: {x: 0, y: 0},
