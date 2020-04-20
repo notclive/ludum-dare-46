@@ -76,7 +76,7 @@ export class Level extends SceneBase {
         this.foodBar = new StatBar(this, 700, 120, 'Food');
 
         this.brain = new Brain(this, 280, 240, this.player);
-        this.alarm = new Alarm(this, 485, 335);
+        this.alarm = new Alarm(this, 485, 365);
 
         this.plug = new Plug(this, 200, 910);
 
