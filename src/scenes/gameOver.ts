@@ -2,13 +2,16 @@ import {SceneBase} from './sceneBase';
 import {StateManager} from '../state/stateManager';
 import MenuButton from '../menuObjects/menuButton';
 import {BUTTON_BACKGROUND_COLOUR} from '../menuObjects/menuConstants';
+import { Mute } from '../gameObjects/mute';
 
 export class GameOver extends SceneBase {
     private _stateManager: StateManager;
 
-    public create(config: {stateManager: StateManager, music: Phaser.Sound.WebAudioSound}) {
+    public create(config: {stateManager: StateManager, music: Phaser.Sound.WebAudioSound, muteButton: Mute}) {
         this._stateManager = config.stateManager;
         this.add.image(640, 512, 'background');
+
+        this.setMuteButton(config.muteButton);
 
         this.music = config.music;
         if (this.music.key !== 'regular') {
@@ -32,7 +35,7 @@ export class GameOver extends SceneBase {
         // Game has been restarted by one of the players.
         if (!this._stateManager.state.gameOver) {
             this.fadeOutMusic(this.music, 1000);
-            this.scene.start('Level', this._stateManager);
+            this.scene.start('Level', {stateManager: this._stateManager, muteButton: this.mute});
         }
     }
 

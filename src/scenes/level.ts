@@ -17,6 +17,7 @@ import {Viruses} from '../gameObjects/viruses';
 import { Alarm } from '../gameObjects/alarm';
 import { WhiteBloodCell } from '../gameObjects/whiteBloodCell';
 import { CatStatus } from '../gameObjects/catStatus';
+import { Mute } from '../gameObjects/mute';
 
 export class Level extends SceneBase {
 
@@ -43,9 +44,10 @@ export class Level extends SceneBase {
 
     public player: Player;
 
-    create(stateManager: StateManager) {
-        this._stateManager = stateManager;
+    create(config: {stateManager: StateManager, muteButton: Mute}) {
+        this._stateManager = config.stateManager;
         this.add.image(this.gameWidth / 2, this.gameHeight / 2, 'background');
+        this.setMuteButton(config.muteButton);
         this.setMusic('sleep');
 
         const catBackground = this.add.image(350, 510, 'catBackground');
@@ -87,7 +89,7 @@ export class Level extends SceneBase {
         if (this.stateManager.state.gameOver) {
             this.plug.stopSounds();
             // I'm hoping that starting another scene will tear down everything in this scene.
-            this.scene.start('GameOver', {stateManager: this.stateManager, music: this.music});
+            this.scene.start('GameOver', {stateManager: this.stateManager, music: this.music, muteButton: this.mute});
             // Reset the music to stop it clashing when restarting the game.
             this.music = null;
             return;

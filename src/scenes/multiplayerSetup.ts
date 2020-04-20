@@ -8,6 +8,7 @@ import {StateManager} from '../state/stateManager';
 import Text = Phaser.GameObjects.Text;
 import {BUTTON_BACKGROUND_COLOUR, BUTTON_TEXT_COLOUR} from '../menuObjects/menuConstants';
 import MenuButton from '../menuObjects/menuButton';
+import { Mute } from '../gameObjects/mute';
 // Module does not quite match Typescript definitions.
 const Peer = (PeerDefinition as any).default;
 
@@ -20,9 +21,11 @@ export class MultiplayerSetup extends SceneBase {
     private loading: Text;
     private peer: PeerDefinition;
 
-    create(music: Phaser.Sound.WebAudioSound) {
-        this.music = music;
+    create(config: {music: Phaser.Sound.WebAudioSound, muteButton: Mute}) {
+        this.music = config.music;
         this.add.image(640, 512, 'background');
+
+        this.setMuteButton(config.muteButton);
 
         const title = this.add.text(0, 150, 'multiplayer setup', {fontSize: '50px', color: BUTTON_BACKGROUND_COLOUR});
         this.centreObjectX(title);

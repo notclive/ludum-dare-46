@@ -1,8 +1,18 @@
+import { Mute } from "../gameObjects/mute";
+import { Tilemaps } from "phaser";
+import { PHASER_STATIC_BODY } from "../consts";
+
 export type MoveableGameObject =
     Phaser.GameObjects.Sprite | Phaser.GameObjects.Text | Phaser.GameObjects.Image | Phaser.GameObjects.Shape;
 
 export class SceneBase extends Phaser.Scene {
     protected music: Phaser.Sound.WebAudioSound;
+    protected mute: Mute;
+
+    protected setMuteButton = (muteButton: Mute) => {
+        this.mute = new Mute(this, muteButton.x, muteButton.y, muteButton.mute);
+        this.sound.mute = muteButton.mute;
+    };
 
     public get gameWidth(): number {
         return this.sys.game.config.width as number;
