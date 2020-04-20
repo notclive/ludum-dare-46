@@ -25,7 +25,7 @@ export class GameOver extends SceneBase {
         const deadCat = this.add.image(640, 250, 'outside-cat', 24);
         deadCat.scale = 1.5;
 
-        const yourScore = this.add.text(0, 460, `your scored ${config.stateManager.state.gameTime} points`, {fontSize: '30px', color: BUTTON_BACKGROUND_COLOUR});
+        const yourScore = this.add.text(0, 460, `you scored ${config.stateManager.state.gameTime} points`, {fontSize: '30px', color: BUTTON_BACKGROUND_COLOUR});
         this.centreObjectX(yourScore);
 
         new MenuButton(this, 545, 'try again', this.restart);
