@@ -4,6 +4,8 @@ import Image = Phaser.GameObjects.Image;
 
 export class Water extends Image {
 
+    private sideToSideDirection = 1;
+
     public constructor(public scene: Phaser.Scene, private catBackground: Image) {
         super(scene, catBackground.x, 0, 'water');
         this.configureHowItLooks();
@@ -20,11 +22,22 @@ export class Water extends Image {
     }
 
     public update(waterLevel: number) {
+        this.moveSideToSide();
         // This keeps the water within the bounds of the cat
         const topOfCatBackground = this.catBackground.y - (this.catBackground.displayHeight / 2);
         const waterLevelY = topOfCatBackground + (this.catBackground.displayHeight * (100 - waterLevel) / 100);
         this.y = waterLevelY + (this.displayHeight / 2);
     }
+
+    private moveSideToSide = () => {
+        if (this.x < this.catBackground.x - 30) {
+            this.sideToSideDirection = 1;
+        }
+        if (this.x > this.catBackground.x + 30) {
+            this.sideToSideDirection = -1
+        }
+        this.x += 0.25 * this.sideToSideDirection;
+    };
 
     public YOfTheWaterLevel = () => this.y - (this.displayHeight / 2);
 }
