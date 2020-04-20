@@ -16,7 +16,7 @@ export class Menu extends SceneBase {
 
         new MenuButton(this, 440, 'singleplayer', this.startSingleplayerGame);
         new MenuButton(this, 530, 'multiplayer', this.startMultiplayerSetup);
-        this.setMuteButton(new Mute(this, 50, 50, false));
+        this.mute = new Mute(this, 50, 50, false);
     }
 
     private startSingleplayerGame = () => {
