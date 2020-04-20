@@ -44,9 +44,13 @@ export class Level extends SceneBase {
 
     public player: Player;
 
-    create(config: { stateManager: StateManager, muteButton: Mute }) {
+    private tiledBackground: Phaser.GameObjects.TileSprite;
+
+    create(config: {stateManager: StateManager, muteButton: Mute}) {
         this._stateManager = config.stateManager;
-        this.add.image(this.gameWidth / 2, this.gameHeight / 2, 'background');
+
+        this.tiledBackground = this.add.tileSprite(this.gameWidth / 2, this.gameHeight / 2, this.gameWidth, this.gameHeight, 'stars-background');
+
         this.setMuteButton(config.muteButton);
         this.setMusic('sleep');
 
@@ -95,6 +99,8 @@ export class Level extends SceneBase {
         }
 
         this.stateManager.tick();
+
+        this.tiledBackground.tilePositionX += this.stateManager.state.tiledBackgroundSpeed;
 
         this.updateStateFromGameObjects();
         this.updateGameObjectsFromState();

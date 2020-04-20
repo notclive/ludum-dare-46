@@ -22,6 +22,7 @@ import decisionBox from '../assets/decisions.png';
 import catBackground from '../assets/cat-main.png';
 import spacebar from '../assets/spacebar.png';
 import mute from '../assets/mute-button-sprite.png';
+import starsBackground from '../assets/background.png';
 import fastMusic from '../assets/music/fast.mp3';
 import regularMusic from '../assets/music/regular.mp3';
 import sleepMusic from '../assets/music/sleep.mp3';
@@ -71,6 +72,7 @@ export class Preloader extends SceneBase {
         this.load.image('fish', fish);
         this.load.image('catBackground', catBackground);
         this.load.image('snorkel', snorkel);
+        this.load.image('stars-background', starsBackground);
 
         this.load.spritesheet('player1',
             player1,

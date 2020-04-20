@@ -28,8 +28,8 @@ export interface GameState {
     speeds: SpeedState;
     organInteractionTimes: OrganInteractionTimes;
     externalEventTimes: ExternalEventTimes;
-
     hardModeMultiplier: number;
+    tiledBackgroundSpeed: number;
 }
 
 export interface PlayerState {
@@ -141,6 +141,12 @@ export interface ExternalEventTimes {
     catGotIll: number;
 }
 
+export const BACKGROUND_SPEEDS = {
+    asleep: 1,
+    awake: 3,
+    ill: 5,
+}
+
 export const INITIAL_STATE: GameState = {
     gameOver: false,
     gameTime: 0,
@@ -188,5 +194,6 @@ export const INITIAL_STATE: GameState = {
     externalEventTimes: {
         catDrank: null,
         catGotIll: null
-    }
+    },
+    tiledBackgroundSpeed: BACKGROUND_SPEEDS.asleep
 };

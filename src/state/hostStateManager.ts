@@ -6,7 +6,8 @@ import {
     StateChangeEvent,
     StateManager,
     Virus,
-    WhiteBloodCellState
+    WhiteBloodCellState,
+    BACKGROUND_SPEEDS
 } from './stateManager';
 import {DataConnection} from 'peerjs';
 import {multiPlayerConfig, singlePlayerConfig} from '../gameConfig';
@@ -121,7 +122,8 @@ export default class HostStateManager implements StateManager {
             externalEventTimes: {
                 ...this._state.externalEventTimes,
                 catGotIll: this._state.gameTime
-            }
+            },
+            tiledBackgroundSpeed: BACKGROUND_SPEEDS.ill,
         };
         const catMouthX = 340;
         const catMouthY = 340;
@@ -269,7 +271,8 @@ export default class HostStateManager implements StateManager {
                 // Prevents cat from drinking and getting ill as soon as it wakes up.
                 catDrank: this._state.gameTime,
                 catGotIll: this._state.gameTime
-            }
+            },
+            tiledBackgroundSpeed: BACKGROUND_SPEEDS.awake,
         };
     };
 
@@ -314,7 +317,7 @@ export default class HostStateManager implements StateManager {
                     velocity: {x: 0, y: 0},
                     reproducesAt: this._state.gameTime + this._gameConfig.ticksForVirusToReproduce,
                 }
-            ]
+            ],
         }
     };
 
@@ -323,7 +326,8 @@ export default class HostStateManager implements StateManager {
         this._state = {
             ...this._state,
             viruses: stillActiveViruses,
-            catStatus: stillActiveViruses.length === 0 ? CatStatus.Awake : CatStatus.Ill
+            catStatus: stillActiveViruses.length === 0 ? CatStatus.Awake : CatStatus.Ill,
+            tiledBackgroundSpeed: stillActiveViruses.length === 0 ? BACKGROUND_SPEEDS.awake : BACKGROUND_SPEEDS.ill,
         };
     };
 
