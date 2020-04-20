@@ -38,7 +38,7 @@ export class WhiteBloodCell extends Sprite {
                     type: 'DESTROY_VIRUS',
                     id: closestTarget.name,
                 });
-            }, 1000);
+            }, 500);
         }
     };
 

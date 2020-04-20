@@ -82,7 +82,7 @@ export class Level extends SceneBase {
 
         this.fishes = new Fishes(this, this.player, this.stomach);
         this.viruses = new Viruses(this, this.player, [this.player, this.externalPlayer]);
-        this.whiteBloodCell = new WhiteBloodCell(this, this.alarm.x, this.alarm.y, this.viruses);
+        this.whiteBloodCell = new WhiteBloodCell(this, this.alarm.x - 25, this.alarm.y - 30, this.viruses);
     }
 
     update() {
