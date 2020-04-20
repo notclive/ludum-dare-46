@@ -1,16 +1,18 @@
-import { Player } from './player';
-import { DecisionBox } from './decisionBox';
+import {Player} from './player';
+import {DecisionBox} from './decisionBox';
 import * as Phaser from 'phaser';
-import { PHASER_STATIC_BODY } from '../consts';
-import { DecisionButton } from './decisionButton';
-import { Level } from '../scenes/level';
-import { Decision } from './decision';
-import { CatStatus } from './catStatus';
+import {PHASER_STATIC_BODY} from '../consts';
+import {DecisionButton} from './decisionButton';
+import {Level} from '../scenes/level';
+import {Decision} from './decision';
+import {CatStatus} from './catStatus';
 import {InteractionManager} from './interactionManager';
 import {GameState} from '../state/stateManager';
+import {OrganShaker} from './OrganShaker';
 
 export class Brain extends Phaser.Physics.Arcade.Sprite {
 
+    private readonly shaker = new OrganShaker(this);
     private readonly interactionManager = new InteractionManager(
         this,
         this.scene.player,
@@ -77,6 +79,7 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
     }
 
     update(state: GameState) {
+        this.shaker.shakeIfUrgent(this.calculateUrgency(state));
         this.interactionManager.update(state);
 
         if (this.currentDecision?.catStatuses.includes(state.catStatus)){
@@ -92,5 +95,15 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
         this.decisionBox = new DecisionBox(this.scene, this.x, 20, this.currentDecision);
         this.buttonA = new DecisionButton(this.scene, this.x - 30, this.y, 'buttonA');
         this.buttonB = new DecisionButton(this.scene, this.x + 30, this.y - 30, 'buttonB');
+    }
+
+    private calculateUrgency(state: GameState) {
+        const fishAreAvailable = state.catStatus === CatStatus.Eating
+            || state.fishes.length > 0
+            || this.scene.stateManager.myPlayer.holdingFish;
+        if (fishAreAvailable) {
+            return 0;
+        }
+        return 100 - state.fullness;
     }
 }

@@ -69,9 +69,13 @@ export default class HostStateManager implements StateManager {
         };
     };
 
+    public get myPlayer() {
+        return this._state.hostPlayer;
+    }
+
     public get otherPlayer() {
         return this.state.peerPlayer;
-    };
+    }
 
     public set viruses(viruses: Virus[]) {
         this._state = {
@@ -221,7 +225,7 @@ export default class HostStateManager implements StateManager {
             ...this._state,
             viruses: newViruses,
         }
-        
+
         if (newViruses.length === 0) {
             this.handleEvent({
                 type: 'SET_CAT_STATUS',
@@ -233,7 +237,7 @@ export default class HostStateManager implements StateManager {
     private reproduceViruses = () => {
         this._state.viruses.filter(virus => virus.reproducesAt === this._state.gameTime)
             .forEach(virus => {
-                    this.handleEvent({
+                this.handleEvent({
                     type: 'PLACE_VIRUS',
                     id: this.generateGloballyUniqueId(),
                     position: {
@@ -262,7 +266,7 @@ export default class HostStateManager implements StateManager {
     };
 
     public generateGloballyUniqueId = () => {
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
             const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
             return v.toString(16);
         });

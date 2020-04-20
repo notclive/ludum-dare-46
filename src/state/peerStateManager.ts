@@ -31,6 +31,10 @@ export default class PeerStateManager implements StateManager {
         });
     };
 
+    public get myPlayer() {
+        return this._state.peerPlayer;
+    }
+
     public get otherPlayer() {
         return this.state.hostPlayer;
     };
