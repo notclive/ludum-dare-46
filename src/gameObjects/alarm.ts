@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import {PHASER_STATIC_BODY} from '../consts';
-import {OrganShaker} from './OrganShaker';
+import {OrganShaker} from './organShaker';
 import {GameState, Virus} from '../state/stateManager';
 import {InteractionManager} from './interactionManager';
 import {Level} from '../scenes/level';

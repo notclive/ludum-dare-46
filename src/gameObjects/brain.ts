@@ -8,7 +8,7 @@ import {Decision} from './decision';
 import {CatStatus} from './catStatus';
 import {InteractionManager} from './interactionManager';
 import {GameState} from '../state/stateManager';
-import {OrganShaker} from './OrganShaker';
+import {OrganShaker} from './organShaker';
 
 export class Brain extends Phaser.Physics.Arcade.Sprite {
 
@@ -97,7 +97,7 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
         this.buttonB = new DecisionButton(this.scene, this.x + 30, this.y - 30, 'buttonB');
     }
 
-    private calculateUrgency(state: GameState) {
+    private calculateUrgency = (state: GameState) => {
         const fishAreAvailable = state.catStatus === CatStatus.Eating
             || state.fishes.numberOfFishInPile > 0
             || this.scene.stateManager.myPlayer.holdingFish;
@@ -105,5 +105,5 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
             return 0;
         }
         return 100 - state.fullness;
-    }
+    };
 }

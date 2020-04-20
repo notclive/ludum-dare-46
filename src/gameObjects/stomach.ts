@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
 import {PHASER_STATIC_BODY} from '../consts';
 import {Level} from '../scenes/level';
-import {OrganShaker} from './OrganShaker';
+import {OrganShaker} from './organShaker';
 import {GameState} from '../state/stateManager';
 
 export class Stomach extends Phaser.Physics.Arcade.Sprite {
