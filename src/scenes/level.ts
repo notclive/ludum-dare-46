@@ -11,7 +11,7 @@ import {Brain} from '../gameObjects/brain';
 import {Stomach} from '../gameObjects/stomach';
 import {Plug} from '../gameObjects/plug';
 import {Water} from '../gameObjects/water';
-import {StateManager} from '../state/stateManager';
+import {PlayerState, StateManager} from '../state/stateManager';
 import {Decision} from '../gameObjects/decision';
 import {Viruses} from '../gameObjects/viruses';
 import {Alarm} from '../gameObjects/alarm';
@@ -37,6 +37,7 @@ export class Level extends SceneBase {
     private fishes: Fishes;
     private viruses: Viruses;
     private whiteBloodCell: WhiteBloodCell;
+    private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private outsideView: OutsideView;
     private isInBrain: boolean;
     private currentCatStatusForMusic = CatStatus.Asleep;
@@ -64,17 +65,22 @@ export class Level extends SceneBase {
         this.externalPlayer = new Player(this, false, this.water, 0, 0);
 
         this.mouth = new Mouth(this, 350, 350);
+
         this.heart = new Heart(this, 460, 550);
+        this.healthBar = new StatBar(this, 700, 40, 'Blood');
+
         this.lungs = new Lungs(this, 240, 540);
+        this.breatheBar = new StatBar(this, 700, 80, 'O2');
+
         this.stomach = new Stomach(this, 500, 780);
+        this.foodBar = new StatBar(this, 700, 120, 'Food');
+
         this.brain = new Brain(this, 280, 240, this.player);
         this.alarm = new Alarm(this, 485, 335);
+
         this.plug = new Plug(this, 200, 910);
 
-        this.healthBar = new StatBar(this, 775, 50, 'Blood');
-        this.breatheBar = new StatBar(this, 950, 50, 'Oxygen');
-        this.foodBar = new StatBar(this, 1125, 50, 'Food');
-
+        this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
 
         this.fishes = new Fishes(this);
