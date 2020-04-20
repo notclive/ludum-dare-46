@@ -5,8 +5,6 @@ import {GameState} from '../state/stateManager';
 
 // Could be replaced by a sprite representing a pile of fish.
 export default class Fishes extends StaticGroup {
-    private _isPickingUpFish = false;
-
     public constructor(public scene: Level) {
         super(scene.physics.world, scene);
     }
@@ -19,10 +17,10 @@ export default class Fishes extends StaticGroup {
     private maybePickUpFish = () => {
         // Add a "is picking up fish" buffer to allow the state to propagate
         if (this.scene.stateManager.myPlayer.holdingFish) {
-            this._isPickingUpFish = false;
+            this.scene.playerIsPickingUpFish = false;
             return;
         }
-        if (this._isPickingUpFish) {
+        if (this.scene.playerIsPickingUpFish) {
             return;
         }
         const playerIsTouchingFish = !!this.getChildren().find(image => this.scene.player.isTouching(image as Image));
@@ -32,7 +30,7 @@ export default class Fishes extends StaticGroup {
     };
 
     private pickUpFish = () => {
-        this._isPickingUpFish = true;
+        this.scene.playerIsPickingUpFish = true;
         this.scene.stateManager.myPlayer = {
             ...this.scene.stateManager.myPlayer,
             holdingFish: true

@@ -20,7 +20,6 @@ import {CatStatus} from '../gameObjects/catStatus';
 import {Mute} from '../gameObjects/mute';
 
 export class Level extends SceneBase {
-
     private _stateManager: StateManager;
     private externalPlayer: Phaser.GameObjects.Sprite;
     private mouth: Mouth;
@@ -43,6 +42,8 @@ export class Level extends SceneBase {
     private currentCatStatusForMusic = CatStatus.Asleep;
 
     public player: Player;
+    public playerIsPickingUpFish = false;
+    public playerIsDroppingOffFish = false;
 
     private tiledBackground: Phaser.GameObjects.TileSprite;
 
@@ -125,7 +126,8 @@ export class Level extends SceneBase {
             position: {
                 x: this.player.x,
                 y: this.player.y
-            }
+            },
+            holdingFish: this.getCurrentFishStatus()
         };
         this.stateManager.viruses = this.viruses.getUpdatedGameState(
             this.stateManager.state.viruses,
@@ -199,6 +201,11 @@ export class Level extends SceneBase {
             const music = this.sound.add(key, {loop: true}) as Phaser.Sound.WebAudioSound;
             this.setNewMusicWithFade(music, fadeTimeMillis);
         }
+    };
+
+    public getCurrentFishStatus = () => {
+        return this.playerIsPickingUpFish
+            || (this.stateManager.myPlayer.holdingFish && !this.playerIsDroppingOffFish);
     };
 
     public mapCatStatusToDecision = (status: CatStatus) => {

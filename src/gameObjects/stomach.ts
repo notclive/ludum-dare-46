@@ -6,7 +6,6 @@ import {GameState} from '../state/stateManager';
 import OrganBase from './organBase';
 
 export class Stomach extends OrganBase {
-    private _isDroppingFish = false;
     private readonly shaker = new OrganShaker(this);
 
     public constructor(public scene: Level, x: number, y: number) {
@@ -34,10 +33,10 @@ export class Stomach extends OrganBase {
 
     private maybeDropFish = () => {
         if (!this.scene.stateManager.myPlayer.holdingFish) {
-            this._isDroppingFish = false;
+            this.scene.playerIsDroppingOffFish = false;
             return;
         }
-        if (this._isDroppingFish) {
+        if (this.scene.playerIsDroppingOffFish) {
             return;
         }
         if (this.scene.player.isTouching(this)) {
@@ -46,7 +45,7 @@ export class Stomach extends OrganBase {
     };
 
     private dropFish() {
-        this._isDroppingFish = true;
+        this.scene.playerIsDroppingOffFish = true;
         this.scene.stateManager.myPlayer = {
             ...this.scene.stateManager.myPlayer,
             holdingFish: false
