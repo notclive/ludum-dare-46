@@ -46,4 +46,8 @@ export class Lungs extends OrganBase {
         this.shaker.shakeIfUrgent(100 - state.lungs);
         this.interactionManager.update(state);
     }
+
+    public stopSounds() {
+        this.interactionManager.stopSounds();
+    }
 }
