@@ -96,7 +96,7 @@ export class MultiplayerSetup extends SceneBase {
 
     private startGameWithStateManager = (stateManager: StateManager) => {
         this.fadeOutMusic(this.music, 1000);
-        this.scene.start('Level', stateManager);
+        this.scene.start('Level', {stateManager, muteButton: this.mute});
     };
 
     private randomlyGenerateGameId = () => {
