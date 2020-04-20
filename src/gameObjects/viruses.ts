@@ -12,6 +12,13 @@ export class Viruses extends StaticGroup {
         private targets: Phaser.GameObjects.Sprite[]
     ) {
         super(scene.physics.world, scene);
+
+        this.scene.anims.create({
+            key: 'disease-pulse',
+            frames: this.scene.anims.generateFrameNumbers('disease', { start: 0, end: 1 }),
+            frameRate: 10,
+            repeat: -1
+        });
     }
 
     public createNewVirus = () => {
@@ -77,6 +84,7 @@ export class Viruses extends StaticGroup {
         sprite.name = virus.id;
         this.add(sprite);
         this.scene.add.existing(sprite);
+        sprite.anims.play('disease-pulse', true);
     };
 
     private updateSpritePosition = (sprite: Sprite, virus: Virus) => {
