@@ -81,7 +81,7 @@ export interface Virus {
 }
 
 export type StateChangeEvent = RestartGame | BreathLungs | PumpHeart | DigestFood | DrainPlug | RingAlarm |
-    TransitionToEating | TakeFishFromPile | PlaceVirus | VirusDestroyed | SetCatStatus | SetPeerPlayerState;
+    TransitionToAwake | TransitionToEating | TakeFishFromPile | PlaceVirus | VirusDestroyed | SetPeerPlayerState;
 
 interface RestartGame {
     type: 'RESTART_GAME';
@@ -107,17 +107,16 @@ interface RingAlarm {
     type: 'RING_ALARM';
 }
 
+interface TransitionToAwake {
+    type: 'TRANSITION_TO_AWAKE';
+}
+
 interface TransitionToEating {
     type: 'TRANSITION_TO_EATING';
 }
 
 interface TakeFishFromPile {
     type: 'TAKE_FISH_FROM_PILE';
-}
-
-interface SetCatStatus {
-    type: 'SET_CAT_STATUS';
-    catStatus: CatStatus;
 }
 
 interface PlaceVirus {
@@ -129,11 +128,6 @@ interface PlaceVirus {
 interface VirusDestroyed {
     type: 'DESTROY_VIRUS';
     id: string;
-}
-
-interface SetCatStatus {
-    type: 'SET_CAT_STATUS';
-    catStatus: CatStatus;
 }
 
 interface SetPeerPlayerState {

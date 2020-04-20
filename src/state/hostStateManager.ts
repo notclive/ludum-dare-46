@@ -116,10 +116,7 @@ export default class HostStateManager implements StateManager {
         this._state = {
             ...this._state,
             catStatus: CatStatus.Ill,
-            queuedCatStatus: {
-                status: CatStatus.Awake,
-                time: this.gameTimeNSecondsFromNow(5)
-            },
+            queuedCatStatus: null,
             externalEventTimes: {
                 ...this._state.externalEventTimes,
                 catGotIll: this._state.gameTime
@@ -192,6 +189,9 @@ export default class HostStateManager implements StateManager {
         if (event.type === 'RING_ALARM') {
             this.ringAlarm();
         }
+        if (event.type === 'TRANSITION_TO_AWAKE') {
+            this.transitionToAwake();
+        }
         if (event.type === 'TRANSITION_TO_EATING') {
             this.transitionToEating();
         }
@@ -206,9 +206,6 @@ export default class HostStateManager implements StateManager {
         }
         if (event.type === 'SET_PEER_PLAYER_STATE') {
             this.setPeerPlayerState(event.state);
-        }
-        if (event.type === 'SET_CAT_STATUS') {
-            this.setCatStatus(event.catStatus);
         }
     };
 
@@ -258,6 +255,19 @@ export default class HostStateManager implements StateManager {
         };
     };
 
+    private transitionToAwake = () => {
+        this._state = {
+            ...this._state,
+            catStatus: CatStatus.Awake,
+            externalEventTimes: {
+                ...this._state.externalEventTimes,
+                // Prevents cat from drinking and getting ill as soon as it wakes up.
+                catDrank: this._state.gameTime,
+                catGotIll: this._state.gameTime
+            }
+        };
+    };
+
     private transitionToEating = () => {
         this._state = {
             ...this._state,
@@ -275,8 +285,7 @@ export default class HostStateManager implements StateManager {
                     this.gameTimeNSecondsFromNow(6)
                 ]
             }
-        }
-
+        };
     };
 
     private takeFishFromPile = () => {
@@ -287,13 +296,6 @@ export default class HostStateManager implements StateManager {
                 numberOfFishInPile: this._state.fishes.numberOfFishInPile - 1
             }
         };
-    };
-
-    private setCatStatus = (catStatus: CatStatus) => {
-        this._state = {
-            ...this._state,
-            catStatus: catStatus
-        }
     };
 
     private placeVirus = (id: string, position: GameObjectPosition) => {
@@ -312,18 +314,12 @@ export default class HostStateManager implements StateManager {
     };
 
     private destroyVirus = (id: string) => {
-        const newViruses = this._state.viruses.filter(x => x.id !== id);
+        const stillActiveViruses = this._state.viruses.filter(x => x.id !== id);
         this._state = {
             ...this._state,
-            viruses: newViruses,
-        }
-
-        if (newViruses.length === 0) {
-            this.handleEvent({
-                type: 'SET_CAT_STATUS',
-                catStatus: CatStatus.Awake
-            });
-        }
+            viruses: stillActiveViruses,
+            catStatus: stillActiveViruses.length === 0 ? CatStatus.Awake : CatStatus.Ill
+        };
     };
 
     private reproduceViruses = () => {

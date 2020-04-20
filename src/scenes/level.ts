@@ -168,19 +168,14 @@ export class Level extends SceneBase {
         return this._stateManager;
     }
 
-    private setCatStatus(catStatus: CatStatus) {
-        this.stateManager.handleEvent({
-            type: 'SET_CAT_STATUS',
-            catStatus: catStatus
-        });
-    }
-
-    private wakeUp = () => {
+    private transitionToAwake = () => {
         if (this.music.key === 'sleep') {
             this.setMusic('regular');
         }
-        this.setCatStatus(CatStatus.Awake);
-    }
+        this.stateManager.handleEvent({
+            type: 'TRANSITION_TO_AWAKE'
+        });
+    };
 
     private transitionToEating = () => {
         this.stateManager.handleEvent({
@@ -215,7 +210,7 @@ export class Level extends SceneBase {
             catStatuses: [CatStatus.Asleep],
             optionA: {
                 label: 'wake up',
-                action: this.wakeUp
+                action: this.transitionToAwake
             },
 
             optionB: {
