@@ -3,8 +3,6 @@ import * as Phaser from 'phaser';
 import { Level } from '../scenes/level';
 
 export class OutsideCat extends Phaser.Physics.Arcade.Sprite {
-    private status: CatStatus = CatStatus.Asleep;
-
     constructor(scene: Level, x: number, y: number) {
         super(scene, x, y, 'outside-cat');
 
@@ -60,35 +58,22 @@ export class OutsideCat extends Phaser.Physics.Arcade.Sprite {
     }
 
     wakeUp = () => {
-      if (this.status !== CatStatus.Awake) {
-        this.status = CatStatus.Awake;
-        this.anims.play('awake', true);
-      }
+      this.anims.play('awake', true);
     }
 
     drink = () => {
-      if (this.status === CatStatus.Awake) {
-        this.status = CatStatus.Drinking;
-        this.anims.play('drinking', true);
-      }
+      this.anims.play('drinking', true);
     }
 
     eat = () => {
-      if (this.status !== CatStatus.Eating) {
-        this.status = CatStatus.Eating;
-        this.anims.play('eating', true);
-      }
+      this.anims.play('eating', true);
     }
 
     becomeIll = () => {
-      if (this.status !== CatStatus.Ill) {
-        this.status = CatStatus.Ill;
-        this.anims.play('ill', true);
-      }
+      this.anims.play('ill', true);
     }
 
     die = () => {
-      this.status = CatStatus.Dead;
       this.anims.play('dead', true);
     }
 }

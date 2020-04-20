@@ -9,6 +9,9 @@ export default class OutsideView {
     private viewTopLeftX: number;
     private viewTopLeftY: number;
 
+    private background: Phaser.GameObjects.Rectangle;
+    private status: CatStatus = CatStatus.Asleep;
+
     private cat: OutsideCat;
 
     public constructor(private scene: Level) {
@@ -18,13 +21,17 @@ export default class OutsideView {
     }
 
     update(status: CatStatus) {
-        switch (status) {
-            case CatStatus.Awake: this.cat.wakeUp(); break;
-            case CatStatus.Drinking: this.cat.drink(); break;
-            case CatStatus.Eating: this.cat.eat(); break;
-            case CatStatus.Ill: this.cat.becomeIll(); break;
-            case CatStatus.Dead: this.cat.die(); break;
+        if (status === this.status) {
+            return;
         }
+        switch (status) {
+            case CatStatus.Awake: this.wakeUp(); break;
+            case CatStatus.Drinking: this.drink(); break;
+            case CatStatus.Eating: this.eat(); break;
+            case CatStatus.Ill: this.becomeIll(); break;
+            case CatStatus.Dead: this.die(); break;
+        }
+        this.status = status;
     }
 
     // Outside view takes up 40% of height and width of game, and is positioned in bottom right corner.
@@ -37,7 +44,11 @@ export default class OutsideView {
 
     private drawBorder = () => {
         const {x, y} = this.viewPositionToGamePosition(0.5, 0.5);
-        this.scene.add.rectangle(x, y, this.viewWidth, this.viewHeight, 0xFF696D);
+        this.background = this.scene.add.rectangle(x, y, this.viewWidth, this.viewHeight, 0xFF696D);
+    };
+
+    private updateBackgroundColour = (colour: number) => {
+        this.background.setFillStyle(colour);
     };
 
     private drawCat = () => {
@@ -50,4 +61,29 @@ export default class OutsideView {
         x: this.viewTopLeftX + x * this.viewWidth,
         y: this.viewTopLeftY + y * this.viewHeight
     });
+
+    private wakeUp = () => {
+        this.updateBackgroundColour(0xFF0000);
+        this.cat.wakeUp();
+    };
+
+    private drink = () => {
+        this.updateBackgroundColour(0x00FF00);
+        this.cat.drink();
+    };
+
+    private eat = () => {
+        this.updateBackgroundColour(0x0000FF);
+        this.cat.eat();
+    };
+
+    private becomeIll = () => {
+        this.updateBackgroundColour(0x2D2210);
+        this.cat.becomeIll();
+    };
+
+    private die = () => {
+        this.updateBackgroundColour(0x888888);
+        this.cat.die();
+    };
 }
