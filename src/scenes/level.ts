@@ -77,11 +77,6 @@ export class Level extends SceneBase {
         this.water = new Water(this, catBackground);
         this.plug = new Plug(this, 200, 910);
 
-        this.physics.add.collider(this.player, this.heart);
-        this.physics.add.collider(this.player, this.lungs);
-        this.physics.add.collider(this.player, this.plug);
-        this.physics.add.collider(this.player, this.alarm);
-
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
 
