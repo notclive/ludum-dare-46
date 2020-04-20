@@ -38,11 +38,11 @@ export const singlePlayerConfig: GameConfig = {
     baseWalkingSpeed: 200,
     waterWalkingSpeed: 100,
 
-    virusBaseSpeed: 75,
-    virusWaterSpeed: 50,
+    virusBaseSpeed: 100,
+    virusWaterSpeed: 75,
 
-    bloodCellsBaseSpeed: 55,
-    bloodCellsWaterSpeed: 40,
+    bloodCellsBaseSpeed: 70,
+    bloodCellsWaterSpeed: 50,
 
     ticksForVirusToReproduce: 6 * 60, // 60FPS
 
@@ -64,11 +64,11 @@ export const multiPlayerConfig: GameConfig = {
     baseWalkingSpeed: 190,
     waterWalkingSpeed: 95,
 
-    virusBaseSpeed: 75,
-    virusWaterSpeed: 50,
+    virusBaseSpeed: 100,
+    virusWaterSpeed: 75,
 
-    bloodCellsBaseSpeed: 55,
-    bloodCellsWaterSpeed: 40,
+    bloodCellsBaseSpeed: 70,
+    bloodCellsWaterSpeed: 50,
 
     ticksForVirusToReproduce: 5 * 60, // 60FPS
 
