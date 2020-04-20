@@ -64,18 +64,18 @@ export class Level extends SceneBase {
         this.player = new Player(this, true, this.water, 350, 610);
         this.externalPlayer = new Player(this, false, this.water, 0, 0);
 
-        this.mouth = new Mouth(this, 350, 360);
+        this.mouth = new Mouth(this, 350, 350);
 
-        this.heart = new Heart(this, 420, 470);
+        this.heart = new Heart(this, 460, 550);
         this.healthBar = new StatBar(this, 700, 40, 'Blood');
 
-        this.lungs = new Lungs(this, 235, 545);
+        this.lungs = new Lungs(this, 240, 540);
         this.breatheBar = new StatBar(this, 700, 80, 'O2');
 
-        this.stomach = new Stomach(this, 500, 750);
+        this.stomach = new Stomach(this, 500, 780);
         this.foodBar = new StatBar(this, 700, 120, 'Food');
 
-        this.brain = new Brain(this, 240, 260, this.player);
+        this.brain = new Brain(this, 280, 240, this.player);
         this.alarm = new Alarm(this, 485, 335);
 
         this.plug = new Plug(this, 200, 910);
