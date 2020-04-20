@@ -25,7 +25,7 @@ export const singlePlayerConfig: GameConfig = {
     bloodLossPerTick: 0.1,
     o2LossPerTick: 0.05,
     foodLossPerTick: 0.01,
-    waterRisePerTick: 0.125,
+    waterRisePerTick: 0.03,
 
     bloodRisePerPump: 10,
     o2RisePerTick: 0.5,
@@ -38,8 +38,8 @@ export const singlePlayerConfig: GameConfig = {
     virusBaseSpeed: 75,
     virusWaterSpeed: 50,
 
-    bloodCellsBaseSpeed: 65,
-    bloodCellsWaterSpeed: 45,
+    bloodCellsBaseSpeed: 55,
+    bloodCellsWaterSpeed: 40,
 
     ticksForVirusToReproduce: 6 * 60, // 60FPS
 };
@@ -48,7 +48,7 @@ export const multiPlayerConfig: GameConfig = {
     bloodLossPerTick: 0.2,
     o2LossPerTick: 0.1,
     foodLossPerTick: 0.02,
-    waterRisePerTick: 0.25,
+    waterRisePerTick: 0.06,
 
     bloodRisePerPump: 10,
     o2RisePerTick: 0.5,
@@ -61,8 +61,8 @@ export const multiPlayerConfig: GameConfig = {
     virusBaseSpeed: 75,
     virusWaterSpeed: 50,
 
-    bloodCellsBaseSpeed: 65,
-    bloodCellsWaterSpeed: 45,
+    bloodCellsBaseSpeed: 55,
+    bloodCellsWaterSpeed: 40,
 
     ticksForVirusToReproduce: 5 * 60, // 60FPS
 };
