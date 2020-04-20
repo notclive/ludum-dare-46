@@ -19,13 +19,16 @@ export interface GameConfig {
     bloodCellsWaterSpeed: number;
 
     ticksForVirusToReproduce: number;
+
+    difficultyIncreasePerTick: number;
+    hardModeStartTime: number;
 }
 
 export const singlePlayerConfig: GameConfig = {
-    bloodLossPerTick: 0.1,
-    o2LossPerTick: 0.05,
-    foodLossPerTick: 0.015,
-    waterRisePerTick: 0.125,
+    bloodLossPerTick: 0.07,
+    o2LossPerTick: 0.038,
+    foodLossPerTick: 0.014,
+    waterRisePerTick: 0.08,
 
     bloodRisePerPump: 10,
     o2RisePerTick: 0.5,
@@ -42,13 +45,17 @@ export const singlePlayerConfig: GameConfig = {
     bloodCellsWaterSpeed: 40,
 
     ticksForVirusToReproduce: 6 * 60, // 60FPS
+
+    difficultyIncreasePerTick: 0.0003,
+    hardModeStartTime: 30 * 60, // 60 FPS
+
 };
 
 export const multiPlayerConfig: GameConfig = {
-    bloodLossPerTick: 0.2,
-    o2LossPerTick: 0.1,
-    foodLossPerTick: 0.03,
-    waterRisePerTick: 0.25,
+    bloodLossPerTick: 0.135,
+    o2LossPerTick: 0.072,
+    foodLossPerTick: 0.027,
+    waterRisePerTick: 0.13,
 
     bloodRisePerPump: 10,
     o2RisePerTick: 0.5,
@@ -65,4 +72,7 @@ export const multiPlayerConfig: GameConfig = {
     bloodCellsWaterSpeed: 40,
 
     ticksForVirusToReproduce: 5 * 60, // 60FPS
+
+    difficultyIncreasePerTick: 0.0003,
+    hardModeStartTime: 30 * 60, // 60 FPS
 };

@@ -38,13 +38,14 @@ export default class HostStateManager implements StateManager {
             ...this._state,
             gameTime: this._state.gameTime + 1,
             gameOver: this.isGameOver(),
-            heart: Math.max(this._state.heart - this._gameConfig.bloodLossPerTick, 0),
-            lungs: Math.max(this._state.lungs - this._gameConfig.o2LossPerTick, 0),
-            fullness: Math.max(this._state.fullness - this._gameConfig.foodLossPerTick, 0),
+            heart: Math.max(this._state.heart - (this._gameConfig.bloodLossPerTick * this._state.hardModeMultiplier), 0),
+            lungs: Math.max(this._state.lungs - (this._gameConfig.o2LossPerTick * this._state.hardModeMultiplier), 0),
+            fullness: Math.max(this._state.fullness - (this._gameConfig.foodLossPerTick * this._state.hardModeMultiplier), 0),
             waterLevel: this.tickWaterLevel()
         };
         this.checkForQueuedEvents();
         this.reproduceViruses();
+        this.setHardModeMultiplier();
         if (this.connection) {
             this.sendStateToPeer(this.connection)
         }
@@ -59,7 +60,7 @@ export default class HostStateManager implements StateManager {
 
     private tickWaterLevel = () => {
         return this._state.catStatus === CatStatus.Drinking
-            ? Math.min(this._state.waterLevel + this._gameConfig.waterRisePerTick, 100)
+            ? Math.min(this._state.waterLevel + (this._gameConfig.waterRisePerTick * this._state.hardModeMultiplier), 100)
             : this._state.waterLevel;
     };
 
@@ -90,7 +91,7 @@ export default class HostStateManager implements StateManager {
             return;
         }
         const catShouldGetIll = !this._state.externalEventTimes.catGotIll
-            || this._state.externalEventTimes.catGotIll < this.gameTimeNSecondsFromNow(-60);
+            || this._state.externalEventTimes.catGotIll < this.gameTimeNSecondsFromNow(-35);
         if (catShouldGetIll) {
             this.transitionToIll();
             return;
@@ -340,6 +341,13 @@ export default class HostStateManager implements StateManager {
                 // Make original virus reproduce again, a little later than the new one to stop batching.
                 virus.reproducesAt = this._state.gameTime + (this._gameConfig.ticksForVirusToReproduce * 1.7);
             });
+    };
+
+    private setHardModeMultiplier = () => {
+        const timeSinceHardMode = this._state.gameTime - this._gameConfig.hardModeStartTime;
+        if (timeSinceHardMode > 0) {
+            this._state.hardModeMultiplier += this._gameConfig.difficultyIncreasePerTick;
+        }
     };
 
     private setPeerPlayerState = (peerPlayer: PlayerState) => {

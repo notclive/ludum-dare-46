@@ -28,6 +28,8 @@ export interface GameState {
     speeds: SpeedState;
     organInteractionTimes: OrganInteractionTimes;
     externalEventTimes: ExternalEventTimes;
+
+    hardModeMultiplier: number;
 }
 
 export interface PlayerState {
@@ -169,6 +171,7 @@ export const INITIAL_STATE: GameState = {
     fullness: 100,
     waterLevel: 0,
     catStatus: CatStatus.Asleep,
+    hardModeMultiplier: 1,
     // These are all set my the host using the config when the gameplay starts
     speeds: {
         baseWalkingSpeed: null,
