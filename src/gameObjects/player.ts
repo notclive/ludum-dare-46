@@ -88,7 +88,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.anims.play(key, true);
     }
 
-    isTouching(object: MoveableGameObject) {
-        return this.scene.bIsTouchingA(this, object);
+    public isTouching(object: MoveableGameObject) {
+        return this.scene.physics.overlap(this, object);
     }
 }

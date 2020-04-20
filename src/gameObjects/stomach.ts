@@ -12,7 +12,13 @@ export class Stomach extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, 'stomach');
         scene.physics.world.enable(this, PHASER_STATIC_BODY);
         scene.add.existing(this);
+        this.reduceHitbox();
     }
+
+    private reduceHitbox = () => {
+        this.body.setSize(125, 145);
+        this.body.setOffset(55, 35);
+    };
 
     public update(state: GameState) {
         this.shaker.shakeIfUrgent(this.calculateUrgency(state));
