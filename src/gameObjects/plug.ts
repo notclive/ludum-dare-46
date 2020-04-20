@@ -52,4 +52,8 @@ export class Plug extends Phaser.Physics.Arcade.Sprite {
         this.shaker.shakeIfUrgent(state.waterLevel * 2);
         this.interactionManager.update(state);
     }
+
+    public stopSounds() {
+        this.interactionManager.stopSounds();
+    }
 }

@@ -58,6 +58,10 @@ export class InteractionManager {
         this.spaceBarWasDownOnLastTick = this.cursors.space.isDown;
     };
 
+    public stopSounds = () => {
+        this.interactionSound?.stop();
+    }
+
     private showOrHideInteractionHint = (playerIsTouchingOrgan: boolean) => {
         if (playerIsTouchingOrgan && !this.playerHasInteractedWithThisOrgan) {
             this.drawInteractionHint();
@@ -105,7 +109,7 @@ export class InteractionManager {
             if (interactionIsCurrentlyHappening && !this.interactionSound?.isPlaying) {
                 const key = this.interactionAnimationConfiguration.interactionSound;
                 this.interactionSound = this.player.scene.sound.add(key, {loop: true}) as Phaser.Sound.WebAudioSound;
-                this.interactionSound.setVolume(2);
+                this.interactionSound.setVolume(1);
                 this.interactionSound.play();
             }
 
