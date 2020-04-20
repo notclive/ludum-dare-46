@@ -33,6 +33,9 @@ export class WhiteBloodCell extends Sprite {
         this.x = whiteBloodCellState.position.x;
         this.y = whiteBloodCellState.position.y;
         this.setVisible(whiteBloodCellState.enabled);
+        if (!whiteBloodCellState.enabled) {
+            return;
+        }
         const closestTarget = this.scene.physics.closest(this, this.targets.getChildren()) as Sprite;
         if (closestTarget
             && this.scene.getDistanceBetweenBandACentres(this, closestTarget) < this.displayHeight
