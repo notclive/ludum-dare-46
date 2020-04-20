@@ -2,6 +2,7 @@ import Sprite = Phaser.GameObjects.Sprite;
 import GameObject = Phaser.GameObjects.GameObject;
 import {Player} from './player';
 import {GameState} from '../state/stateManager';
+import OrganBase from './organBase';
 
 export type InteractionType = 'PUMP' | 'HOLD' | 'PRESS';
 
@@ -17,7 +18,7 @@ export class InteractionManager {
     private pumpSound: Phaser.Sound.WebAudioSound;
 
     public constructor(
-        private organ: Sprite,
+        private organ: OrganBase,
         private player: Player,
         private interactionType: InteractionType,
         private notifyParentOfInteraction: () => void,
@@ -52,7 +53,7 @@ export class InteractionManager {
 
     public update = (state: GameState) => {
         const playerIsTouchingOrgan = this.player.isTouching(this.organ);
-        this.showOrHideInteractionHint(playerIsTouchingOrgan);
+        this.showOrHideInteractionHint(playerIsTouchingOrgan, this.organ.interactionIsEnabled);
         this.pickAnimationsAndSounds(state);
         if (playerIsTouchingOrgan) {
             this.checkForInteraction();
@@ -64,8 +65,8 @@ export class InteractionManager {
         this.holdSound?.stop();
     }
 
-    private showOrHideInteractionHint = (playerIsTouchingOrgan: boolean) => {
-        if (playerIsTouchingOrgan && !this.playerHasInteractedWithThisOrgan) {
+    private showOrHideInteractionHint = (playerIsTouchingOrgan: boolean, interactionIsEnabled: boolean) => {
+        if (playerIsTouchingOrgan && !this.playerHasInteractedWithThisOrgan && interactionIsEnabled) {
             this.drawInteractionHint();
         } else {
             this.destroyInteractionHint();

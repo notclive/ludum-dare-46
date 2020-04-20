@@ -9,8 +9,9 @@ import {CatStatus} from './catStatus';
 import {InteractionManager} from './interactionManager';
 import {GameState} from '../state/stateManager';
 import {OrganShaker} from './organShaker';
+import OrganBase from './organBase';
 
-export class Brain extends Phaser.Physics.Arcade.Sprite {
+export class Brain extends OrganBase {
 
     private readonly shaker = new OrganShaker(this);
     private readonly interactionManager = new InteractionManager(

@@ -5,8 +5,9 @@ import {OrganShaker} from './organShaker';
 import {InteractionManager} from './interactionManager';
 import {Level} from '../scenes/level';
 import {GameState} from '../state/stateManager';
+import OrganBase from './organBase';
 
-export class Lungs extends Phaser.Physics.Arcade.Sprite {
+export class Lungs extends OrganBase {
 
     private readonly shaker = new OrganShaker(this);
     private readonly interactionManager = new InteractionManager(

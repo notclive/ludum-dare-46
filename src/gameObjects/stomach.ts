@@ -3,8 +3,9 @@ import {PHASER_STATIC_BODY} from '../consts';
 import {Level} from '../scenes/level';
 import {OrganShaker} from './organShaker';
 import {GameState} from '../state/stateManager';
+import OrganBase from './organBase';
 
-export class Stomach extends Phaser.Physics.Arcade.Sprite {
+export class Stomach extends OrganBase {
 
     private readonly shaker = new OrganShaker(this);
 

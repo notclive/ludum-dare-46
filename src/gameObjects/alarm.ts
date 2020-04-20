@@ -4,8 +4,9 @@ import {OrganShaker} from './organShaker';
 import {GameState, Virus} from '../state/stateManager';
 import {InteractionManager} from './interactionManager';
 import {Level} from '../scenes/level';
+import OrganBase from './organBase';
 
-export class Alarm extends Phaser.Physics.Arcade.Sprite {
+export class Alarm extends OrganBase {
 
     private readonly shaker = new OrganShaker(this);
     private readonly interactionManager = new InteractionManager(
@@ -35,6 +36,7 @@ export class Alarm extends Phaser.Physics.Arcade.Sprite {
     }
 
     public update(state: GameState) {
+        this.interactionIsEnabled = state.viruses.length > 0;
         const urgency = state.whiteBloodCell.enabled ? 0 : state.viruses.length * 40;
         this.shaker.shakeIfUrgent(urgency);
         this.interactionManager.update(state)
