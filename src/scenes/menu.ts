@@ -7,6 +7,9 @@ export class Menu extends SceneBase {
 
     create() {
         this.add.image(640, 512, 'background');
+        this.music = this.sound.add('regular', {loop: true}) as Phaser.Sound.WebAudioSound;
+        this.music.play();
+        this.sound.pauseOnBlur = false;
 
         const title = this.add.text(0, 150, 'ginger\'s day in', {fontSize: '50px', color: BUTTON_BACKGROUND_COLOUR});
         this.centreObjectX(title);
@@ -16,10 +19,11 @@ export class Menu extends SceneBase {
     }
 
     private startSingleplayerGame = () => {
+        this.fadeOutMusic(this.music, 1000);
         this.scene.start('Level', new HostStateManager());
     };
 
     private startMultiplayerSetup = () => {
-        this.scene.start('MultiplayerSetup');
+        this.scene.start('MultiplayerSetup', this.music);
     };
 }

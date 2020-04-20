@@ -20,7 +20,8 @@ export class MultiplayerSetup extends SceneBase {
     private loading: Text;
     private peer: PeerDefinition;
 
-    create() {
+    create(music: Phaser.Sound.WebAudioSound) {
+        this.music = music;
         this.add.image(640, 512, 'background');
 
         const title = this.add.text(0, 150, 'multiplayer setup', {fontSize: '50px', color: BUTTON_BACKGROUND_COLOUR});
@@ -91,6 +92,7 @@ export class MultiplayerSetup extends SceneBase {
     };
 
     private startGameWithStateManager = (stateManager: StateManager) => {
+        this.fadeOutMusic(this.music, 1000);
         this.scene.start('Level', stateManager);
     };
 

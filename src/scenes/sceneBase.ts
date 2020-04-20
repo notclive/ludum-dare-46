@@ -2,6 +2,7 @@ export type MoveableGameObject =
     Phaser.GameObjects.Sprite | Phaser.GameObjects.Text | Phaser.GameObjects.Image | Phaser.GameObjects.Shape;
 
 export class SceneBase extends Phaser.Scene {
+    protected music: Phaser.Sound.WebAudioSound;
 
     public get gameWidth(): number {
         return this.sys.game.config.width as number;
@@ -44,5 +45,37 @@ export class SceneBase extends Phaser.Scene {
     public centreObject(object: MoveableGameObject) {
         this.centreObjectX(object);
         this.centreObjectY(object);
+    }
+
+    protected setNewMusicWithFade = (newMusic: Phaser.Sound.WebAudioSound, fadeTimeMillis: number) => {
+        if (this.music) {
+            this.fadeOutMusic(this.music, fadeTimeMillis);
+        }
+        this.fadeInMusic(newMusic, fadeTimeMillis);
+        this.music = newMusic;
+    };
+
+    protected fadeOutMusic(music: Phaser.Sound.WebAudioSound, timeInMillis: number) {
+        const stages = 20;
+        const startingVolume = music.volume;
+        for (let i = 0; i < stages; i++) {
+            const timeOut = i * timeInMillis / stages;
+            const volume = startingVolume * (stages - i) / stages;
+            setTimeout(() => music.setVolume(volume), timeOut);
+        }
+        setTimeout(() => music.stop(), timeInMillis);
+    }
+
+    protected fadeInMusic(music: Phaser.Sound.WebAudioSound, timeInMillis: number) {
+        const stages = 20;
+        const desiredVolume = music.volume;
+        music.setVolume(0);
+        music.play();
+        for (let i = 0; i < stages; i++) {
+            const timeOut = i * timeInMillis / stages;
+            const volume = desiredVolume * i / stages;
+            setTimeout(() => music.setVolume(volume), timeOut);
+        }
+        setTimeout(() => music.setVolume(desiredVolume), timeInMillis);
     }
 }

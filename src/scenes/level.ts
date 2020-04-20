@@ -49,6 +49,7 @@ export class Level extends SceneBase {
     create(stateManager: StateManager) {
         this._stateManager = stateManager;
         this.add.image(this.gameWidth / 2, this.gameHeight / 2, 'background');
+        this.setMusic('sleep');
 
         const catBackground = this.add.image(350, 510, 'catBackground');
         catBackground.scale = 1.15;
@@ -86,6 +87,7 @@ export class Level extends SceneBase {
 
     update() {
         if (this.stateManager.state.gameOver) {
+            this.fadeOutMusic(this.music, 1000);
             // I'm hoping that starting another scene will tear down everything in this scene.
             this.scene.start('GameOver', this.stateManager);
             return;
@@ -136,6 +138,10 @@ export class Level extends SceneBase {
     }
 
     private updateGameObjectsFromState() {
+        // Must update the music before updating the viruses, as it checks how many
+        // there currently are compared to how many there will be
+        this.updateMusicFromState();
+
         this.updateExternalPlayerFromState(this.stateManager.otherPlayer);
         this.fishes.update(this.stateManager.state.fishes, this.stateManager.state.gameTime);
         this.alarm.update(this.stateManager.state);
@@ -177,6 +183,9 @@ export class Level extends SceneBase {
     }
 
     private wakeUp = () => {
+        if (this.music.key === 'sleep') {
+            this.setMusic('regular');
+        }
         this.setCatStatus(CatStatus.Awake);
         this.drinkPeriodically();
 
@@ -219,6 +228,24 @@ export class Level extends SceneBase {
             this.wakeUp();
         }, generateFishDurationInSeconds * 1000)
     }
+
+    private updateMusicFromState = () => {
+        const numberOfExistingViruses = this.viruses.getChildren().length;
+        const numberOfNewViruses = this.stateManager.state.viruses.length;
+        if (numberOfExistingViruses === 0 && numberOfNewViruses > 0) {
+            this.setMusic('fast', 500);
+        }
+        if (numberOfExistingViruses > 0 && numberOfNewViruses === 0) {
+            this.setMusic('regular', 1000);
+        }
+    };
+
+    private setMusic = (key: 'sleep' | 'regular' | 'fast', fadeTimeMillis = 4000) => {
+        if (!this.music || this.music.key !== key) {
+            const music = this.sound.add(key, {loop: true}) as Phaser.Sound.WebAudioSound;
+            this.setNewMusicWithFade(music, fadeTimeMillis);
+        }
+    };
 
     public mapCatStatusToDecision = (status: CatStatus) => {
         return this.decisions.find(d => d.catStatuses.includes(status));

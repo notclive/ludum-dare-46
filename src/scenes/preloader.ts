@@ -19,6 +19,9 @@ import player2WithFish from '../assets/players/player2-with-fish.png';
 import outsideCat from '../assets/outsideView/outside-cat.png';
 import catBackground from '../assets/cat-main.png';
 import spacebar from '../assets/spacebar.png';
+import fastMusic from '../assets/music/fast.mp3';
+import regularMusic from '../assets/music/regular.mp3';
+import sleepMusic from '../assets/music/sleep.mp3';
 import { BUTTON_BACKGROUND_COLOUR_HEX } from '../menuObjects/menuConstants';
 
 const BAR_WIDTH = 320;
@@ -114,6 +117,10 @@ export class Preloader extends SceneBase {
             spacebar,
             { frameWidth: 122, frameHeight: 49 }
         );
+
+        this.load.audio('fast', [fastMusic]);
+        this.load.audio('regular', [regularMusic]);
+        this.load.audio('sleep', [sleepMusic]);
     }
 
     private setupBackground = () => {
