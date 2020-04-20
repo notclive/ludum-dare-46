@@ -20,6 +20,7 @@ import outsideCat from '../assets/outsideView/outside-cat.png';
 import decisionBox from '../assets/decisions.png';
 import catBackground from '../assets/cat-main.png';
 import spacebar from '../assets/spacebar.png';
+import mute from '../assets/mute-button-sprite.png';
 import fastMusic from '../assets/music/fast.mp3';
 import regularMusic from '../assets/music/regular.mp3';
 import sleepMusic from '../assets/music/sleep.mp3';
@@ -124,6 +125,10 @@ export class Preloader extends SceneBase {
         this.load.spritesheet('spacebar',
             spacebar,
             { frameWidth: 122, frameHeight: 49 }
+        );
+        this.load.spritesheet('mute',
+            mute,
+            { frameWidth: 40, frameHeight: 40 }
         );
 
         this.load.audio('fast', [fastMusic]);

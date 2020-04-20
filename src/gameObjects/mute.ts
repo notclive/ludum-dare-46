@@ -4,21 +4,21 @@ import { SceneBase } from '../scenes/sceneBase';
 
 export class Mute extends Phaser.Physics.Arcade.Sprite {
     public constructor(public scene: SceneBase, x: number, y: number, private _mute: boolean) {
-        super(scene, x, y, 'player2');
+        super(scene, x, y, 'mute');
 
         this.scene.physics.world.enable(this, PHASER_STATIC_BODY);
         this.scene.add.existing(this);
 
         this.scene.anims.create({
-            key: 'muted',
-            frames: this.scene.anims.generateFrameNumbers('player2', { start: 0, end: 0 }),
+            key: 'unmuted',
+            frames: this.scene.anims.generateFrameNumbers('mute', { start: 0, end: 0 }),
             frameRate: 1,
             repeat: -1
         });
 
         this.scene.anims.create({
-            key: 'unmuted',
-            frames: this.scene.anims.generateFrameNumbers('player2', { start: 1, end: 1 }),
+            key: 'muted',
+            frames: this.scene.anims.generateFrameNumbers('mute', { start: 1, end: 1 }),
             frameRate: 1,
             repeat: -1
         });
