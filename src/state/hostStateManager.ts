@@ -41,7 +41,7 @@ export default class HostStateManager implements StateManager {
             heart: Math.max(this._state.heart - this._gameConfig.bloodLossPerTick, 0),
             lungs: Math.max(this._state.lungs - this._gameConfig.o2LossPerTick, 0),
             fullness: Math.max(this._state.fullness - this._gameConfig.foodLossPerTick, 0),
-            waterLevel: Math.min(this._state.waterLevel + this._gameConfig.waterRisePerTick, 100)
+            waterLevel: this.tickWaterLevel()
         };
         this.reproduceViruses();
         if (this.connection) {
@@ -55,6 +55,12 @@ export default class HostStateManager implements StateManager {
             || this._state.lungs === 0
             || this._state.fullness === 0;
     }
+
+    private tickWaterLevel = () => {
+        return this._state.catStatus === CatStatus.Drinking
+            ? Math.min(this._state.waterLevel + this._gameConfig.waterRisePerTick, 100)
+            : this._state.waterLevel;
+    };
 
     public set myPlayer(hostPlayer: PlayerState) {
         this._state = {
