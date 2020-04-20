@@ -18,6 +18,14 @@ export class DecisionBox extends Phaser.GameObjects.Sprite {
 
         this.setVisible(false);
         this.text.setVisible(false);
+
+        this.scene.anims.create({
+            key: 'decision-box-pulse',
+            frames: this.scene.anims.generateFrameNumbers('decision-box', { start: 0, end: 1 }),
+            frameRate: 3,
+            repeat: -1
+        });
+        this.anims.play('decision-box-pulse', true);
     }
 
     show() {
