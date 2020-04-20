@@ -1,6 +1,6 @@
 import * as Phaser from 'phaser';
 import { Level } from '../scenes/level';
-import { MoveableGameObject } from '../scenes/sceneBase';
+import {MoveableGameObject, SceneBase} from '../scenes/sceneBase';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
 

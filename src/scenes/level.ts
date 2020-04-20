@@ -21,7 +21,6 @@ import { CatStatus } from '../gameObjects/catStatus';
 export class Level extends SceneBase {
 
     private _stateManager: StateManager;
-    private player: Player;
     private externalPlayer: Phaser.GameObjects.Sprite;
     private mouth: Mouth;
     private heart: Heart;
@@ -45,6 +44,8 @@ export class Level extends SceneBase {
     private drinkingInterval: NodeJS.Timeout;
     private drinkingTimeout: NodeJS.Timeout;
     private illnessInterval: NodeJS.Timeout;
+
+    public player: Player;
 
     create(stateManager: StateManager) {
         this._stateManager = stateManager;
@@ -174,11 +175,6 @@ export class Level extends SceneBase {
     }
 
     private handleSpaceBar() {
-        if (this.bIsTouchingA(this.player, this.heart)) {
-            if (!this.spaceBarDown) {
-                this.beatHeart();
-            }
-        }
         if (this.bIsTouchingA(this.player, this.lungs)) {
             if (this.cursors.space.getDuration() > 200) {
                 this.pumpLungs();
@@ -200,12 +196,6 @@ export class Level extends SceneBase {
             }
         }
     }
-
-    private beatHeart = () => {
-        this.stateManager.handleEvent({
-            type: 'BEAT_HEART'
-        });
-    };
 
     private pumpLungs = () => {
         this.stateManager.handleEvent({
