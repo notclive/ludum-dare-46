@@ -23,6 +23,7 @@ import spacebar from '../assets/spacebar.png';
 import fastMusic from '../assets/music/fast.mp3';
 import regularMusic from '../assets/music/regular.mp3';
 import sleepMusic from '../assets/music/sleep.mp3';
+import waterSound from '../assets/sounds/water.mp3';
 import { BUTTON_BACKGROUND_COLOUR_HEX } from '../menuObjects/menuConstants';
 
 const BAR_WIDTH = 320;
@@ -126,6 +127,7 @@ export class Preloader extends SceneBase {
         this.load.audio('fast', [fastMusic]);
         this.load.audio('regular', [regularMusic]);
         this.load.audio('sleep', [sleepMusic]);
+        this.load.audio('water', [waterSound]);
     }
 
     private setupBackground = () => {

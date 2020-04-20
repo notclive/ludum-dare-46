@@ -13,6 +13,7 @@ export class InteractionManager {
     private playerHasInteractedWithThisOrgan = false;
     private spaceBarWasDownOnLastTick = false;
     private interactionHint: GameObject;
+    private interactionSound: Phaser.Sound.WebAudioSound;
 
     public constructor(
         private organ: Sprite,
@@ -100,6 +101,17 @@ export class InteractionManager {
                 ? this.interactionAnimationConfiguration.interactionAnimation
                 : this.interactionAnimationConfiguration.normalAnimation;
             this.organ.anims.play(animation, true);
+
+            if (interactionIsCurrentlyHappening && !this.interactionSound?.isPlaying) {
+                const key = this.interactionAnimationConfiguration.interactionSound;
+                this.interactionSound = this.player.scene.sound.add(key, {loop: true}) as Phaser.Sound.WebAudioSound;
+                this.interactionSound.setVolume(2);
+                this.interactionSound.play();
+            }
+
+            if (!interactionIsCurrentlyHappening && this.interactionSound && !this.interactionSound.isPaused) {
+                this.interactionSound.pause();
+            }
         }
     };
 
@@ -137,4 +149,5 @@ interface InteractionAnimationConfiguration {
     pickInteractionTime: (OrganInteractionTimes) => number;
     normalAnimation: string;
     interactionAnimation: string;
+    interactionSound: string;
 }
