@@ -92,7 +92,7 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
         this.buttonA?.hide();
         this.buttonB?.hide();
 
-        this.decisionBox = new DecisionBox(this.scene, this.x, 20, this.currentDecision);
+        this.decisionBox = new DecisionBox(this.scene, 750, 350, this.currentDecision);
         this.buttonA = new DecisionButton(this.scene, this.x - 30, this.y, 'buttonA');
         this.buttonB = new DecisionButton(this.scene, this.x + 30, this.y - 30, 'buttonB');
     }

@@ -21,12 +21,6 @@ export class Viruses extends StaticGroup {
         });
     }
 
-    public createNewVirus = () => {
-        const catMouthX = 340;
-        const catMouthY = 340;
-        this.createVirus({x: catMouthX, y: catMouthY});
-    };
-
     public update = (viruses: Virus[]) => {
         this.destroyVirusesThatNoLongerExist(viruses);
         this.getVirusSpritePair(viruses)
@@ -59,14 +53,6 @@ export class Viruses extends StaticGroup {
             virus.position.x += virus.velocity.x * 1/60;
             virus.position.y += virus.velocity.y * 1/60;
             return virus;
-        });
-    };
-
-    private createVirus = (position: GameObjectPosition) => {
-        this.scene.stateManager.handleEvent({
-            type: 'PLACE_VIRUS',
-            id: this.scene.stateManager.generateGloballyUniqueId(),
-            position: position,
         });
     };
 

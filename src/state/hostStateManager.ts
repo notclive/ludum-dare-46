@@ -65,6 +65,7 @@ export default class HostStateManager implements StateManager {
 
     private checkForQueuedEvents = () => {
         this.maybeTransitionToQueuedState();
+        this.maybeTransitionAwayFromAwake();
         this.generateAnyQueuedFish();
     };
 
@@ -76,6 +77,57 @@ export default class HostStateManager implements StateManager {
                 queuedCatStatus: undefined
             }
         }
+    };
+
+    private maybeTransitionAwayFromAwake = () => {
+        if (this._state.catStatus !== CatStatus.Awake) {
+            return;
+        }
+        const catShouldDrink = !this._state.externalEventTimes.catDrank
+            || this._state.externalEventTimes.catDrank < this.gameTimeNSecondsFromNow(-10);
+        if (catShouldDrink) {
+            this.transitionToDrinking();
+            return;
+        }
+        const catShouldGetIll = !this._state.externalEventTimes.catGotIll
+            || this._state.externalEventTimes.catGotIll < this.gameTimeNSecondsFromNow(-60);
+        if (catShouldGetIll) {
+            this.transitionToIll();
+            return;
+        }
+    };
+
+    private transitionToDrinking = () => {
+        this._state = {
+            ...this._state,
+            catStatus: CatStatus.Drinking,
+            queuedCatStatus: {
+                status: CatStatus.Awake,
+                time: this.gameTimeNSecondsFromNow(3)
+            },
+            externalEventTimes: {
+                ...this._state.externalEventTimes,
+                catDrank: this._state.gameTime
+            }
+        }
+    };
+
+    private transitionToIll = () => {
+        this._state = {
+            ...this._state,
+            catStatus: CatStatus.Ill,
+            queuedCatStatus: {
+                status: CatStatus.Awake,
+                time: this.gameTimeNSecondsFromNow(5)
+            },
+            externalEventTimes: {
+                ...this._state.externalEventTimes,
+                catGotIll: this._state.gameTime
+            }
+        };
+        const catMouthX = 340;
+        const catMouthY = 340;
+        this.placeVirus(this.generateGloballyUniqueId(), {x: catMouthX, y: catMouthY});
     };
 
     private generateAnyQueuedFish = () => {
