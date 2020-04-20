@@ -151,7 +151,7 @@ export class Level extends SceneBase {
         this.breatheBar.update(this.stateManager.state.lungs);
         this.plug.update(this.stateManager.state);
         this.water.update(this.stateManager.state.waterLevel);
-        this.stomach.update();
+        this.stomach.update(this.stateManager.state);
         this.foodBar.update(this.stateManager.state.fullness);
         this.brain.update(this.stateManager.state);
         this.outsideView.update(this.stateManager.state.catStatus);

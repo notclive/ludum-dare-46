@@ -1,8 +1,12 @@
 import * as Phaser from 'phaser';
 import {PHASER_STATIC_BODY} from '../consts';
 import {Level} from '../scenes/level';
+import {OrganShaker} from './OrganShaker';
+import {GameState} from '../state/stateManager';
 
 export class Stomach extends Phaser.Physics.Arcade.Sprite {
+
+    private readonly shaker = new OrganShaker(this);
 
     public constructor(public scene: Level, x: number, y: number) {
         super(scene, x, y, 'stomach');
@@ -10,9 +14,16 @@ export class Stomach extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
     }
 
-    public update() {
+    public update(state: GameState) {
+        this.shaker.shakeIfUrgent(this.calculateUrgency(state));
         this.maybeDropFish();
     }
+
+    private calculateUrgency = ({fullness}: GameState) => {
+        return this.scene.stateManager.myPlayer.holdingFish
+            ? 100 - fullness
+            : 0;
+    };
 
     private maybeDropFish = () => {
         if (this.scene.player.isTouching(this)) {
