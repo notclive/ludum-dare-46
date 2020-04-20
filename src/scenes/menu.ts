@@ -15,7 +15,7 @@ export class Menu extends SceneBase {
         this.centreObjectX(title);
 
         new MenuButton(this, 440, 'singleplayer', this.startSingleplayerGame);
-        new MenuButton(this, 530, 'mutiplayer', this.startMultiplayerSetup);
+        new MenuButton(this, 530, 'multiplayer', this.startMultiplayerSetup);
     }
 
     private startSingleplayerGame = () => {
