@@ -39,6 +39,7 @@ export class Level extends SceneBase {
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private outsideView: OutsideView;
     private isInBrain: boolean;
+    private currentCatStatusForMusic = CatStatus.Asleep;
 
     public player: Player;
 
@@ -169,9 +170,6 @@ export class Level extends SceneBase {
     }
 
     private transitionToAwake = () => {
-        if (this.music.key === 'sleep') {
-            this.setMusic('regular');
-        }
         this.stateManager.handleEvent({
             type: 'TRANSITION_TO_AWAKE'
         });
@@ -186,12 +184,17 @@ export class Level extends SceneBase {
     private updateMusicFromState = () => {
         const numberOfExistingViruses = this.viruses.getChildren().length;
         const numberOfNewViruses = this.stateManager.state.viruses.length;
+        const newCatStatus = this.stateManager.state.catStatus;
         if (numberOfExistingViruses === 0 && numberOfNewViruses > 0) {
             this.setMusic('fast', 500);
         }
-        if (numberOfExistingViruses > 0 && numberOfNewViruses === 0) {
+        else if (numberOfExistingViruses > 0 && numberOfNewViruses === 0) {
             this.setMusic('regular', 1000);
         }
+        else if (this.currentCatStatusForMusic === CatStatus.Asleep && newCatStatus !== CatStatus.Asleep) {
+            this.setMusic('regular');
+        }
+        this.currentCatStatusForMusic = newCatStatus;
     };
 
     private setMusic = (key: 'sleep' | 'regular' | 'fast', fadeTimeMillis = 4000) => {
