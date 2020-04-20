@@ -94,7 +94,7 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
 
         this.decisionBox = new DecisionBox(this.scene, 750, 350, this.currentDecision);
         this.buttonA = new DecisionButton(this.scene, this.x - 30, this.y, 'buttonA');
-        this.buttonB = new DecisionButton(this.scene, this.x + 30, this.y - 30, 'buttonB');
+        this.buttonB = new DecisionButton(this.scene, this.x + 24, this.y - 33, 'buttonB');
     }
 
     private calculateUrgency = (state: GameState) => {
