@@ -18,6 +18,7 @@ import player1WithFish from '../assets/players/player1-with-fish.png';
 import player2WithFish from '../assets/players/player2-with-fish.png';
 import outsideCat from '../assets/outsideView/outside-cat.png';
 import catBackground from '../assets/cat-main.png';
+import spacebar from '../assets/spacebar.png';
 import { BUTTON_BACKGROUND_COLOUR_HEX } from '../menuObjects/menuConstants';
 
 const BAR_WIDTH = 320;
@@ -102,6 +103,10 @@ export class Preloader extends SceneBase {
         this.load.spritesheet('outside-cat',
             outsideCat,
             { frameWidth: 400, frameHeight: 320 }
+        );
+        this.load.spritesheet('spacebar',
+            spacebar,
+            { frameWidth: 122, frameHeight: 49 }
         );
     }
 
