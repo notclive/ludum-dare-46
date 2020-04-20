@@ -46,7 +46,9 @@ export class MultiplayerSetup extends SceneBase {
             connection.on('error', (error) => {
                 console.error('Connection error', error);
             });
-            this.startGameWithStateManager(new HostStateManager(connection))
+            connection.on('open', () => {
+                this.startGameWithStateManager(new HostStateManager(connection))
+            });
         });
         this.peer.on('error', (error) => {
             console.error('Peer error', error);
