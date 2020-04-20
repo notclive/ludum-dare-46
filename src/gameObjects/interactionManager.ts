@@ -76,6 +76,7 @@ export class InteractionManager {
     private destroyInteractionHint = () => {
         if (this.interactionHint) {
             this.interactionHint.destroy();
+            this.interactionHint = null;
         }
     };
 
