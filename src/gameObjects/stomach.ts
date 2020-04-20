@@ -32,7 +32,7 @@ export class Stomach extends Phaser.Physics.Arcade.Sprite {
     };
 
     private maybeDropFish = () => {
-        if (this.scene.player.isTouching(this)) {
+        if (this.scene.player.isTouching(this) && this.scene.stateManager.myPlayer.holdingFish) {
             this.dropFish();
         }
     };
