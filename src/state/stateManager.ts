@@ -67,12 +67,6 @@ interface FishState {
     numberOfFishInPile: number;
 }
 
-export interface Fish {
-    id: string;
-    visibleAfterGameTime: number;
-    position: GameObjectPosition;
-}
-
 export interface Virus {
     id: string;
     position: GameObjectPosition;
