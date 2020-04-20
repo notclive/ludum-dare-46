@@ -13,14 +13,16 @@ export class InteractionManager {
     private playerHasInteractedWithThisOrgan = false;
     private spaceBarWasDownOnLastTick = false;
     private interactionHint: GameObject;
-    private interactionSound: Phaser.Sound.WebAudioSound;
+    private holdSound: Phaser.Sound.WebAudioSound;
+    private pumpSound: Phaser.Sound.WebAudioSound;
 
     public constructor(
         private organ: Sprite,
         private player: Player,
         private interactionType: InteractionType,
         private notifyParentOfInteraction: () => void,
-        private interactionEffectsConfiguration?: InteractionEffectsConfiguration
+        private interactionEffectsConfiguration?: InteractionEffectsConfiguration,
+        private pumpSoundKey?: string,
     ) {
         this.player.scene.anims.create({
             key: 'pump-spacebar',
@@ -59,7 +61,7 @@ export class InteractionManager {
     };
 
     public stopSounds = () => {
-        this.interactionSound?.stop();
+        this.holdSound?.stop();
     }
 
     private showOrHideInteractionHint = (playerIsTouchingOrgan: boolean) => {
@@ -107,7 +109,7 @@ export class InteractionManager {
                 this.pickOrganAnimation(interactionIsCurrentlyHappening);
             }
 
-            if (this.interactionEffectsConfiguration.interactionSound) {
+            if (this.interactionEffectsConfiguration.holdSound) {
                 this.playOrPauseOrganSoundEffect(interactionIsCurrentlyHappening);
             }
         }
@@ -121,15 +123,15 @@ export class InteractionManager {
     }
 
     private playOrPauseOrganSoundEffect(interactionIsCurrentlyHappening: boolean) {
-        if (interactionIsCurrentlyHappening && !this.interactionSound?.isPlaying) {
-            const key = this.interactionEffectsConfiguration.interactionSound;
-            this.interactionSound = this.player.scene.sound.add(key, {loop: true}) as Phaser.Sound.WebAudioSound;
-            this.interactionSound.setVolume(1);
-            this.interactionSound.play();
+        if (interactionIsCurrentlyHappening && !this.holdSound?.isPlaying) {
+            const key = this.interactionEffectsConfiguration.holdSound;
+            this.holdSound = this.player.scene.sound.add(key, {loop: true}) as Phaser.Sound.WebAudioSound;
+            this.holdSound.setVolume(1);
+            this.holdSound.play();
         }
 
-        if (!interactionIsCurrentlyHappening && this.interactionSound && !this.interactionSound.isPaused) {
-            this.interactionSound.pause();
+        if (!interactionIsCurrentlyHappening && this.holdSound && !this.holdSound.isPaused) {
+            this.holdSound.pause();
         }
     }
 
@@ -147,6 +149,11 @@ export class InteractionManager {
         if (this.cursors.space.isDown) {
             if (!this.spaceBarWasDownOnLastTick) {
                 this.handleInteraction();
+                if (this.pumpSoundKey) {
+                    this.pumpSound = this.player.scene.sound.add(this.pumpSoundKey, {loop: false}) as Phaser.Sound.WebAudioSound;
+                    this.pumpSound.setVolume(2);
+                    this.pumpSound.play();
+                }
             }
         }
     };
@@ -165,7 +172,7 @@ export class InteractionManager {
 
 interface InteractionEffectsConfiguration {
     pickInteractionTime: (OrganInteractionTimes) => number;
+    holdSound: string;
     normalAnimation: string;
     interactionAnimation: string;
-    interactionSound: string;
 }

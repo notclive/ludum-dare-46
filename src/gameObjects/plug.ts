@@ -20,7 +20,7 @@ export class Plug extends Phaser.Physics.Arcade.Sprite {
             pickInteractionTime: (organInteractionTimes: OrganInteractionTimes) => organInteractionTimes.plugUsed,
             normalAnimation: 'plug-plugged',
             interactionAnimation: 'plug-unplugged',
-            interactionSound: 'water',
+            holdSound: 'water',
         }
     );
 

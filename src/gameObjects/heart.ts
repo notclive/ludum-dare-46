@@ -1,3 +1,4 @@
+import { OrganInteractionTimes } from './../state/stateManager';
 import * as Phaser from 'phaser';
 import { PHASER_STATIC_BODY } from '../consts';
 import {OrganShaker} from './organShaker';
@@ -16,7 +17,9 @@ export class Heart extends Phaser.Physics.Arcade.Sprite {
             this.scene.stateManager.handleEvent({
                 type: 'PUMP_HEART'
             });
-        }
+        },
+        null,
+        'heartbeat'
     );
 
     constructor(public scene: Level, x: number, y: number) {
