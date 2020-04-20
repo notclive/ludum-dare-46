@@ -40,8 +40,6 @@ export class Level extends SceneBase {
     private outsideView: OutsideView;
     private isInBrain: boolean;
 
-    private drinkingInterval: NodeJS.Timeout;
-    private drinkingTimeout: NodeJS.Timeout;
     private illnessInterval: NodeJS.Timeout;
 
     public player: Player;
@@ -172,10 +170,6 @@ export class Level extends SceneBase {
     }
 
     private setCatStatus(catStatus: CatStatus) {
-        if (![CatStatus.Awake, CatStatus.Drinking].includes(catStatus)) {
-            this.clearDrinkTimeouts();
-        }
-
         this.stateManager.handleEvent({
             type: 'SET_CAT_STATUS',
             catStatus: catStatus
@@ -187,7 +181,6 @@ export class Level extends SceneBase {
             this.setMusic('regular');
         }
         this.setCatStatus(CatStatus.Awake);
-        this.drinkPeriodically();
 
         if (!this.illnessInterval) {
             this.illnessInterval = setInterval(() => {
@@ -199,23 +192,6 @@ export class Level extends SceneBase {
     private becomeIll = () => {
         this.setCatStatus(CatStatus.Ill);
         this.viruses.createNewVirus();
-    }
-
-    private drinkPeriodically = () => {
-        const durationOfEachDrink = 3 * 1000;
-        const timeBetweenDrinks = 10 * 1000;
-
-        this.drinkingInterval = setInterval(() => {
-            this.setCatStatus(CatStatus.Drinking);
-            this.drinkingTimeout = setTimeout(() => {
-                this.setCatStatus(CatStatus.Awake);
-            }, durationOfEachDrink)
-        }, timeBetweenDrinks)
-    }
-
-    private clearDrinkTimeouts = () => {
-        clearInterval(this.drinkingInterval);
-        clearTimeout(this.drinkingTimeout);
     }
 
     private transitionToEating = () => {

@@ -65,6 +65,7 @@ export default class HostStateManager implements StateManager {
 
     private checkForQueuedEvents = () => {
         this.maybeTransitionToQueuedState();
+        this.maybeTransitionAwayFromAwake();
         this.generateAnyQueuedFish();
     };
 
@@ -77,6 +78,33 @@ export default class HostStateManager implements StateManager {
             }
         }
     };
+
+    private maybeTransitionAwayFromAwake = () => {
+        if (this._state.catStatus !== CatStatus.Awake) {
+            return;
+        }
+        const catShouldDrink = !this._state.externalEventTimes.catDrank
+            || this._state.externalEventTimes.catDrank < this.gameTimeNSecondsFromNow(-10);
+        if (catShouldDrink) {
+            this.transitionToDrinking();
+            return;
+        }
+    };
+
+    private transitionToDrinking() {
+        this._state = {
+            ...this._state,
+            catStatus: CatStatus.Drinking,
+            queuedCatStatus: {
+                status: CatStatus.Awake,
+                time: this.gameTimeNSecondsFromNow(3)
+            },
+            externalEventTimes: {
+                ...this._state.externalEventTimes,
+                catDrank: this._state.gameTime
+            }
+        }
+    }
 
     private generateAnyQueuedFish = () => {
         if (this._state.fishes.queuedFish) {

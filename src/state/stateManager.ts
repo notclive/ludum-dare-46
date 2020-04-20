@@ -27,6 +27,7 @@ export interface GameState {
     queuedCatStatus?: QueuedCatStatus;
     speeds: SpeedState;
     organInteractionTimes: OrganInteractionTimes;
+    externalEventTimes: ExternalEventTimes;
 }
 
 export interface PlayerState {
@@ -144,6 +145,10 @@ export interface OrganInteractionTimes {
     plugUsed: number;
 }
 
+export interface ExternalEventTimes {
+    catDrank: number;
+}
+
 export const INITIAL_STATE: GameState = {
     gameOver: false,
     gameTime: 0,
@@ -185,5 +190,8 @@ export const INITIAL_STATE: GameState = {
     },
     organInteractionTimes: {
         plugUsed: null
+    },
+    externalEventTimes: {
+        catDrank: null
     }
 };
