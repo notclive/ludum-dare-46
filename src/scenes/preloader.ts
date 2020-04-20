@@ -16,6 +16,7 @@ import player1 from '../assets/players/player1.png';
 import player2 from '../assets/players/player2.png';
 import player1WithFish from '../assets/players/player1-with-fish.png';
 import player2WithFish from '../assets/players/player2-with-fish.png';
+import snorkel from '../assets/players/snorkel.png';
 import outsideCat from '../assets/outsideView/outside-cat.png';
 import decisionBox from '../assets/decisions.png';
 import catBackground from '../assets/cat-main.png';
@@ -69,6 +70,7 @@ export class Preloader extends SceneBase {
         this.load.image('water', water);
         this.load.image('fish', fish);
         this.load.image('catBackground', catBackground);
+        this.load.image('snorkel', snorkel);
 
         this.load.spritesheet('player1',
             player1,

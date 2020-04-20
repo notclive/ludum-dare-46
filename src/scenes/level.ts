@@ -1,23 +1,23 @@
 import * as Phaser from 'phaser';
-import { SceneBase } from './sceneBase';
-import { Player } from '../gameObjects/player';
-import { Mouth } from '../gameObjects/mouth';
-import { Heart } from '../gameObjects/heart';
-import { StatBar } from '../gameObjects/statBar';
-import { Lungs } from '../gameObjects/lungs';
+import {SceneBase} from './sceneBase';
+import {Player} from '../gameObjects/player';
+import {Mouth} from '../gameObjects/mouth';
+import {Heart} from '../gameObjects/heart';
+import {StatBar} from '../gameObjects/statBar';
+import {Lungs} from '../gameObjects/lungs';
 import OutsideView from '../subscene/outsideView';
 import Fishes from '../gameObjects/fishes';
-import { Brain } from '../gameObjects/brain';
-import { Stomach } from '../gameObjects/stomach';
-import { Plug } from '../gameObjects/plug';
-import { Water } from '../gameObjects/water';
-import { PlayerState, StateManager } from '../state/stateManager';
-import { Decision } from '../gameObjects/decision';
+import {Brain} from '../gameObjects/brain';
+import {Stomach} from '../gameObjects/stomach';
+import {Plug} from '../gameObjects/plug';
+import {Water} from '../gameObjects/water';
+import {PlayerState, StateManager} from '../state/stateManager';
+import {Decision} from '../gameObjects/decision';
 import {Viruses} from '../gameObjects/viruses';
-import { Alarm } from '../gameObjects/alarm';
-import { WhiteBloodCell } from '../gameObjects/whiteBloodCell';
-import { CatStatus } from '../gameObjects/catStatus';
-import { Mute } from '../gameObjects/mute';
+import {Alarm} from '../gameObjects/alarm';
+import {WhiteBloodCell} from '../gameObjects/whiteBloodCell';
+import {CatStatus} from '../gameObjects/catStatus';
+import {Mute} from '../gameObjects/mute';
 
 export class Level extends SceneBase {
 
@@ -44,7 +44,7 @@ export class Level extends SceneBase {
 
     public player: Player;
 
-    create(config: {stateManager: StateManager, muteButton: Mute}) {
+    create(config: { stateManager: StateManager, muteButton: Mute }) {
         this._stateManager = config.stateManager;
         this.add.image(this.gameWidth / 2, this.gameHeight / 2, 'background');
         this.setMuteButton(config.muteButton);
@@ -56,9 +56,9 @@ export class Level extends SceneBase {
         // World bounds are rectangular so don't perfectly match catBackground.
         this.physics.world.setBounds(80, 150, 580, 830);
 
-        this.player = new Player(this, 350, 610);
-        this.externalPlayer = this.physics.add.sprite(0, 0, 'player2');
-        this.externalPlayer.depth = 1;
+        this.water = new Water(this, catBackground);
+        this.player = new Player(this, true, this.water, 350, 610);
+        this.externalPlayer = new Player(this, false, this.water, 0, 0);
 
         this.mouth = new Mouth(this, 350, 360);
 
@@ -74,7 +74,6 @@ export class Level extends SceneBase {
         this.brain = new Brain(this, 240, 260, this.player);
         this.alarm = new Alarm(this, 485, 335);
 
-        this.water = new Water(this, catBackground);
         this.plug = new Plug(this, 200, 910);
 
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -97,11 +96,6 @@ export class Level extends SceneBase {
 
         this.stateManager.tick();
 
-        const walkingSpeed = this.player.y > this.water.YOfTheWaterLevel()
-            ? this.stateManager.state.speeds.waterWalkingSpeed
-            : this.stateManager.state.speeds.baseWalkingSpeed;
-
-        this.player.update(walkingSpeed, this.cursors);
         this.updateStateFromGameObjects();
         this.updateGameObjectsFromState();
 
@@ -144,7 +138,8 @@ export class Level extends SceneBase {
         // there currently are compared to how many there will be
         this.updateMusicFromState();
 
-        this.updateExternalPlayerFromState(this.stateManager.otherPlayer);
+        this.player.update(this.stateManager.state);
+        this.externalPlayer.update(this.stateManager.state);
         this.fishes.update(this.stateManager.state);
         this.alarm.update(this.stateManager.state);
         this.viruses.update(this.stateManager.state.viruses);
@@ -160,15 +155,6 @@ export class Level extends SceneBase {
         this.brain.update(this.stateManager.state);
         this.mouth.update(this.stateManager.state);
         this.outsideView.update(this.stateManager.state.catStatus);
-    }
-
-    private updateExternalPlayerFromState(otherPlayer: PlayerState) {
-        this.externalPlayer.setPosition(otherPlayer.position.x, otherPlayer.position.y);
-        if (otherPlayer.holdingFish) {
-            this.externalPlayer.setTexture('player2-with-fish');
-        } else {
-            this.externalPlayer.setTexture('player2');
-        }
     }
 
     public get stateManager() {
@@ -193,11 +179,9 @@ export class Level extends SceneBase {
         const newCatStatus = this.stateManager.state.catStatus;
         if (numberOfExistingViruses === 0 && numberOfNewViruses > 0) {
             this.setMusic('fast', 500);
-        }
-        else if (numberOfExistingViruses > 0 && numberOfNewViruses === 0) {
+        } else if (numberOfExistingViruses > 0 && numberOfNewViruses === 0) {
             this.setMusic('regular', 1000);
-        }
-        else if (this.currentCatStatusForMusic === CatStatus.Asleep && newCatStatus !== CatStatus.Asleep) {
+        } else if (this.currentCatStatusForMusic === CatStatus.Asleep && newCatStatus !== CatStatus.Asleep) {
             this.setMusic('regular');
         }
         this.currentCatStatusForMusic = newCatStatus;
@@ -224,7 +208,8 @@ export class Level extends SceneBase {
 
             optionB: {
                 label: 'nahhh',
-                action: () => {}
+                action: () => {
+                }
             }
         },
         {
@@ -242,7 +227,8 @@ export class Level extends SceneBase {
 
             optionB: {
                 label: 'keep chillin\'',
-                action: () => {}
+                action: () => {
+                }
             }
         },
     ];
