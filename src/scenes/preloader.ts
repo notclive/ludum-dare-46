@@ -149,7 +149,7 @@ export class Preloader extends SceneBase {
         var gradient = context.createLinearGradient(0, 0, this.gameWidth, this.gameHeight);
 
         gradient.addColorStop(0, '#FFFFFF');
-        gradient.addColorStop(1, '#4B0082');
+        gradient.addColorStop(1, '#FF696D');
 
         context.fillStyle = gradient;
         context.fillRect(0, 0, this.gameWidth, this.gameHeight);
