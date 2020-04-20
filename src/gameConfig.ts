@@ -35,8 +35,8 @@ export const singlePlayerConfig: GameConfig = {
     foodRisePerFish: 20,
     waterLossPerTick: 0.8,
 
-    baseWalkingSpeed: 160,
-    waterWalkingSpeed: 80,
+    baseWalkingSpeed: 200,
+    waterWalkingSpeed: 100,
 
     virusBaseSpeed: 75,
     virusWaterSpeed: 50,
