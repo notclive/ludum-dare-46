@@ -46,7 +46,7 @@ export const singlePlayerConfig: GameConfig = {
 
     ticksForVirusToReproduce: 6 * 60, // 60FPS
 
-    difficultyIncreasePerTick: 0.0003,
+    difficultyIncreasePerTick: 0.0002,
     hardModeStartTime: 45 * 60, // 60 FPS
 };
 
