@@ -73,7 +73,7 @@ export class Viruses extends StaticGroup {
     };
 
     private addNewVirus = (virus: Virus) => {
-        const sprite = new Sprite(this.scene, virus.position.x, virus.position.y, 'virus');
+        const sprite = new Sprite(this.scene, virus.position.x, virus.position.y, 'disease');
         sprite.name = virus.id;
         this.add(sprite);
         this.scene.add.existing(sprite);
