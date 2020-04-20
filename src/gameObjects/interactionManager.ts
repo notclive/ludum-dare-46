@@ -105,7 +105,9 @@ export class InteractionManager {
 
             if (this.interactionEffectsConfiguration.interactionAnimation) {
                 this.pickOrganAnimation(interactionIsCurrentlyHappening);
-            } else if (this.interactionEffectsConfiguration.interactionSound) {
+            }
+
+            if (this.interactionEffectsConfiguration.interactionSound) {
                 this.playOrPauseOrganSoundEffect(interactionIsCurrentlyHappening);
             }
         }
