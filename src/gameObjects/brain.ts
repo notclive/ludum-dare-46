@@ -6,17 +6,27 @@ import { DecisionButton } from './decisionButton';
 import { Level } from '../scenes/level';
 import { Decision } from './decision';
 import { CatStatus } from './catStatus';
+import {InteractionManager} from './interactionManager';
+import {GameState} from '../state/stateManager';
 
 export class Brain extends Phaser.Physics.Arcade.Sprite {
+
+    private readonly interactionManager = new InteractionManager(
+        this,
+        this.scene.player,
+        'PRESS',
+        () => {
+            this.tryPressButton();
+        }
+    ).moveInteractionHint(0, -75);
+
     private decisionBox: DecisionBox;
     private buttonA: DecisionButton;
     private buttonB: DecisionButton;
     private currentDecision: Decision;
     private decisionIsVisible: boolean;
 
-    playerIsOverlapping: boolean;
-
-    constructor(scene: Level, x: number, y: number, private player: Player) {
+    constructor(public scene: Level, x: number, y: number, private player: Player) {
         super(scene, x, y, 'brain');
 
         scene.physics.world.enable(this, PHASER_STATIC_BODY);
@@ -31,7 +41,7 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
         this.anims.play('brain-slowPulse', true);
     }
 
-    tryPressButton = () => {
+    private tryPressButton = () => {
         if (!this.decisionIsVisible) {
             return;
         }
@@ -66,19 +76,21 @@ export class Brain extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    update(scene: Level, catStatus: CatStatus) {
-        if (this.currentDecision?.catStatuses.includes(catStatus)){
+    update(state: GameState) {
+        this.interactionManager.update(state);
+
+        if (this.currentDecision?.catStatuses.includes(state.catStatus)){
             return;
         }
-        this.currentDecision = scene.mapCatStatusToDecision(catStatus);
+        this.currentDecision = this.scene.mapCatStatusToDecision(state.catStatus);
 
         //TODO: Not sure how to destroy these things, rather than just hide them.
         this.decisionBox?.hide();
         this.buttonA?.hide();
         this.buttonB?.hide();
 
-        this.decisionBox = new DecisionBox(scene, this.x, 20, this.currentDecision);
-        this.buttonA = new DecisionButton(scene, this.x - 30, this.y, 'buttonA');
-        this.buttonB = new DecisionButton(scene, this.x + 30, this.y - 30, 'buttonB');
+        this.decisionBox = new DecisionBox(this.scene, this.x, 20, this.currentDecision);
+        this.buttonA = new DecisionButton(this.scene, this.x - 30, this.y, 'buttonA');
+        this.buttonB = new DecisionButton(this.scene, this.x + 30, this.y - 30, 'buttonB');
     }
 }

@@ -38,7 +38,6 @@ export class Level extends SceneBase {
     private whiteBloodCell: WhiteBloodCell;
     private cursors: Phaser.Types.Input.Keyboard.CursorKeys;
     private outsideView: OutsideView;
-    private spaceBarDown = false;
     private isInBrain: boolean;
 
     private drinkingInterval: NodeJS.Timeout;
@@ -113,13 +112,6 @@ export class Level extends SceneBase {
             }
             this.isInBrain = false;
         }
-
-        if (this.cursors.space.isDown) {
-            this.handleSpaceBar();
-            this.spaceBarDown = true;
-        } else {
-            this.spaceBarDown = false;
-        }
     }
 
     private updateStateFromGameObjects() {
@@ -156,7 +148,7 @@ export class Level extends SceneBase {
         this.plug.update(this.stateManager.state);
         this.water.update(this.stateManager.state.waterLevel);
         this.foodBar.update(this.stateManager.state.fullness);
-        this.brain.update(this, this.stateManager.state.catStatus);
+        this.brain.update(this.stateManager.state);
         this.outsideView.update(this.stateManager.state.catStatus);
     }
 
@@ -166,14 +158,6 @@ export class Level extends SceneBase {
             this.externalPlayer.setTexture('player2-with-fish');
         } else {
             this.externalPlayer.setTexture('player2');
-        }
-    }
-
-    private handleSpaceBar() {
-        if (this.bIsTouchingA(this.player, this.brain)) {
-            if (!this.spaceBarDown) {
-                this.brain.tryPressButton();
-            }
         }
     }
 

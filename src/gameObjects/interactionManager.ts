@@ -8,6 +8,8 @@ export type InteractionType = 'PUMP' | 'HOLD' | 'PRESS';
 export class InteractionManager {
 
     private readonly cursors = this.player.scene.input.keyboard.createCursorKeys();
+    private interactionXOffset = 0;
+    private interactionYOffset = 0;
     private playerHasInteractedWithThisOrgan = false;
     private spaceBarWasDownOnLastTick = false;
     private interactionHint: GameObject;
@@ -39,6 +41,12 @@ export class InteractionManager {
         });
     }
 
+    public moveInteractionHint = (xOffset: number, yOffset: number) => {
+        this.interactionXOffset = xOffset;
+        this.interactionYOffset = yOffset;
+        return this;
+    };
+
     public update = (state: GameState) => {
         const playerIsTouchingOrgan = this.player.isTouching(this.organ);
         this.showOrHideInteractionHint(playerIsTouchingOrgan);
@@ -60,7 +68,7 @@ export class InteractionManager {
     private drawInteractionHint = () => {
         if (!this.interactionHint) {
             this.interactionHint = this.player.scene.add
-                .sprite(this.organ.x, this.organ.y, 'spacebar')
+                .sprite(this.organ.x + this.interactionXOffset, this.organ.y + this.interactionYOffset, 'spacebar')
                 .anims.play(this.getHintAnimation(), true);
         }
     };
