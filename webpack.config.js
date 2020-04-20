@@ -37,7 +37,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'ginger\'s day in'
+            title: 'snowball\'s day in'
         }),
         new webpack.DefinePlugin({
           CANVAS_RENDERER: JSON.stringify(true),

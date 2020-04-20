@@ -11,7 +11,7 @@ export class Menu extends SceneBase {
         this.music.play();
         this.sound.pauseOnBlur = false;
 
-        const title = this.add.text(0, 150, 'ginger\'s day in', {fontSize: '50px', color: BUTTON_BACKGROUND_COLOUR});
+        const title = this.add.text(0, 150, 'snowball\'s day in', {fontSize: '50px', color: BUTTON_BACKGROUND_COLOUR});
         this.centreObjectX(title);
 
         new MenuButton(this, 440, 'singleplayer', this.startSingleplayerGame);
