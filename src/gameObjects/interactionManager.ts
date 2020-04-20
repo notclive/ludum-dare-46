@@ -150,13 +150,20 @@ export class InteractionManager {
             if (!this.spaceBarWasDownOnLastTick) {
                 this.handleInteraction();
                 if (this.pumpSoundKey) {
-                    this.pumpSound = this.player.scene.sound.add(this.pumpSoundKey, {loop: false}) as Phaser.Sound.WebAudioSound;
-                    this.pumpSound.setVolume(2);
-                    this.pumpSound.play();
+                    this.playPumpSound();
                 }
             }
         }
     };
+
+    private playPumpSound = () => {
+        if (this.pumpSound?.isPlaying) {
+            return;
+        }
+        this.pumpSound = this.player.scene.sound.add(this.pumpSoundKey, {loop: false}) as Phaser.Sound.WebAudioSound;
+        this.pumpSound.setVolume(2);
+        this.pumpSound.play();
+    }
 
     private checkForHoldInteraction() {
         if (this.cursors.space.getDuration() > 200) {
