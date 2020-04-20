@@ -38,13 +38,14 @@ export default class OutsideView {
     private calculateBounds = () => {
         this.viewWidth = this.scene.gameWidth * 0.4;
         this.viewHeight = this.scene.gameHeight * 0.4;
-        this.viewTopLeftX = this.scene.gameWidth - this.viewWidth;
-        this.viewTopLeftY = this.scene.gameHeight - this.viewHeight;
+        this.viewTopLeftX = this.scene.gameWidth - this.viewWidth - 20;
+        this.viewTopLeftY = this.scene.gameHeight - this.viewHeight - 20;
     };
 
     private drawBorder = () => {
         const {x, y} = this.viewPositionToGamePosition(0.5, 0.5);
         this.background = this.scene.add.rectangle(x, y, this.viewWidth, this.viewHeight, 0x6984B5);
+        this.background.setStrokeStyle(2, 0x404040);
     };
 
     private updateBackgroundColour = (colour: number) => {
