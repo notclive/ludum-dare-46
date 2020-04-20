@@ -89,9 +89,15 @@ export default class HostStateManager implements StateManager {
             this.transitionToDrinking();
             return;
         }
+        const catShouldGetIll = !this._state.externalEventTimes.catGotIll
+            || this._state.externalEventTimes.catGotIll < this.gameTimeNSecondsFromNow(-60);
+        if (catShouldGetIll) {
+            this.transitionToIll();
+            return;
+        }
     };
 
-    private transitionToDrinking() {
+    private transitionToDrinking = () => {
         this._state = {
             ...this._state,
             catStatus: CatStatus.Drinking,
@@ -104,7 +110,25 @@ export default class HostStateManager implements StateManager {
                 catDrank: this._state.gameTime
             }
         }
-    }
+    };
+
+    private transitionToIll = () => {
+        this._state = {
+            ...this._state,
+            catStatus: CatStatus.Ill,
+            queuedCatStatus: {
+                status: CatStatus.Awake,
+                time: this.gameTimeNSecondsFromNow(5)
+            },
+            externalEventTimes: {
+                ...this._state.externalEventTimes,
+                catGotIll: this._state.gameTime
+            }
+        };
+        const catMouthX = 340;
+        const catMouthY = 340;
+        this.placeVirus(this.generateGloballyUniqueId(), {x: catMouthX, y: catMouthY});
+    };
 
     private generateAnyQueuedFish = () => {
         if (this._state.fishes.queuedFish) {

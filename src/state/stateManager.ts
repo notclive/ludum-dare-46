@@ -147,6 +147,7 @@ export interface OrganInteractionTimes {
 
 export interface ExternalEventTimes {
     catDrank: number;
+    catGotIll: number;
 }
 
 export const INITIAL_STATE: GameState = {
@@ -192,6 +193,7 @@ export const INITIAL_STATE: GameState = {
         plugUsed: null
     },
     externalEventTimes: {
-        catDrank: null
+        catDrank: null,
+        catGotIll: null
     }
 };

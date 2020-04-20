@@ -40,8 +40,6 @@ export class Level extends SceneBase {
     private outsideView: OutsideView;
     private isInBrain: boolean;
 
-    private illnessInterval: NodeJS.Timeout;
-
     public player: Player;
 
     create(stateManager: StateManager) {
@@ -181,17 +179,6 @@ export class Level extends SceneBase {
             this.setMusic('regular');
         }
         this.setCatStatus(CatStatus.Awake);
-
-        if (!this.illnessInterval) {
-            this.illnessInterval = setInterval(() => {
-                this.becomeIll();
-            }, 60 * 1000);
-        }
-    }
-
-    private becomeIll = () => {
-        this.setCatStatus(CatStatus.Ill);
-        this.viruses.createNewVirus();
     }
 
     private transitionToEating = () => {

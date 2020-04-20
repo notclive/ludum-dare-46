@@ -90,11 +90,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.anims.play(key, true);
     }
 
-    gameOver() {
-        this.setTint(0xff0000);
-        this.anims.play('still');
-    }
-
     public get isHoldingFish() {
         return this._isHoldingFish;
     }
