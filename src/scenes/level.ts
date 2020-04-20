@@ -87,9 +87,10 @@ export class Level extends SceneBase {
 
     update() {
         if (this.stateManager.state.gameOver) {
-            this.fadeOutMusic(this.music, 1000);
             // I'm hoping that starting another scene will tear down everything in this scene.
-            this.scene.start('GameOver', this.stateManager);
+            this.scene.start('GameOver', {stateManager: this.stateManager, music: this.music});
+            // Reset the music to stop it clashing when restarting the game.
+            this.music = null;
             return;
         }
 

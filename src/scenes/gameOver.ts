@@ -6,12 +6,15 @@ import {BUTTON_BACKGROUND_COLOUR} from '../menuObjects/menuConstants';
 export class GameOver extends SceneBase {
     private _stateManager: StateManager;
 
-    public create(stateManager: StateManager) {
-        this._stateManager = stateManager;
+    public create(config: {stateManager: StateManager, music: Phaser.Sound.WebAudioSound}) {
+        this._stateManager = config.stateManager;
         this.add.image(640, 512, 'background');
 
-        this.music = this.sound.add('regular', {loop: true}) as Phaser.Sound.WebAudioSound;
-        this.fadeInMusic(this.music, 1000);
+        this.music = config.music;
+        if (this.music.key !== 'regular') {
+            const newMusic =  this.sound.add('regular', {loop: true}) as Phaser.Sound.WebAudioSound;
+            this.setNewMusicWithFade(newMusic, 1000);
+        }
 
         const title = this.add.text(0, 150, 'game over', {fontSize: '50px', color: BUTTON_BACKGROUND_COLOUR});
         this.centreObjectX(title);
@@ -19,7 +22,7 @@ export class GameOver extends SceneBase {
         const deadCat = this.add.image(640, 250, 'outside-cat', 24);
         deadCat.scale = 1.5;
 
-        const yourScore = this.add.text(0, 460, `your scored ${stateManager.state.gameTime} points`, {fontSize: '30px', color: BUTTON_BACKGROUND_COLOUR});
+        const yourScore = this.add.text(0, 460, `your scored ${config.stateManager.state.gameTime} points`, {fontSize: '30px', color: BUTTON_BACKGROUND_COLOUR});
         this.centreObjectX(yourScore);
 
         new MenuButton(this, 545, 'try again', this.restart);
