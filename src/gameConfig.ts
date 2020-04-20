@@ -47,8 +47,7 @@ export const singlePlayerConfig: GameConfig = {
     ticksForVirusToReproduce: 6 * 60, // 60FPS
 
     difficultyIncreasePerTick: 0.0003,
-    hardModeStartTime: 30 * 60, // 60 FPS
-
+    hardModeStartTime: 45 * 60, // 60 FPS
 };
 
 export const multiPlayerConfig: GameConfig = {
@@ -59,7 +58,7 @@ export const multiPlayerConfig: GameConfig = {
 
     bloodRisePerPump: 10,
     o2RisePerTick: 0.5,
-    foodRisePerFish: 10,
+    foodRisePerFish: 20,
     waterLossPerTick: 0.8,
 
     baseWalkingSpeed: 140,
@@ -74,5 +73,5 @@ export const multiPlayerConfig: GameConfig = {
     ticksForVirusToReproduce: 5 * 60, // 60FPS
 
     difficultyIncreasePerTick: 0.0003,
-    hardModeStartTime: 30 * 60, // 60 FPS
+    hardModeStartTime: 45 * 60, // 60 FPS
 };
