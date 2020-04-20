@@ -20,7 +20,7 @@ export class Alarm extends Phaser.Physics.Arcade.Sprite {
     );
 
     constructor(public scene: Level, x: number, y: number) {
-        super(scene, x, y, 'alarm');
+        super(scene, x, y, 'lymph');
 
         scene.physics.world.enable(this, PHASER_STATIC_BODY);
         scene.add.existing(this);
