@@ -1,3 +1,4 @@
+import { OrganInteractionTimes } from './../state/stateManager';
 import * as Phaser from 'phaser';
 import { PHASER_STATIC_BODY } from '../consts';
 import {OrganShaker} from './organShaker';
@@ -16,6 +17,10 @@ export class Lungs extends Phaser.Physics.Arcade.Sprite {
             this.scene.stateManager.handleEvent({
                 type: 'BREATHE_LUNGS'
             });
+        },
+        {
+            pickInteractionTime: (times: OrganInteractionTimes) => times.lungsUsed,
+            holdSound: 'lungs',
         }
     );
 

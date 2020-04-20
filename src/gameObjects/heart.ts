@@ -1,4 +1,3 @@
-import { OrganInteractionTimes } from './../state/stateManager';
 import * as Phaser from 'phaser';
 import { PHASER_STATIC_BODY } from '../consts';
 import {OrganShaker} from './organShaker';

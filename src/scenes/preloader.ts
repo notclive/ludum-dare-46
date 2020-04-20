@@ -25,6 +25,7 @@ import regularMusic from '../assets/music/regular.mp3';
 import sleepMusic from '../assets/music/sleep.mp3';
 import waterSound from '../assets/sounds/water.mp3';
 import heartbeatSound from '../assets/sounds/heartbeat.mp3';
+import lungsSound from '../assets/sounds/lungs.mp3';
 import { BUTTON_BACKGROUND_COLOUR_HEX } from '../menuObjects/menuConstants';
 
 const BAR_WIDTH = 320;
@@ -130,6 +131,7 @@ export class Preloader extends SceneBase {
         this.load.audio('sleep', [sleepMusic]);
         this.load.audio('water', [waterSound]);
         this.load.audio('heartbeat', [heartbeatSound]);
+        this.load.audio('lungs', [lungsSound]);
     }
 
     private setupBackground = () => {

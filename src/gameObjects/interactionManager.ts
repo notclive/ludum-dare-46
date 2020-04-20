@@ -180,6 +180,6 @@ export class InteractionManager {
 interface InteractionEffectsConfiguration {
     pickInteractionTime: (OrganInteractionTimes) => number;
     holdSound: string;
-    normalAnimation: string;
-    interactionAnimation: string;
+    normalAnimation?: string;
+    interactionAnimation?: string;
 }

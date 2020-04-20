@@ -137,6 +137,7 @@ interface SetPeerPlayerState {
 
 export interface OrganInteractionTimes {
     plugUsed: number;
+    lungsUsed: number;
 }
 
 export interface ExternalEventTimes {
@@ -184,7 +185,8 @@ export const INITIAL_STATE: GameState = {
         bloodCellsWaterSpeed: null,
     },
     organInteractionTimes: {
-        plugUsed: null
+        plugUsed: null,
+        lungsUsed: null,
     },
     externalEventTimes: {
         catDrank: null,

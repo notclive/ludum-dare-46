@@ -216,7 +216,11 @@ export default class HostStateManager implements StateManager {
     private breathLungs = () => {
         this._state = {
             ...this._state,
-            lungs: Math.min(this._state.lungs + this._gameConfig.o2RisePerTick, 100)
+            lungs: Math.min(this._state.lungs + this._gameConfig.o2RisePerTick, 100),
+            organInteractionTimes: {
+                ...this._state.organInteractionTimes,
+                lungsUsed: this._state.gameTime
+            }
         };
     };
 
