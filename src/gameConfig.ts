@@ -24,7 +24,7 @@ export interface GameConfig {
 export const singlePlayerConfig: GameConfig = {
     bloodLossPerTick: 0.1,
     o2LossPerTick: 0.05,
-    foodLossPerTick: 0.01,
+    foodLossPerTick: 0.015,
     waterRisePerTick: 0.03,
 
     bloodRisePerPump: 10,
@@ -47,7 +47,7 @@ export const singlePlayerConfig: GameConfig = {
 export const multiPlayerConfig: GameConfig = {
     bloodLossPerTick: 0.2,
     o2LossPerTick: 0.1,
-    foodLossPerTick: 0.02,
+    foodLossPerTick: 0.03,
     waterRisePerTick: 0.06,
 
     bloodRisePerPump: 10,
