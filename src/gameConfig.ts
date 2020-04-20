@@ -61,8 +61,8 @@ export const multiPlayerConfig: GameConfig = {
     foodRisePerFish: 20,
     waterLossPerTick: 0.8,
 
-    baseWalkingSpeed: 140,
-    waterWalkingSpeed: 70,
+    baseWalkingSpeed: 190,
+    waterWalkingSpeed: 95,
 
     virusBaseSpeed: 75,
     virusWaterSpeed: 50,
