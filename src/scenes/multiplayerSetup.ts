@@ -27,7 +27,7 @@ export class MultiplayerSetup extends SceneBase {
 
         this.setMuteButton(config.muteButton);
 
-        const title = this.add.text(0, 150, 'multiplayer setup', {fontSize: '50px', color: BUTTON_BACKGROUND_COLOUR});
+        const title = this.add.text(0, 150, 'multiplayer setup (beta)', {fontSize: '50px', color: BUTTON_BACKGROUND_COLOUR});
         this.centreObjectX(title);
 
         this.loading = this.add.text(0, 400, 'establishing connection to the kittynet...', {fontSize: '30px', color: BUTTON_BACKGROUND_COLOUR});
