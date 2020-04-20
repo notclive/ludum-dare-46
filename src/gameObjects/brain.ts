@@ -105,6 +105,7 @@ export class Brain extends OrganBase {
         if (fishAreAvailable) {
             return 0;
         }
-        return 100 - state.fullness;
+        // +20 as players often don't work out that the brain is needed to fill hunger.
+        return (100 - state.fullness) + 20;
     };
 }
