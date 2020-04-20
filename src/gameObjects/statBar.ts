@@ -16,7 +16,9 @@ export class StatBar {
     private readonly currentValueBar: Graphics;
 
     public constructor(public scene: Level, private x: number, private y: number, private label: string) {
-        this.scene.add.text(this.x, this.y + 5, this.label, {fontSize: '20px', fill: '#000'});
+        this.scene.add.text(this.x, this.y + 5, this.label, {
+            fontSize: '20px', fill: '#fff', shadow: {color: '#000', fill: true, blur: 7}
+        });
 
         const container = this.scene.add.graphics();
         container.fillStyle(Color.HexStringToColor('#6D1213').color);
