@@ -18,8 +18,11 @@ export default class Fishes extends StaticGroup {
 
     private maybePickUpFish = () => {
         // Add a "is picking up fish" buffer to allow the state to propagate
-        if (this.scene.stateManager.myPlayer.holdingFish || this._isPickingUpFish) {
+        if (this.scene.stateManager.myPlayer.holdingFish) {
             this._isPickingUpFish = false;
+            return;
+        }
+        if (this._isPickingUpFish) {
             return;
         }
         const playerIsTouchingFish = !!this.getChildren().find(image => this.scene.player.isTouching(image as Image));
