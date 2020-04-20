@@ -1,6 +1,7 @@
 import Sprite = Phaser.GameObjects.Sprite;
 import GameObject = Phaser.GameObjects.GameObject;
 import {Player} from './player';
+import {GameState, OrganInteractionTimes} from '../state/stateManager';
 
 export type InteractionType = 'PUMP' | 'HOLD' | 'PRESS';
 
@@ -15,34 +16,29 @@ export class InteractionManager {
         private organ: Sprite,
         private player: Player,
         private interactionType: InteractionType,
-        private notifyParentOfInteraction: () => void
+        private notifyParentOfInteraction: () => void,
+        private interactionAnimationConfiguration?: InteractionAnimationConfiguration
     ) {
         this.player.scene.anims.create({
             key: 'pump-spacebar',
-            frames: this.player.scene.anims.generateFrameNumbers('spacebar', { start: 0, end: 1 }),
+            frames: this.player.scene.anims.generateFrameNumbers('spacebar', {start: 0, end: 1}),
             frameRate: 3,
             repeat: -1
         });
         this.player.scene.anims.create({
             key: 'hold-spacebar',
-            frames: this.player.scene.anims.generateFrameNumbers('spacebar', { frames: [2, 3, 3, 3, 3, 3, 3, 3, 3] }),
+            frames: this.player.scene.anims.generateFrameNumbers('spacebar', {frames: [2, 3, 3, 3, 3, 3, 3, 3, 3]}),
             frameRate: 3,
             repeat: -1
         });
     }
 
-    public checkForInteraction = () => {
+    public update = (state: GameState) => {
         const playerIsTouchingOrgan = this.player.isTouching(this.organ);
         this.showOrHideInteractionHint(playerIsTouchingOrgan);
+        this.pickOrganAnimation(state);
         if (playerIsTouchingOrgan) {
-            if (this.interactionType === 'PUMP') {
-                this.checkForPumpInteraction();
-            }
-            if (this.interactionType === 'HOLD') {
-                this.checkForHoldInteraction();
-            }
-        } else {
-            this.destroyInteractionHint();
+            this.checkForInteraction();
         }
         this.spaceBarWasDownOnLastTick = this.cursors.space.isDown;
     };
@@ -80,6 +76,28 @@ export class InteractionManager {
         }
     };
 
+    private pickOrganAnimation = ({organInteractionTimes, gameTime}: GameState) => {
+        if (this.interactionAnimationConfiguration) {
+            const lastInteractionTime = this.interactionAnimationConfiguration.pickInteractionTime(organInteractionTimes);
+            // I don't know how reliably a multiplayer peer will call update for every game state.
+            // A buffer of 10 ticks makes it very likely a peer will notice that the plug was used.
+            const interactionIsCurrentlyHappening = lastInteractionTime && lastInteractionTime > gameTime - 10;
+            const animation = interactionIsCurrentlyHappening
+                ? this.interactionAnimationConfiguration.interactionAnimation
+                : this.interactionAnimationConfiguration.normalAnimation;
+            this.organ.anims.play(animation, true);
+        }
+    };
+
+    private checkForInteraction = () => {
+        if (this.interactionType === 'PUMP') {
+            this.checkForPumpInteraction();
+        }
+        if (this.interactionType === 'HOLD') {
+            this.checkForHoldInteraction();
+        }
+    };
+
     private checkForPumpInteraction = () => {
         if (this.cursors.space.isDown) {
             if (!this.spaceBarWasDownOnLastTick) {
@@ -98,4 +116,10 @@ export class InteractionManager {
         this.playerHasInteractedWithThisOrgan = true;
         this.notifyParentOfInteraction();
     };
+}
+
+interface InteractionAnimationConfiguration {
+    pickInteractionTime: (OrganInteractionTimes) => number;
+    normalAnimation: string;
+    interactionAnimation: string;
 }

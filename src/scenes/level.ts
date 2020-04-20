@@ -149,9 +149,9 @@ export class Level extends SceneBase {
         this.alarm.update(this.stateManager.state);
         this.viruses.update(this.stateManager.state.viruses);
         this.whiteBloodCell.update(this.stateManager.state.whiteBloodCell);
-        this.heart.update(this.stateManager.state.heart);
+        this.heart.update(this.stateManager.state);
         this.healthBar.update(this.stateManager.state.heart);
-        this.lungs.update(this.stateManager.state.lungs);
+        this.lungs.update(this.stateManager.state);
         this.breatheBar.update(this.stateManager.state.lungs);
         this.plug.update(this.stateManager.state);
         this.water.update(this.stateManager.state.waterLevel);
@@ -170,11 +170,6 @@ export class Level extends SceneBase {
     }
 
     private handleSpaceBar() {
-        if (this.bIsTouchingA(this.player, this.plug)) {
-            if (this.cursors.space.getDuration() > 200) {
-                this.openPlug();
-            }
-        }
         if (this.bIsTouchingA(this.player, this.brain)) {
             if (!this.spaceBarDown) {
                 this.brain.tryPressButton();
@@ -186,18 +181,6 @@ export class Level extends SceneBase {
             }
         }
     }
-
-    private pumpLungs = () => {
-        this.stateManager.handleEvent({
-            type: 'BREATHE_LUNGS'
-        });
-    };
-
-    private openPlug = () => {
-        this.stateManager.handleEvent({
-            type: 'DRAIN_PLUG'
-        });
-    };
 
     private ringAlarm = () => {
         this.stateManager.handleEvent({

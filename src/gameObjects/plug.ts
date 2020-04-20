@@ -2,12 +2,28 @@ import * as Phaser from 'phaser';
 import {PHASER_STATIC_BODY} from '../consts';
 import {OrganShaker} from './OrganShaker';
 import {GameState, OrganInteractionTimes} from '../state/stateManager';
+import {InteractionManager} from './interactionManager';
+import {Level} from '../scenes/level';
 
 export class Plug extends Phaser.Physics.Arcade.Sprite {
 
     private readonly shaker = new OrganShaker(this);
+    private readonly interactionManager = new InteractionManager(
+        this,
+        this.scene.player,
+        'HOLD',
+        () => {
+            this.scene.stateManager.handleEvent({
+                type: 'DRAIN_PLUG'
+            });
+        }, {
+            pickInteractionTime: (organInteractionTimes: OrganInteractionTimes) => organInteractionTimes.plugUsed,
+            normalAnimation: 'plug-plugged',
+            interactionAnimation: 'plug-unplugged'
+        }
+    );
 
-    constructor(scene: Phaser.Scene, x: number, y: number) {
+    constructor(public scene: Level, x: number, y: number) {
         super(scene, x, y, 'plug');
 
         scene.physics.world.enable(this, PHASER_STATIC_BODY);
@@ -15,13 +31,13 @@ export class Plug extends Phaser.Physics.Arcade.Sprite {
 
         this.scene.anims.create({
             key: 'plug-plugged',
-            frames: this.scene.anims.generateFrameNumbers('plug', { start: 0, end: 1 }),
+            frames: this.scene.anims.generateFrameNumbers('plug', {start: 0, end: 1}),
             frameRate: 10,
             repeat: -1
         });
         this.scene.anims.create({
             key: 'plug-unplugged',
-            frames: this.scene.anims.generateFrameNumbers('plug', { start: 2, end: 4 }),
+            frames: this.scene.anims.generateFrameNumbers('plug', {start: 2, end: 4}),
             frameRate: 15,
             repeat: -1
         });
@@ -30,19 +46,9 @@ export class Plug extends Phaser.Physics.Arcade.Sprite {
         this.setOrigin(0.31, 0.81);
     }
 
-    public update({waterLevel, organInteractionTimes, gameTime}: GameState) {
+    public update(state: GameState) {
         // A water level of 50% is pretty problematic.
-        this.shaker.shakeIfUrgent(waterLevel * 2);
-        this.setAnimation(organInteractionTimes, gameTime);
+        this.shaker.shakeIfUrgent(state.waterLevel * 2);
+        this.interactionManager.update(state);
     }
-
-    private setAnimation = ({plugUsed}: OrganInteractionTimes, gameTime: number) => {
-        // I don't know how reliably a multiplayer peer will call update for every game state.
-        // A buffer of 10 ticks makes it very likely a peer will notice that the plug was used.
-        if (plugUsed && plugUsed > gameTime - 10) {
-            this.anims.play('plug-unplugged', true);
-        } else {
-            this.anims.play('plug-plugged', true);
-        }
-    };
 }

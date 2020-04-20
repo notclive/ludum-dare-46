@@ -3,6 +3,7 @@ import { PHASER_STATIC_BODY } from '../consts';
 import {OrganShaker} from './OrganShaker';
 import {InteractionManager} from './interactionManager';
 import {Level} from '../scenes/level';
+import {GameState} from '../state/stateManager';
 
 export class Lungs extends Phaser.Physics.Arcade.Sprite {
 
@@ -35,8 +36,8 @@ export class Lungs extends Phaser.Physics.Arcade.Sprite {
         this.anims.play('lungs-slowPulse', true);
     }
 
-    public update(oxygenLevel: number) {
-        this.shaker.shakeIfUrgent(100 - oxygenLevel);
-        this.interactionManager.checkForInteraction();
+    public update(state: GameState) {
+        this.shaker.shakeIfUrgent(100 - state.lungs);
+        this.interactionManager.update(state);
     }
 }
