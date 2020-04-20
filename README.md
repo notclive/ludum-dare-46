@@ -38,3 +38,10 @@ hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 Resolve this with
 `git push origin 5e8628c3702c5d6758e0655a0eb980c61b7a66aa:gh-pages --force`
 using the SHA1 from the error message.
+
+## Credits
+
+Sound effects with thanks to:
+- Whistle: [Audio Debris Sound Effects](http://bit.ly/2C1ZZmw)
+- Water: amanda @ [SoundBible](http://soundbible.com/)
+- Heartbeat: Daniel Simions @ [SoundBible](http://soundbible.com/)
