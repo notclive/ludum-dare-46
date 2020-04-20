@@ -13,7 +13,7 @@ export class DecisionBox extends Phaser.GameObjects.Sprite {
 
         this.setDepth(1);
 
-        this.text = this.scene.add.text(this.xPosition + 60, this.yPosition - 80, `Do what? \n  A: ${decision.optionA.label}\n  B: ${decision.optionB.label}`, { fontSize: '20px', fill: '#fff' });
+        this.text = this.scene.add.text(this.xPosition + 60, this.yPosition - 80, `Do what? \n  A: ${decision.optionA.label}\n  B: ${decision.optionB.label}`, { fontSize: '21px', fill: '#022F40' });
         this.text.setDepth(1);
 
         this.setVisible(false);
