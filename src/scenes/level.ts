@@ -77,7 +77,7 @@ export class Level extends SceneBase {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.outsideView = new OutsideView(this);
 
-        this.fishes = new Fishes(this, this.player, this.stomach);
+        this.fishes = new Fishes(this);
         this.viruses = new Viruses(this, this.player, [this.player, this.externalPlayer]);
         this.whiteBloodCell = new WhiteBloodCell(this, this.alarm.x - 25, this.alarm.y - 30, this.viruses);
     }
@@ -116,7 +116,7 @@ export class Level extends SceneBase {
 
     private updateStateFromGameObjects() {
         this.stateManager.myPlayer = {
-            holdingFish: this.player.isHoldingFish,
+            ...this.stateManager.myPlayer,
             position: {
                 x: this.player.x,
                 y: this.player.y
@@ -151,6 +151,7 @@ export class Level extends SceneBase {
         this.breatheBar.update(this.stateManager.state.lungs);
         this.plug.update(this.stateManager.state);
         this.water.update(this.stateManager.state.waterLevel);
+        this.stomach.update();
         this.foodBar.update(this.stateManager.state.fullness);
         this.brain.update(this.stateManager.state);
         this.outsideView.update(this.stateManager.state.catStatus);

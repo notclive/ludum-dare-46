@@ -1,59 +1,41 @@
 import StaticGroup = Phaser.Physics.Arcade.StaticGroup;
 import Image = Phaser.GameObjects.Image;
 import {Level} from '../scenes/level';
-import {Player} from './player';
 import {GameState} from '../state/stateManager';
-import {Stomach} from './stomach';
 
 // Could be replaced by a sprite representing a pile of fish.
 export default class Fishes extends StaticGroup {
 
-    public constructor(
-        public scene: Level,
-        private player: Player,
-        private stomach: Stomach
-    ) {
+    public constructor(public scene: Level) {
         super(scene.physics.world, scene);
-        this.handleFishKeyBeingPressed();
     }
 
-    private handleFishKeyBeingPressed = () => {
-        this.scene.input.keyboard
-            .addKey('F')
-            .on('down', () => {
-                if (this.player.isHoldingFish) {
-                    this.dropFish();
-                } else {
-                    this.tryPickUpFish();
-                }
-            });
+    public update = (state: GameState) => {
+        this.maybePickUpFish();
+        this.ensureCorrectNumberOfFishAreShown(state);
     };
 
-    private tryPickUpFish = () => {
-        const closestFish = this.scene.getClosestBTouchingA(this.player, this.children.entries as Image[]);
-        if (closestFish) {
+    private maybePickUpFish = () => {
+        if (this.scene.stateManager.myPlayer.holdingFish) {
+            return;
+        }
+        const playerIsTouchingFish = !!this.getChildren().find(image => this.scene.player.isTouching(image as Image));
+        if (playerIsTouchingFish) {
             this.pickUpFish();
         }
     };
 
     private pickUpFish = () => {
-        this.player.isHoldingFish = true;
+        this.scene.stateManager.myPlayer = {
+            ...this.scene.stateManager.myPlayer,
+            holdingFish: true
+        };
         this.scene.stateManager.handleEvent({
             type: 'TAKE_FISH_FROM_PILE'
         });
     };
 
-    private dropFish = () => {
-        // For now dropped fish disappear, shortly players won't be able to control when fish are dropped.
-        this.player.isHoldingFish = false;
-        if (this.player.isTouching(this.stomach)) {
-            this.scene.stateManager.handleEvent({
-                type: 'DIGEST_FOOD'
-            });
-        }
-    };
-
-    public update = (state: GameState) => {
+    private ensureCorrectNumberOfFishAreShown(state: GameState) {
         const numberOfFishDrawn = this.getChildren().length;
         if (state.fishes.numberOfFishInPile > numberOfFishDrawn) {
             this.drawFish();
@@ -61,7 +43,7 @@ export default class Fishes extends StaticGroup {
         if (state.fishes.numberOfFishInPile < numberOfFishDrawn) {
             this.destroyFish();
         }
-    };
+    }
 
     private destroyFish = () => {
         if (this.getChildren().length === 0) {

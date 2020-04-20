@@ -1,10 +1,8 @@
 import * as Phaser from 'phaser';
-import { Level } from '../scenes/level';
-import {MoveableGameObject, SceneBase} from '../scenes/sceneBase';
+import {Level} from '../scenes/level';
+import {MoveableGameObject} from '../scenes/sceneBase';
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
-
-    private _isHoldingFish = false;
 
     constructor(public scene: Level, x: number, y: number) {
         super(scene, x, y, 'player1');
@@ -81,21 +79,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     private playMovingAnimation() {
-        const key = this._isHoldingFish ? 'moving-with-fish' : 'moving';
+        const key = this.scene.stateManager.myPlayer.holdingFish ? 'moving-with-fish' : 'moving';
         this.anims.play(key, true);
     }
 
     private playStillAnimation() {
-        const key = this._isHoldingFish ? 'still-with-fish' : 'still';
+        const key = this.scene.stateManager.myPlayer.holdingFish ? 'still-with-fish' : 'still';
         this.anims.play(key, true);
-    }
-
-    public get isHoldingFish() {
-        return this._isHoldingFish;
-    }
-
-    public set isHoldingFish(isHoldingFish: boolean) {
-        this._isHoldingFish = isHoldingFish;
     }
 
     isTouching(object: MoveableGameObject) {
