@@ -1,6 +1,6 @@
 import Sprite = Phaser.GameObjects.Sprite;
-import {Player} from './player';
 import GameObject = Phaser.GameObjects.GameObject;
+import {Player} from './player';
 
 export type InteractionType = 'PUMP' | 'HOLD' | 'PRESS';
 
@@ -23,6 +23,12 @@ export class InteractionManager {
             frameRate: 3,
             repeat: -1
         });
+        this.player.scene.anims.create({
+            key: 'hold-spacebar',
+            frames: this.player.scene.anims.generateFrameNumbers('spacebar', { frames: [2, 3, 3, 3, 3, 3, 3, 3, 3] }),
+            frameRate: 3,
+            repeat: -1
+        });
     }
 
     public checkForInteraction = () => {
@@ -31,6 +37,9 @@ export class InteractionManager {
         if (playerIsTouchingOrgan) {
             if (this.interactionType === 'PUMP') {
                 this.checkForPumpInteraction();
+            }
+            if (this.interactionType === 'HOLD') {
+                this.checkForHoldInteraction();
             }
         } else {
             this.destroyInteractionHint();
@@ -50,8 +59,18 @@ export class InteractionManager {
         if (!this.interactionHint) {
             this.interactionHint = this.player.scene.add
                 .sprite(this.organ.x, this.organ.y, 'spacebar')
-                .anims.play('pump-spacebar', true);
+                .anims.play(this.getHintAnimation(), true);
         }
+    };
+
+    private getHintAnimation = () => {
+        if (this.interactionType === 'PUMP') {
+            return 'pump-spacebar';
+        }
+        if (this.interactionType === 'HOLD') {
+            return 'hold-spacebar';
+        }
+        return 'press-spacebar';
     };
 
     private destroyInteractionHint = () => {
@@ -68,8 +87,14 @@ export class InteractionManager {
         }
     };
 
+    private checkForHoldInteraction() {
+        if (this.cursors.space.getDuration() > 200) {
+            this.handleInteraction();
+        }
+    }
+
     private handleInteraction = () => {
         this.playerHasInteractedWithThisOrgan = true;
         this.notifyParentOfInteraction();
-    }
+    };
 }

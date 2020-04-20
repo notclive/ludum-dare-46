@@ -85,11 +85,11 @@ export default class HostStateManager implements StateManager {
         if (event.type === 'RESTART_GAME') {
             this.restartGame();
         }
-        if (event.type === 'PUMP_LUNGS') {
-            this.pumpLungs();
+        if (event.type === 'BREATHE_LUNGS') {
+            this.breathLungs();
         }
-        if (event.type === 'BEAT_HEART') {
-            this.beatHeart();
+        if (event.type === 'PUMP_HEART') {
+            this.pumpHeart();
         }
         if (event.type === 'DIGEST_FOOD') {
             this.digestFood();
@@ -124,14 +124,14 @@ export default class HostStateManager implements StateManager {
         this._state = INITIAL_STATE;
     };
 
-    private pumpLungs = () => {
+    private breathLungs = () => {
         this._state = {
             ...this._state,
             lungs: Math.min(this._state.lungs + this._gameConfig.o2RisePerTick, 100)
         };
     };
 
-    private beatHeart = () => {
+    private pumpHeart = () => {
         this._state = {
             ...this._state,
             heart: Math.min(this._state.heart + this._gameConfig.bloodRisePerPump, 100)

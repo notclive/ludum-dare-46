@@ -68,19 +68,19 @@ export interface Virus {
     reproducesAt: number;
 }
 
-export type StateChangeEvent = RestartGame | PumpLungs | BeatHeart | DigestFood | DrainPlug | RingAlarm |
+export type StateChangeEvent = RestartGame | BreathLungs | PumpHeart | DigestFood | DrainPlug | RingAlarm |
     PlaceFish | RemoveFish | PlaceVirus | VirusDestroyed | SetCatStatus | SetPeerPlayerState;
 
 interface RestartGame {
     type: 'RESTART_GAME';
 }
 
-interface PumpLungs {
-    type: 'PUMP_LUNGS';
+interface BreathLungs {
+    type: 'BREATHE_LUNGS';
 }
 
-interface BeatHeart {
-    type: 'BEAT_HEART';
+interface PumpHeart {
+    type: 'PUMP_HEART';
 }
 
 interface DigestFood {

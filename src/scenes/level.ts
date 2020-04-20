@@ -65,7 +65,7 @@ export class Level extends SceneBase {
         this.heart = new Heart(this, 420, 470);
         this.healthBar = new StatBar(this, 700, 40, 'Blood');
 
-        this.lungs = new Lungs(this, 220, 540);
+        this.lungs = new Lungs(this, 235, 545);
         this.breatheBar = new StatBar(this, 700, 80, 'O2');
 
         this.stomach = new Stomach(this, 500, 750);
@@ -175,11 +175,6 @@ export class Level extends SceneBase {
     }
 
     private handleSpaceBar() {
-        if (this.bIsTouchingA(this.player, this.lungs)) {
-            if (this.cursors.space.getDuration() > 200) {
-                this.pumpLungs();
-            }
-        }
         if (this.bIsTouchingA(this.player, this.plug)) {
             if (this.cursors.space.getDuration() > 200) {
                 this.openPlug();
@@ -199,7 +194,7 @@ export class Level extends SceneBase {
 
     private pumpLungs = () => {
         this.stateManager.handleEvent({
-            type: 'PUMP_LUNGS'
+            type: 'BREATHE_LUNGS'
         });
     };
 

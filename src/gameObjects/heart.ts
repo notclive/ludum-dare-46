@@ -13,7 +13,7 @@ export class Heart extends Phaser.Physics.Arcade.Sprite {
         'PUMP',
         () => {
             this.scene.stateManager.handleEvent({
-                type: 'BEAT_HEART'
+                type: 'PUMP_HEART'
             });
         }
     );
