@@ -2,12 +2,24 @@ import * as Phaser from 'phaser';
 import {PHASER_STATIC_BODY} from '../consts';
 import {OrganShaker} from './OrganShaker';
 import {GameState, Virus} from '../state/stateManager';
+import {InteractionManager} from './interactionManager';
+import {Level} from '../scenes/level';
 
 export class Alarm extends Phaser.Physics.Arcade.Sprite {
 
     private readonly shaker = new OrganShaker(this);
+    private readonly interactionManager = new InteractionManager(
+        this,
+        this.scene.player,
+        'PRESS',
+        () => {
+            this.scene.stateManager.handleEvent({
+                type: 'RING_ALARM'
+            });
+        }
+    );
 
-    constructor(scene: Phaser.Scene, x: number, y: number) {
+    constructor(public scene: Level, x: number, y: number) {
         super(scene, x, y, 'alarm');
 
         scene.physics.world.enable(this, PHASER_STATIC_BODY);
@@ -22,8 +34,9 @@ export class Alarm extends Phaser.Physics.Arcade.Sprite {
         this.anims.play('lymph-slowPulse', true);
     }
 
-    public update({viruses, whiteBloodCell}: GameState) {
-        const urgency = whiteBloodCell.enabled ? 0 : viruses.length * 40;
+    public update(state: GameState) {
+        const urgency = state.whiteBloodCell.enabled ? 0 : state.viruses.length * 40;
         this.shaker.shakeIfUrgent(urgency);
+        this.interactionManager.update(state)
     }
 }

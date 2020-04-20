@@ -1,7 +1,7 @@
 import Sprite = Phaser.GameObjects.Sprite;
 import GameObject = Phaser.GameObjects.GameObject;
 import {Player} from './player';
-import {GameState, OrganInteractionTimes} from '../state/stateManager';
+import {GameState} from '../state/stateManager';
 
 export type InteractionType = 'PUMP' | 'HOLD' | 'PRESS';
 
@@ -28,6 +28,12 @@ export class InteractionManager {
         this.player.scene.anims.create({
             key: 'hold-spacebar',
             frames: this.player.scene.anims.generateFrameNumbers('spacebar', {frames: [2, 3, 3, 3, 3, 3, 3, 3, 3]}),
+            frameRate: 3,
+            repeat: -1
+        });
+        this.player.scene.anims.create({
+            key: 'press-spacebar',
+            frames: this.player.scene.anims.generateFrameNumbers('spacebar', {frames: [4, 5, 5, 5, 5]}),
             frameRate: 3,
             repeat: -1
         });
@@ -90,7 +96,8 @@ export class InteractionManager {
     };
 
     private checkForInteraction = () => {
-        if (this.interactionType === 'PUMP') {
+        // Pump and press are the same, they only differ in the hint.
+        if (this.interactionType === 'PUMP' || this.interactionType === 'PRESS') {
             this.checkForPumpInteraction();
         }
         if (this.interactionType === 'HOLD') {

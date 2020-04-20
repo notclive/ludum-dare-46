@@ -175,18 +175,7 @@ export class Level extends SceneBase {
                 this.brain.tryPressButton();
             }
         }
-        if (this.bIsTouchingA(this.player, this.alarm)) {
-            if (!this.spaceBarDown) {
-                this.ringAlarm();
-            }
-        }
     }
-
-    private ringAlarm = () => {
-        this.stateManager.handleEvent({
-            type: 'RING_ALARM'
-        });
-    };
 
     public get stateManager() {
         return this._stateManager;
