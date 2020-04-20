@@ -44,7 +44,7 @@ export default class OutsideView {
 
     private drawBorder = () => {
         const {x, y} = this.viewPositionToGamePosition(0.5, 0.5);
-        this.background = this.scene.add.rectangle(x, y, this.viewWidth, this.viewHeight, 0xFF696D);
+        this.background = this.scene.add.rectangle(x, y, this.viewWidth, this.viewHeight, 0x6984B5);
     };
 
     private updateBackgroundColour = (colour: number) => {
@@ -63,27 +63,27 @@ export default class OutsideView {
     });
 
     private wakeUp = () => {
-        this.updateBackgroundColour(0xFF0000);
+        this.updateBackgroundColour(0x63DBF9);
         this.cat.wakeUp();
     };
 
     private drink = () => {
-        this.updateBackgroundColour(0x00FF00);
+        this.updateBackgroundColour(0xFF8488);
         this.cat.drink();
     };
 
     private eat = () => {
-        this.updateBackgroundColour(0x0000FF);
+        this.updateBackgroundColour(0xFFCA3A);
         this.cat.eat();
     };
 
     private becomeIll = () => {
-        this.updateBackgroundColour(0x2D2210);
+        this.updateBackgroundColour(0xBCC6C5);
         this.cat.becomeIll();
     };
 
     private die = () => {
-        this.updateBackgroundColour(0x888888);
+        this.updateBackgroundColour(0xFFFFFF);
         this.cat.die();
     };
 }
